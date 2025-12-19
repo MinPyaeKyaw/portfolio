@@ -1,0 +1,120 @@
+/* Extra Small Devices */
+@media (max-width: 480px) {
+  #hero h1 {
+    font-size: 5rem;
+  }
+  .hero-img-1 {
+    width: 150px;
+    right: 0;
+    top: 15%;
+  }
+
+  .hero-img-2 {
+    width: 200px;
+    left: 0;
+    bottom: 8%;
+  }
+
+  .hero-img-3 {
+    width: 100px;
+    bottom: 13%;
+    right: 7%;
+  }
+
+  .hero-img-4 {
+    width: 100px;
+    top: 17%;
+    left: 7%;
+  }
+}
+
+/* Small Devices */
+@media (max-width: 768px) and (min-width: 481px) {
+  #hero h1 {
+    font-size: 5rem;
+  }
+  .hero-img-1 {
+    width: 200px;
+    right: 0;
+    top: 15%;
+  }
+
+  .hero-img-2 {
+    width: 250px;
+    left: 0;
+    bottom: 8%;
+  }
+
+  .hero-img-3 {
+    width: 150px;
+    bottom: 13%;
+    right: 7%;
+  }
+
+  .hero-img-4 {
+    width: 150px;
+    top: 17%;
+    left: 7%;
+  }
+}
+
+/* Medium Devices */
+@media (max-width: 1024px) and (min-width: 769px) {
+  #hero h1 {
+    font-size: 10rem;
+  }
+  .hero-img-1 {
+    width: 200px;
+    right: 7%;
+    top: 15%;
+  }
+
+  .hero-img-2 {
+    width: 250px;
+    left: 5%;
+    bottom: 15%;
+  }
+
+  .hero-img-3 {
+    width: 150px;
+    right: 7%;
+    bottom: 15%;
+  }
+
+  .hero-img-4 {
+    width: 150px;
+    left: 7%;
+    top: 15%;
+  }
+}
+
+/* Large Devices */
+@media (min-width: 1024px) {
+  #hero h1 {
+    font-size: 10rem;
+  }
+
+  .hero-img-1 {
+    width: 350px;
+    right: 7%;
+    top: 15%;
+  }
+
+  .hero-img-2 {
+    width: 400px;
+    left: 5%;
+    bottom: 15%;
+  }
+
+  .hero-img-3 {
+    width: 200px;
+    right: 7%;
+    bottom: 15%;
+  }
+
+  .hero-img-4 {
+    width: 200px;
+    left: 7%;
+    top: 15%;
+  }
+}

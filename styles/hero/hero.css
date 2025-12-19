@@ -1,0 +1,39 @@
+#hero {
+  background-color: var(--blue);
+  height: 100vh;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  position: relative;
+}
+
+#hero h1 {
+  font-family: var(--font-family-title);
+  color: var(--white);
+}
+
+#hero p {
+  color: var(--white);
+}
+
+#hero button {
+  margin-top: 40px;
+}
+
+.hero-img-1 {
+  position: absolute;
+}
+
+.hero-img-2 {
+  position: absolute;
+}
+
+.hero-img-3 {
+  position: absolute;
+}
+
+.hero-img-4 {
+  position: absolute;
+}
