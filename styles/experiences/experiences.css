@@ -4,6 +4,7 @@
   width: 100%;
   position: relative;
   display: flex;
+  flex-direction: column;
   justify-content: center;
   align-items: center;
 }
@@ -20,4 +21,60 @@
   right: 0;
   top: 10%;
   width: 500px;
+}
+
+.timeline {
+  position: relative;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 30px;
+}
+
+.timeline::before {
+  content: "";
+  width: 0px;
+  height: 90%;
+  border-left: 4px dashed var(--white);
+  position: absolute;
+  left: 50%;
+  top: 5%;
+  transform: translateX(-50%);
+  z-index: 1;
+}
+
+.timeline-item {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--white);
+  position: relative;
+  gap: 4%;
+}
+
+.timeline-item:nth-child(even) {
+  flex-direction: row-reverse;
+}
+
+/* .timeline-item div {
+  flex: 1;
+} */
+
+.timeline-item .smile {
+  width: 50px;
+  height: 50px;
+  position: absolute;
+  z-index: 2;
+}
+
+.timeline-item .smile .smile-img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+}
+
+.timeline-item .date {
+}
+
+.timeline-item .content {
 }
