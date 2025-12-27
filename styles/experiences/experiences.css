@@ -11,16 +11,10 @@
 
 .exp-img-1 {
   position: absolute;
-  left: 0;
-  bottom: 10%;
-  width: 500px;
 }
 
 .exp-img-2 {
   position: absolute;
-  right: 0;
-  top: 10%;
-  width: 500px;
 }
 
 .timeline {
@@ -28,7 +22,7 @@
   width: 100%;
   display: flex;
   flex-direction: column;
-  gap: 30px;
+  gap: 70px;
 }
 
 .timeline::before {
@@ -37,23 +31,16 @@
   height: 90%;
   border-left: 4px dashed var(--white);
   position: absolute;
-  left: 50%;
   top: 5%;
-  transform: translateX(-50%);
   z-index: 1;
 }
 
 .timeline-item {
   display: flex;
   align-items: center;
-  justify-content: center;
   color: var(--white);
   position: relative;
   gap: 4%;
-}
-
-.timeline-item:nth-child(even) {
-  flex-direction: row-reverse;
 }
 
 /* .timeline-item div {
@@ -74,7 +61,17 @@
 }
 
 .timeline-item .date {
+  flex: 1;
+  text-align: right;
 }
 
 .timeline-item .content {
+  flex: 1;
+  text-align: left;
+}
+
+.timeline-item .content .company {
+  font-family: var(--font-family-title);
+  font-size: var(--font-sub-title);
+  letter-spacing: 5px;
 }

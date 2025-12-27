@@ -14,14 +14,20 @@
   src: url("./../fonts/Dynamo EF Shadow Bold.otf");
 }
 
+@font-face {
+  font-family: "Dynamo CG";
+  src: url("./../fonts/Dynamo CG.otf");
+}
+
 :root {
   --font-family: "JetBrains Mono";
-  --font-family-title: "Dynamo Shadow";
+  --font-family-hero-heading: "Dynamo Shadow";
+  --font-family-title: "Dynamo CG";
 
   --font-text: 16px;
   --font-mb-text: 14px;
   --font-title: 4rem;
-  --font-sub-title: 2rem;
+  --font-sub-title: 1.5rem;
   --font-mb-title: 3rem;
   --font-mbsub-title: 1.5rem;
 
@@ -46,6 +52,7 @@ h5,
 h6 {
   font-family: var(--font-family-title);
   color: var(--white);
+  letter-spacing: 10px;
 }
 
 .btn {
