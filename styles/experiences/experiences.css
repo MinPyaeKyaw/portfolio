@@ -7,14 +7,17 @@
   flex-direction: column;
   justify-content: center;
   align-items: center;
+  z-index: 1;
 }
 
 .exp-img-1 {
   position: absolute;
+  z-index: -1;
 }
 
 .exp-img-2 {
   position: absolute;
+  z-index: -1;
 }
 
 .timeline {
@@ -37,7 +40,6 @@
 
 .timeline-item {
   display: flex;
-  align-items: center;
   color: var(--white);
   position: relative;
   gap: 4%;
