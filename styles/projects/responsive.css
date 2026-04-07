@@ -1,0 +1,45 @@
+/* Extra Small Devices */
+@media (max-width: 480px) {
+  .project-container {
+    grid-template-columns: repeat(1, 1fr);
+  }
+
+  .project-item .open-link {
+    display: none;
+  }
+}
+
+/* Small Devices */
+@media (max-width: 768px) and (min-width: 481px) {
+  .project-container {
+    grid-template-columns: repeat(1, 1fr);
+  }
+
+  .project-item .open-link {
+    display: none;
+  }
+}
+
+/* Medium Devices */
+@media (max-width: 1024px) and (min-width: 769px) {
+  .project-container {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .project-item .open-link svg {
+    width: 25px;
+    height: 25px;
+  }
+}
+
+/* Large Devices */
+@media (min-width: 1024px) {
+  .project-container {
+    grid-template-columns: repeat(3, 1fr);
+  }
+
+  .project-item .open-link svg {
+    width: 25px;
+    height: 25px;
+  }
+}
