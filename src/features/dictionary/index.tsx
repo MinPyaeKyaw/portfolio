@@ -8,7 +8,6 @@ import {
 } from "react";
 import type { DictionaryWord } from "@/types/dictionary-word";
 import { SearchBar } from "./components/search-bar";
-import { WordDetail } from "./components/word-detail";
 import { WordList } from "./components/word-list";
 import {
   MAX_DICTIONARY_RESULTS,
@@ -17,7 +16,6 @@ import {
 
 export default function DictionaryPage() {
   const [query, setQuery] = useState("");
-  const [selected, setSelected] = useState<DictionaryWord | null>(null);
   const [lexicon, setLexicon] = useState<DictionaryWord[] | null>(null);
 
   const deferredQuery = useDeferredValue(query);
@@ -100,20 +98,9 @@ export default function DictionaryPage() {
           ) : null}
           <WordList
             words={filtered}
-            onSelect={(w) => {
-              setSelected(w);
-            }}
           />
         </div>
       )}
-
-      <WordDetail
-        word={selected}
-        open={selected !== null}
-        onOpenChange={(open) => {
-          if (!open) setSelected(null);
-        }}
-      />
     </div>
   );
 }

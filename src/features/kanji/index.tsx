@@ -25,7 +25,7 @@ function drawStroke(
 ) {
   if (!points.length) return;
   ctx.strokeStyle = strokeColor;
-  ctx.lineWidth = 12;
+  ctx.lineWidth = 7;
   ctx.lineCap = "round";
   ctx.lineJoin = "round";
   ctx.beginPath();
@@ -54,6 +54,7 @@ export default function KanjiPage() {
   const [strokes, setStrokes] = useState<Point[][]>([]);
   const [activeStroke, setActiveStroke] = useState<Point[]>([]);
   const [lexicon, setLexicon] = useState<DictionaryWord[] | null>(null);
+  const [hasSearched, setHasSearched] = useState(false);
   const {
     isModelLoading,
     isPredicting,
@@ -65,7 +66,6 @@ export default function KanjiPage() {
   const hasDrawing = strokes.length > 0 || activeStroke.length > 0;
 
   const matchedWords = useMemo(() => {
-    console.log("lee", prediction);
     const predictedKanji = prediction?.label.trim();
     if (!lexicon || !predictedKanji) return [];
     return lexicon
@@ -198,127 +198,53 @@ export default function KanjiPage() {
     setStrokes([]);
     activeStrokeRef.current = [];
     setActiveStroke([]);
+    setHasSearched(false);
     clearPrediction();
   };
 
   const recognizeDrawing = async () => {
     const canvas = canvasRef.current;
     if (!canvas) return;
+    setHasSearched(true);
     await predictFromCanvas(canvas);
   };
 
   return (
     <div className="mx-auto max-w-3xl px-4 py-8 text-left md:py-10">
-      <h1 className="font-heading text-3xl font-medium tracking-tight text-foreground md:text-4xl">
-        Kanji
-      </h1>
-      <p className="mt-2 text-muted-foreground text-sm">
-        Draw a kanji and run local TensorFlow recognition.
-      </p>
-
-      <div className="mt-4 overflow-hidden rounded-2xl border border-border bg-card p-3 md:p-4">
-        <canvas
-          ref={canvasRef}
-          className="aspect-square w-full touch-none rounded-xl bg-background"
-          onPointerDown={handlePointerDown}
-          onPointerMove={handlePointerMove}
-          onPointerUp={endStroke}
-          onPointerCancel={endStroke}
-          aria-label="Kanji drawing canvas"
-        />
-      </div>
-
-      <div className="mt-4 flex flex-wrap items-center gap-2">
-        <Button
-          type="button"
-          variant="outline"
-          onClick={undoStroke}
-          disabled={!strokes.length}
-        >
-          <Undo2 aria-hidden />
-          Undo stroke
-        </Button>
-        <Button
-          type="button"
-          variant="outline"
-          onClick={clearCanvas}
-          disabled={!hasDrawing}
-        >
-          <X aria-hidden />
-          Clear canvas
-        </Button>
-        <Button
-          type="button"
-          onClick={() => {
-            void recognizeDrawing();
-          }}
-          disabled={!hasDrawing || isModelLoading || isPredicting}
-        >
-          {isPredicting ? (
-            <Loader2 className="animate-spin" aria-hidden />
-          ) : (
-            <ScanText aria-hidden />
-          )}
-          Recognize
-        </Button>
-        <span className="text-muted-foreground text-xs">
-          Strokes: {strokes.length}
-        </span>
-      </div>
-
       <div className="mt-6 rounded-2xl border border-border bg-card p-4">
-        <div className="mb-3 flex items-center justify-between gap-2">
-          <h2 className="font-medium text-base">Recognition</h2>
-          <span className="text-muted-foreground text-xs">
-            {isModelLoading ? "Loading model…" : "Model ready"}
-          </span>
-        </div>
-        {isModelLoading ? (
-          <div className="flex items-center gap-2 text-muted-foreground text-sm">
-            <Loader2 className="size-4 animate-spin" aria-hidden />
-            Downloading model from <code>/model/model.json</code>
-          </div>
-        ) : prediction ? (
-          <div className="space-y-2 text-sm">
-            <p>
-              Predicted Kanji:{" "}
-              <span className="font-heading text-primary text-2xl">
-                {prediction.label}
-              </span>
-            </p>
-            <p className="text-muted-foreground">
-              Class index: {prediction.index} | Confidence:{" "}
-              {(prediction.confidence * 100).toFixed(2)}%
-            </p>
-          </div>
-        ) : (
-          <p className="text-muted-foreground text-sm">
-            Draw a kanji and press Recognize.
-          </p>
-        )}
-        {modelError ? (
-          <p className="mt-3 text-destructive text-sm">{modelError}</p>
-        ) : null}
-      </div>
-
-      <div className="mt-6 rounded-2xl border border-border bg-card p-4">
-        <h2 className="font-medium text-base">Matched words (kanji)</h2>
         {lexicon === null ? (
           <p className="mt-2 text-muted-foreground text-sm">
             Loading dictionary…
           </p>
+        ) : !hasSearched ? (
+          <p className="mt-2 text-muted-foreground text-sm">
+            Draw a kanji and click the search button.
+          </p>
+        ) : isPredicting ? (
+          <div
+            className="mt-3 flex items-center gap-2 rounded-lg border border-border/70 bg-muted/30 px-3 py-2 text-sm text-muted-foreground"
+            role="status"
+            aria-live="polite"
+          >
+            <Loader2 className="size-4 animate-spin" aria-hidden />
+            Running OCR and searching matched words...
+          </div>
         ) : !prediction ? (
           <p className="mt-2 text-muted-foreground text-sm">
             Recognize a kanji to search matches in{" "}
             <code>src/utils/words.ts</code>.
           </p>
         ) : matchedWords.length === 0 ? (
-          <p className="mt-2 text-muted-foreground text-sm">
+          <>
+            <h2 className="font-medium text-base">Matched words</h2>
+            <p className="mt-2 text-muted-foreground text-sm">
             No matches found for{" "}
             <span className="font-mono">{prediction.label}</span>.
-          </p>
+            </p>
+          </>
         ) : (
           <>
+            <h2 className="font-medium text-base">Matched words</h2>
             <p className="mt-2 text-muted-foreground text-xs">
               {matchedWords.length} match(es) for{" "}
               <span className="font-mono">{prediction.label}</span>
@@ -344,6 +270,94 @@ export default function KanjiPage() {
           </>
         )}
       </div>
+
+      <div className="h-[420px]" aria-hidden />
+
+      <div className="fixed inset-x-0 bottom-[calc(4.75rem+env(safe-area-inset-bottom,0px))] z-40 flex justify-center px-4">
+        <div className="relative w-full max-w-[300px] overflow-hidden rounded-xl border border-border bg-background shadow-lg">
+          <canvas
+            ref={canvasRef}
+            className="aspect-square w-full touch-none bg-background"
+            onPointerDown={handlePointerDown}
+            onPointerMove={handlePointerMove}
+            onPointerUp={endStroke}
+            onPointerCancel={endStroke}
+            aria-label="Kanji drawing canvas"
+          />
+
+          <div className="absolute top-2 right-2 flex gap-2">
+            <Button
+              type="button"
+              size="icon"
+              variant="secondary"
+              onClick={undoStroke}
+              disabled={!strokes.length}
+              aria-label="Undo"
+              title="Undo"
+            >
+              <Undo2 aria-hidden />
+            </Button>
+            <Button
+              type="button"
+              size="icon"
+              variant="secondary"
+              onClick={clearCanvas}
+              disabled={!hasDrawing}
+              aria-label="Clear"
+              title="Clear"
+            >
+              <X aria-hidden />
+            </Button>
+            <Button
+              type="button"
+              size="icon"
+              onClick={() => {
+                void recognizeDrawing();
+              }}
+              disabled={!hasDrawing || isModelLoading || isPredicting}
+              aria-label="Search"
+              title="Search"
+            >
+              {isPredicting ? (
+                <Loader2 className="animate-spin" aria-hidden />
+              ) : (
+                <ScanText aria-hidden />
+              )}
+            </Button>
+          </div>
+        </div>
+      </div>
+
+      {prediction ? (
+        <div className="mt-4 rounded-2xl border border-border bg-card p-4">
+          <p className="text-sm">
+            OCR:{" "}
+            <span className="font-heading text-primary text-2xl">
+              {prediction.label}
+            </span>
+          </p>
+          <p className="text-muted-foreground text-xs">
+            Class {prediction.index} · {(prediction.confidence * 100).toFixed(2)}%
+          </p>
+        </div>
+      ) : null}
+
+      {!prediction && isPredicting ? (
+        <div className="mt-4 rounded-2xl border border-border bg-card p-4">
+          <div
+            className="flex items-center gap-2 text-muted-foreground text-sm"
+            role="status"
+            aria-live="polite"
+          >
+            <Loader2 className="size-4 animate-spin" aria-hidden />
+            OCR is running...
+          </div>
+        </div>
+      ) : null}
+
+      {modelError ? (
+        <p className="mt-3 text-destructive text-sm">{modelError}</p>
+      ) : null}
     </div>
   );
 }

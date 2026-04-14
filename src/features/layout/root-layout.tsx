@@ -1,5 +1,5 @@
 import { BookOpen, Home, Layers } from 'lucide-react'
-import { NavLink, Outlet } from 'react-router-dom'
+import { NavLink, Outlet, useLocation } from 'react-router-dom'
 import { BrandLinkToHome } from '@/components/brand-lockup'
 import { ThemeToggle } from '@/components/theme-toggle'
 import { cn } from '@/lib/utils'
@@ -14,16 +14,24 @@ const navClass = ({ isActive }: { isActive: boolean }) =>
 
 const mobileTabClass = ({ isActive }: { isActive: boolean }) =>
   cn(
-    'flex min-h-12 min-w-0 flex-1 flex-col items-center justify-center gap-0.5 py-1.5 text-[11px] font-medium transition-colors',
+    'group relative z-10 flex min-h-10 min-w-0 flex-1 items-center justify-center rounded-xl px-2 py-1 text-[10px] font-medium transition-all duration-200',
     isActive
-      ? 'text-primary'
-      : 'text-muted-foreground active:bg-muted/50'
+      ? 'text-white'
+      : 'text-muted-foreground active:scale-[0.98]'
   )
 
 export default function RootLayout() {
+  const { pathname } = useLocation()
+  const activeTabIndex =
+    pathname.startsWith('/dictionary')
+      ? 1
+      : pathname.startsWith('/kanji')
+        ? 2
+        : 0
+
   return (
     <div className="flex min-h-svh flex-col bg-background">
-      <header className="sticky top-0 z-40 flex flex-wrap items-center justify-between gap-3 border-border border-b bg-background/95 px-4 py-2.5 backdrop-blur-sm md:px-6">
+      <header className="sticky top-0 z-40 flex h-[3.75rem] flex-nowrap items-center justify-between gap-3 border-border border-b bg-background/95 px-4 backdrop-blur-sm md:px-6">
         <BrandLinkToHome />
         <div className="flex items-center gap-1 md:gap-2">
           <nav
@@ -50,42 +58,53 @@ export default function RootLayout() {
         <Outlet />
       </main>
 
-      <nav
-        className="fixed inset-x-0 bottom-0 z-50 border-border border-t bg-background/95 pb-[env(safe-area-inset-bottom,0px)] backdrop-blur-md md:hidden"
-        aria-label="Primary"
-      >
-        <div className="mx-auto flex max-w-lg">
+      <nav className="fixed inset-x-0 bottom-2 z-50 px-3 pb-[env(safe-area-inset-bottom,0px)] md:hidden">
+        <div className="relative mx-auto flex max-w-lg items-center rounded-2xl border border-border/80 bg-background/85 p-1 shadow-[0_8px_30px_rgba(0,0,0,0.12)] backdrop-blur-xl">
+          <div
+            className="absolute top-1 bottom-1 left-1 w-[calc((100%-0.5rem)/3)] rounded-xl bg-primary shadow-[0_6px_16px_rgba(233,46,105,0.35)] transition-transform duration-300 ease-out"
+            style={{ transform: `translateX(${activeTabIndex * 100}%)` }}
+            aria-hidden
+          />
           <NavLink to="/" end className={mobileTabClass}>
             {({ isActive }) => (
-              <>
+              <span className="flex flex-col items-center gap-0.5">
                 <Home
-                  className={cn('size-5 shrink-0', isActive && 'stroke-[2.5]')}
+                  className={cn(
+                    'size-[18px] shrink-0 transition-transform duration-200',
+                    isActive ? 'stroke-[2.5] scale-105' : 'group-active:scale-95'
+                  )}
                   aria-hidden
                 />
                 <span>Home</span>
-              </>
+              </span>
             )}
           </NavLink>
           <NavLink to="/dictionary" className={mobileTabClass}>
             {({ isActive }) => (
-              <>
+              <span className="flex flex-col items-center gap-0.5">
                 <BookOpen
-                  className={cn('size-5 shrink-0', isActive && 'stroke-[2.5]')}
+                  className={cn(
+                    'size-[18px] shrink-0 transition-transform duration-200',
+                    isActive ? 'stroke-[2.5] scale-105' : 'group-active:scale-95'
+                  )}
                   aria-hidden
                 />
                 <span>Dictionary</span>
-              </>
+              </span>
             )}
           </NavLink>
           <NavLink to="/kanji" className={mobileTabClass}>
             {({ isActive }) => (
-              <>
+              <span className="flex flex-col items-center gap-0.5">
                 <Layers
-                  className={cn('size-5 shrink-0', isActive && 'stroke-[2.5]')}
+                  className={cn(
+                    'size-[18px] shrink-0 transition-transform duration-200',
+                    isActive ? 'stroke-[2.5] scale-105' : 'group-active:scale-95'
+                  )}
                   aria-hidden
                 />
                 <span>Kanji</span>
-              </>
+              </span>
             )}
           </NavLink>
         </div>
