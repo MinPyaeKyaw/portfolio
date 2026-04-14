@@ -1,43 +1,37 @@
-import { BookOpen, Home, Layers } from 'lucide-react'
-import { NavLink, Outlet, useLocation } from 'react-router-dom'
-import { BrandLinkToHome } from '@/components/brand-lockup'
-import { ThemeToggle } from '@/components/theme-toggle'
-import { cn } from '@/lib/utils'
+import { BookOpen, Home, Layers } from "lucide-react";
+import { NavLink, Outlet, useLocation } from "react-router-dom";
+import { BrandLinkToHome } from "@/components/brand-lockup";
+import { ThemeToggle } from "@/components/theme-toggle";
+import { cn } from "@/lib/utils";
 
 const navClass = ({ isActive }: { isActive: boolean }) =>
   cn(
-    'rounded-lg px-3 py-2 text-sm font-medium transition-colors',
+    "rounded-lg px-3 py-2 text-sm font-medium transition-colors",
     isActive
-      ? 'bg-muted text-foreground'
-      : 'text-muted-foreground hover:bg-muted/60 hover:text-foreground'
-  )
+      ? "bg-muted text-foreground"
+      : "text-muted-foreground hover:bg-muted/60 hover:text-foreground",
+  );
 
 const mobileTabClass = ({ isActive }: { isActive: boolean }) =>
   cn(
-    'group relative z-10 flex min-h-10 min-w-0 flex-1 items-center justify-center rounded-xl px-2 py-1 text-[10px] font-medium transition-all duration-200',
-    isActive
-      ? 'text-white'
-      : 'text-muted-foreground active:scale-[0.98]'
-  )
+    "group relative z-10 flex min-h-10 min-w-0 flex-1 items-center justify-center rounded-xl px-2 py-1 text-[10px] font-medium transition-all duration-200",
+    isActive ? "text-white" : "text-muted-foreground active:scale-[0.98]",
+  );
 
 export default function RootLayout() {
-  const { pathname } = useLocation()
-  const activeTabIndex =
-    pathname.startsWith('/dictionary')
-      ? 1
-      : pathname.startsWith('/kanji')
-        ? 2
-        : 0
+  const { pathname } = useLocation();
+  const activeTabIndex = pathname.startsWith("/dictionary")
+    ? 1
+    : pathname.startsWith("/kanji")
+      ? 2
+      : 0;
 
   return (
     <div className="flex min-h-svh flex-col bg-background">
       <header className="sticky top-0 z-40 flex h-[3.75rem] flex-nowrap items-center justify-between gap-3 border-border border-b bg-background/95 px-4 backdrop-blur-sm md:px-6">
         <BrandLinkToHome />
         <div className="flex items-center gap-1 md:gap-2">
-          <nav
-            className="hidden flex-wrap gap-1 md:flex"
-            aria-label="Main"
-          >
+          <nav className="hidden flex-wrap gap-1 md:flex" aria-label="Main">
             <NavLink to="/dictionary" className={navClass}>
               Dictionary
             </NavLink>
@@ -51,8 +45,8 @@ export default function RootLayout() {
 
       <main
         className={cn(
-          'flex-1',
-          'pb-[calc(3.75rem+env(safe-area-inset-bottom,0px))] md:pb-0'
+          "flex-1",
+          "pb-[calc(3.75rem+env(safe-area-inset-bottom,0px))] md:pb-0",
         )}
       >
         <Outlet />
@@ -70,8 +64,10 @@ export default function RootLayout() {
               <span className="flex flex-col items-center gap-0.5">
                 <Home
                   className={cn(
-                    'size-[18px] shrink-0 transition-transform duration-200',
-                    isActive ? 'stroke-[2.5] scale-105' : 'group-active:scale-95'
+                    "size-[18px] shrink-0 transition-transform duration-200",
+                    isActive
+                      ? "stroke-[2.5] scale-105"
+                      : "group-active:scale-95",
                   )}
                   aria-hidden
                 />
@@ -84,8 +80,10 @@ export default function RootLayout() {
               <span className="flex flex-col items-center gap-0.5">
                 <BookOpen
                   className={cn(
-                    'size-[18px] shrink-0 transition-transform duration-200',
-                    isActive ? 'stroke-[2.5] scale-105' : 'group-active:scale-95'
+                    "size-[18px] shrink-0 transition-transform duration-200",
+                    isActive
+                      ? "stroke-[2.5] scale-105"
+                      : "group-active:scale-95",
                   )}
                   aria-hidden
                 />
@@ -98,8 +96,10 @@ export default function RootLayout() {
               <span className="flex flex-col items-center gap-0.5">
                 <Layers
                   className={cn(
-                    'size-[18px] shrink-0 transition-transform duration-200',
-                    isActive ? 'stroke-[2.5] scale-105' : 'group-active:scale-95'
+                    "size-[18px] shrink-0 transition-transform duration-200",
+                    isActive
+                      ? "stroke-[2.5] scale-105"
+                      : "group-active:scale-95",
                   )}
                   aria-hidden
                 />
@@ -110,5 +110,5 @@ export default function RootLayout() {
         </div>
       </nav>
     </div>
-  )
+  );
 }
