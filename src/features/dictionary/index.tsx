@@ -31,7 +31,7 @@ export default function DictionaryPage() {
     };
   }, []);
 
-  const { items: filtered, truncated } = useMemo(() => {
+  const { items: filtered } = useMemo(() => {
     if (!lexicon) {
       return { items: [] as DictionaryWord[], truncated: false };
     }
@@ -44,7 +44,7 @@ export default function DictionaryPage() {
   const isLoading = lexicon === null;
 
   return (
-    <div className="mx-auto max-w-3xl px-4 pb-10 pt-6 md:pt-8">
+    <div className="mx-auto max-w-3xl px-4 pb-0 pt-6 md:pb-10 md:pt-8">
       <div className="mb-4">
         <SearchBar value={query} onChange={setQuery} />
       </div>
@@ -67,12 +67,10 @@ export default function DictionaryPage() {
         <EmptyState title="No words found" />
       ) : (
         <div className="space-y-3">
-          {truncated ? (
-            <p className="text-muted-foreground text-xs">
-              Showing the first {MAX_DICTIONARY_RESULTS} matches. Refine your
-              search for more specific results.
-            </p>
-          ) : null}
+          <p className="text-muted-foreground text-xs">
+            Showing the first {MAX_DICTIONARY_RESULTS} matches. Refine your
+            search for more specific results.
+          </p>
           <WordList words={filtered} />
         </div>
       )}

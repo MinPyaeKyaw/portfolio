@@ -17,7 +17,7 @@ export function EmptyState({ title }: EmptyStateProps) {
         </h2>
       ) : null}
       <p className="mt-2 mx-auto max-w-sm text-muted-foreground text-sm leading-relaxed">
-        Try a word in Hiragana, Katakana, Kanji, Romaji, or Myanmar.
+        Try a word in Hiragana, Katakana, Kanji, Romaji, or မြန်မာ.
       </p>
     </div>
   );
