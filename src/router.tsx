@@ -1,17 +1,17 @@
-import { createBrowserRouter } from 'react-router-dom'
-import RootLayout from './features/layout/RootLayout'
-import DictionaryPage from './features/dictionary/DictionaryPage'
-import HomePage from './features/home/HomePage'
-import KanjiPage from './features/kanji/KanjiPage'
+import { createBrowserRouter } from "react-router-dom";
+import RootLayout from "./features/layout/root-layout";
+import DictionaryPage from "./features/dictionary";
+import HomePage from "./features/home";
+import KanjiPage from "./features/kanji";
 
 export const router = createBrowserRouter([
   {
-    path: '/',
+    path: "/",
     element: <RootLayout />,
     children: [
       { index: true, element: <HomePage /> },
-      { path: 'dictionary', element: <DictionaryPage /> },
-      { path: 'kanji', element: <KanjiPage /> },
+      { path: "dictionary", element: <DictionaryPage /> },
+      { path: "kanji", element: <KanjiPage /> },
     ],
   },
-])
+]);
