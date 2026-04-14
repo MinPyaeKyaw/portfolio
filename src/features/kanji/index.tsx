@@ -106,11 +106,12 @@ export default function KanjiPage() {
 
     const rootStyle = getComputedStyle(document.documentElement);
     const border = rootStyle.getPropertyValue("--border").trim() || "#d7d7d7";
+    const isDarkMode = document.documentElement.classList.contains("dark");
     const strokeColor =
       rootStyle.getPropertyValue("--primary").trim() || "#e92e69";
 
     // Guideline grid to help handwriting alignment.
-    ctx.strokeStyle = border;
+    ctx.strokeStyle = isDarkMode ? "rgba(255, 255, 255, 0.2)" : border;
     ctx.lineWidth = 1;
     ctx.setLineDash([5, 5]);
     ctx.beginPath();
@@ -282,10 +283,10 @@ export default function KanjiPage() {
       </div>
 
       <div className="fixed inset-x-0 bottom-[calc(4.75rem+env(safe-area-inset-bottom,0px))] z-40 flex justify-center px-4">
-        <div className="relative w-full overflow-hidden rounded-xl border border-dashed border-primary bg-white">
+        <div className="relative w-full overflow-hidden rounded-xl border border-dashed border-primary bg-white dark:bg-zinc-900">
           <canvas
             ref={canvasRef}
-            className="h-[230px] w-full touch-none bg-white"
+            className="h-[230px] w-full touch-none bg-white dark:bg-zinc-900"
             onPointerDown={handlePointerDown}
             onPointerMove={handlePointerMove}
             onPointerUp={endStroke}

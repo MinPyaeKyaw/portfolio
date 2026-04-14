@@ -1,5 +1,5 @@
 import { useCallback, useRef } from "react";
-import { BookOpen, Home, Layers } from "lucide-react";
+import { BookOpen, GraduationCap, Layers } from "lucide-react";
 import { NavLink, Outlet, useLocation } from "react-router-dom";
 import { BrandLinkToHome } from "@/components/brand-lockup";
 import { ThemeToggle } from "@/components/theme-toggle";
@@ -102,7 +102,7 @@ export default function RootLayout() {
           <NavLink to="/" end className={mobileTabClass} onClick={playTabClickSound}>
             {({ isActive }) => (
               <span className="flex flex-col items-center gap-0.5">
-                <Home
+                <GraduationCap
                   className={cn(
                     "size-[18px] shrink-0 transition-transform duration-200",
                     isActive
@@ -111,7 +111,7 @@ export default function RootLayout() {
                   )}
                   aria-hidden
                 />
-                <span>Home</span>
+                <span>Learn</span>
               </span>
             )}
           </NavLink>
