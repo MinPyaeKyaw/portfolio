@@ -49,18 +49,18 @@ export default function RootLayout() {
       const oscillator = ctx.createOscillator();
       const gain = ctx.createGain();
 
-      oscillator.type = "triangle";
-      oscillator.frequency.setValueAtTime(880, now);
-      oscillator.frequency.exponentialRampToValueAtTime(640, now + 0.045);
+      oscillator.type = "sine";
+      oscillator.frequency.setValueAtTime(720, now);
+      oscillator.frequency.exponentialRampToValueAtTime(560, now + 0.035);
 
       gain.gain.setValueAtTime(0.0001, now);
-      gain.gain.exponentialRampToValueAtTime(0.06, now + 0.008);
-      gain.gain.exponentialRampToValueAtTime(0.0001, now + 0.05);
+      gain.gain.exponentialRampToValueAtTime(0.018, now + 0.006);
+      gain.gain.exponentialRampToValueAtTime(0.0001, now + 0.038);
 
       oscillator.connect(gain);
       gain.connect(ctx.destination);
       oscillator.start(now);
-      oscillator.stop(now + 0.06);
+      oscillator.stop(now + 0.045);
     } catch {
       // Best-effort sound effect: ignore audio failures silently.
     }

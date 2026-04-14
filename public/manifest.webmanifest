@@ -1,0 +1,24 @@
+{
+  "name": "Myanhon",
+  "short_name": "Myanhon",
+  "description": "Japan-Myanmar dictionary and Japanese learning tools.",
+  "start_url": "/",
+  "scope": "/",
+  "display": "standalone",
+  "background_color": "#ffffff",
+  "theme_color": "#e92e69",
+  "icons": [
+    {
+      "src": "/favicon.svg",
+      "type": "image/svg+xml",
+      "sizes": "any",
+      "purpose": "any"
+    },
+    {
+      "src": "/icons.svg",
+      "type": "image/svg+xml",
+      "sizes": "any",
+      "purpose": "maskable any"
+    }
+  ]
+}

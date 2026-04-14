@@ -24,7 +24,7 @@ export function WordList({ words }: WordListProps) {
               <li key={w.id}>
                 <Link
                   to={`/dictionary/${w.id}`}
-                  className="flex w-full flex-col gap-0.5 rounded-xl bg-white px-4 py-3.5 text-left transition-colors hover:bg-white/95 focus-visible:ring-2 focus-visible:ring-ring focus-visible:outline-none"
+                  className="flex w-full flex-col gap-0.5 rounded-xl bg-muted/45 px-4 py-3.5 text-left transition-colors hover:bg-muted/65 focus-visible:ring-2 focus-visible:ring-ring focus-visible:outline-none dark:bg-muted/30 dark:hover:bg-muted/45"
                 >
                   <span className="font-heading text-base font-medium tracking-tight text-foreground">
                     {primary}
@@ -44,7 +44,7 @@ export function WordList({ words }: WordListProps) {
         </ul>
       </ScrollArea>
       <div
-        className="pointer-events-none absolute right-0 bottom-0 left-0 h-16 bg-linear-to-t from-white/99 via-white/90 to-transparent dark:from-black/45 dark:via-black/20"
+        className="pointer-events-none absolute right-0 bottom-0 left-0 h-16 bg-linear-to-t from-background via-background/80 to-transparent"
         aria-hidden
       />
     </div>

@@ -44,7 +44,7 @@ export default function DictionaryPage() {
   const isLoading = lexicon === null;
 
   return (
-    <div className="mx-auto max-w-3xl px-4 pb-0 pt-6 md:pb-10 md:pt-8">
+    <div className="mx-auto max-w-3xl px-4 pb-0 pt-3 md:pb-10 md:pt-8">
       <div className="mb-4">
         <SearchBar value={query} onChange={setQuery} />
       </div>

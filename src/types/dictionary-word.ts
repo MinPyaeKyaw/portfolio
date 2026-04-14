@@ -1,7 +1,7 @@
 export interface WordExample {
-  kanjiSentance: string;
-  hiraSentance: string;
-  mmSentance: string;
+  japaneseWithKanji: string;
+  japaneseWithHiragana: string;
+  mm: string;
 }
 
 export interface WordForm {

@@ -7,7 +7,7 @@ type EmptyStateProps = {
 
 export function EmptyState({ title }: EmptyStateProps) {
   return (
-    <div className="flex min-h-[56vh] flex-col items-center justify-center rounded-2xl bg-linear-to-b from-muted/40 to-transparent px-6 py-10 text-center">
+    <div className="flex min-h-[56vh] flex-col items-center justify-center *:px-6 py-10 text-center">
       <div className="mx-auto mb-2 w-full max-w-[240px] shrink-0" aria-hidden>
         <DotLottieReact src={searchingAnimation} autoplay loop />
       </div>
