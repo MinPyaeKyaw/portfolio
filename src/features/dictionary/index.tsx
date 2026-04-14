@@ -1,4 +1,3 @@
-import { Loader2 } from "lucide-react";
 import { useDeferredValue, useEffect, useMemo, useState } from "react";
 import type { DictionaryWord } from "@/types/dictionary-word";
 import { EmptyState } from "./components/empty-state";
@@ -41,7 +40,6 @@ export default function DictionaryPage() {
   const hasQuery = query.trim().length > 0;
   const showHint = !hasQuery;
   const showEmpty = lexicon && hasQuery && filtered.length === 0;
-  const isLoading = lexicon === null;
 
   return (
     <div className="mx-auto max-w-3xl px-4 pb-0 pt-3 md:pb-10 md:pt-8">
@@ -49,19 +47,7 @@ export default function DictionaryPage() {
         <SearchBar value={query} onChange={setQuery} />
       </div>
 
-      {isLoading ? (
-        <div
-          className="flex flex-col items-center justify-center gap-3 rounded-2xl border border-dashed border-border/80 bg-muted/20 py-20"
-          role="status"
-          aria-live="polite"
-        >
-          <Loader2
-            className="size-8 animate-spin text-muted-foreground"
-            aria-hidden
-          />
-          <p className="text-muted-foreground text-sm">Loading dictionary…</p>
-        </div>
-      ) : showHint ? (
+      {showHint ? (
         <EmptyState />
       ) : showEmpty ? (
         <EmptyState title="No words found" />

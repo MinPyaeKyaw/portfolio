@@ -1,4 +1,4 @@
-import { Loader2, ScanText, Undo2, X } from "lucide-react";
+import { ChevronRight, Loader2, Search, Undo2, X } from "lucide-react";
 import {
   useCallback,
   useEffect,
@@ -7,13 +7,11 @@ import {
   useState,
   type PointerEvent,
 } from "react";
+import { DotLottieReact } from "@lottiefiles/dotlottie-react";
+import { Link } from "react-router-dom";
 import { Button } from "@/components/ui/button";
+import handDrawingAnimation from "@/assets/lottie/hand-drawing.lottie?url";
 import { useKanjiRecognizer } from "@/hooks/use-kanji-recognizer";
-import {
-  getPrimaryHeadword,
-  getReadingLine,
-  snippetText,
-} from "@/features/dictionary/utils/display-word";
 import type { DictionaryWord } from "@/types/dictionary-word";
 
 type Point = { x: number; y: number };
@@ -210,16 +208,24 @@ export default function KanjiPage() {
   };
 
   return (
-    <div className="mx-auto max-w-3xl px-4 py-8 text-left md:py-10">
-      <div className="mt-6 rounded-2xl border border-border bg-card p-4">
+    <div className="mx-auto max-w-3xl px-4 pt-3 text-left md:pt-10">
+      <div>
         {lexicon === null ? (
           <p className="mt-2 text-muted-foreground text-sm">
             Loading dictionary…
           </p>
         ) : !hasSearched ? (
-          <p className="mt-2 text-muted-foreground text-sm">
-            Draw a kanji and click the search button.
-          </p>
+          <div className="flex h-[calc(100vh-380px)] flex-col items-center justify-center text-center *:px-6">
+            <div
+              className="mx-auto mb-2 w-full max-w-[240px] shrink-0"
+              aria-hidden
+            >
+              <DotLottieReact src={handDrawingAnimation} autoplay loop />
+            </div>
+            <p className="mt-2 mx-auto max-w-sm text-muted-foreground text-sm leading-relaxed">
+              Draw a kanji and click search button.
+            </p>
+          </div>
         ) : isPredicting ? (
           <div
             className="mt-3 flex items-center gap-2 rounded-lg border border-border/70 bg-muted/30 px-3 py-2 text-sm text-muted-foreground"
@@ -236,34 +242,38 @@ export default function KanjiPage() {
           </p>
         ) : matchedWords.length === 0 ? (
           <>
-            <h2 className="font-medium text-base">Matched words</h2>
-            <p className="mt-2 text-muted-foreground text-sm">
-            No matches found for{" "}
-            <span className="font-mono">{prediction.label}</span>.
-            </p>
+            <div className="mt-2 flex h-[calc(100vh-380px)] items-center justify-center rounded-xl border border-border/70 bg-muted/25 px-4 py-3">
+              <p className="text-muted-foreground text-sm">
+                No matches found for{" "}
+                <span className="font-mono">{prediction.label}</span>.
+              </p>
+            </div>
           </>
         ) : (
           <>
-            <h2 className="font-medium text-base">Matched words</h2>
-            <p className="mt-2 text-muted-foreground text-xs">
-              {matchedWords.length} match(es) for{" "}
-              <span className="font-mono">{prediction.label}</span>
-            </p>
-            <ul className="mt-3 space-y-2">
+            <div className="mb-2 flex items-center justify-between px-1">
+              <p className="text-muted-foreground text-xs uppercase tracking-wider">
+                Results
+              </p>
+              <span className="rounded-full bg-muted px-2.5 py-1 text-xs text-muted-foreground">
+                {matchedWords.length} words
+              </span>
+            </div>
+            <ul className="h-[calc(100vh-410px)] pb-3 space-y-3 overflow-y-auto pr-1">
               {matchedWords.map((word) => (
-                <li
-                  key={word.id}
-                  className="rounded-lg border border-border/80 bg-background px-3 py-2"
-                >
-                  <p className="font-medium text-foreground">
-                    {getPrimaryHeadword(word)}
-                  </p>
-                  <p className="text-muted-foreground text-xs">
-                    {getReadingLine(word)}
-                  </p>
-                  <p className="myanmar-text text-muted-foreground text-sm">
-                    {snippetText(word.mm, 96)}
-                  </p>
+                <li key={word.id}>
+                  <Link
+                    to={`/dictionary/${word.id}`}
+                    className="flex w-full items-center justify-between rounded-xl border border-border/60 bg-white px-4 py-3.5 text-left transition-colors hover:bg-white/95 focus-visible:ring-2 focus-visible:ring-ring focus-visible:outline-none dark:bg-muted/30 dark:hover:bg-muted/45"
+                  >
+                    <span className="font-heading text-lg font-medium tracking-tight text-foreground">
+                      {word.kanji}
+                    </span>
+                    <ChevronRight
+                      className="size-4 shrink-0 text-muted-foreground"
+                      aria-hidden
+                    />
+                  </Link>
                 </li>
               ))}
             </ul>
@@ -271,13 +281,11 @@ export default function KanjiPage() {
         )}
       </div>
 
-      <div className="h-[420px]" aria-hidden />
-
       <div className="fixed inset-x-0 bottom-[calc(4.75rem+env(safe-area-inset-bottom,0px))] z-40 flex justify-center px-4">
-        <div className="relative w-full max-w-[300px] overflow-hidden rounded-xl border border-border bg-background shadow-lg">
+        <div className="relative w-full overflow-hidden rounded-xl border border-dashed border-primary bg-white">
           <canvas
             ref={canvasRef}
-            className="aspect-square w-full touch-none bg-background"
+            className="h-[230px] w-full touch-none bg-white"
             onPointerDown={handlePointerDown}
             onPointerMove={handlePointerMove}
             onPointerUp={endStroke}
@@ -308,52 +316,29 @@ export default function KanjiPage() {
             >
               <X aria-hidden />
             </Button>
+          </div>
+          <div className="absolute right-2 bottom-2">
             <Button
               type="button"
-              size="icon"
+              size="sm"
               onClick={() => {
                 void recognizeDrawing();
               }}
               disabled={!hasDrawing || isModelLoading || isPredicting}
+              className="gap-1.5 px-3"
               aria-label="Search"
               title="Search"
             >
               {isPredicting ? (
                 <Loader2 className="animate-spin" aria-hidden />
               ) : (
-                <ScanText aria-hidden />
+                <Search className="size-4" aria-hidden />
               )}
+              <span>Search</span>
             </Button>
           </div>
         </div>
       </div>
-
-      {prediction ? (
-        <div className="mt-4 rounded-2xl border border-border bg-card p-4">
-          <p className="text-sm">
-            OCR:{" "}
-            <span className="font-heading text-primary text-2xl">
-              {prediction.label}
-            </span>
-          </p>
-          <p className="text-muted-foreground text-xs">
-            Class {prediction.index} · {(prediction.confidence * 100).toFixed(2)}%
-          </p>
-        </div>
-      ) : null}
-
-      {!prediction && isPredicting ? (
-        <div className="mt-4 rounded-2xl border border-border bg-card p-4">
-          <div
-            className="flex items-center gap-2 text-muted-foreground text-sm"
-            role="status"
-            aria-live="polite"
-          >
-            <Loader2 className="size-4 animate-spin" aria-hidden />
-            OCR is running...
-          </div>
-        </div>
-      ) : null}
 
       {modelError ? (
         <p className="mt-3 text-destructive text-sm">{modelError}</p>
