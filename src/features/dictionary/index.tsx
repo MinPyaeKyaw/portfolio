@@ -1,13 +1,8 @@
 import { DotLottieReact } from "@lottiefiles/dotlottie-react";
 import { Loader2 } from "lucide-react";
-import {
-  useDeferredValue,
-  useEffect,
-  useMemo,
-  useState,
-} from "react";
+import { useDeferredValue, useEffect, useMemo, useState } from "react";
 import type { DictionaryWord } from "@/types/dictionary-word";
-import searchingAnimation from "@/assets/lottie/Searching.lottie?url";
+import searchingAnimation from "@/assets/lottie/searching.lottie?url";
 import { SearchBar } from "./components/search-bar";
 import { WordList } from "./components/word-list";
 import {
@@ -79,9 +74,7 @@ export default function DictionaryPage() {
               search for more specific results.
             </p>
           ) : null}
-          <WordList
-            words={filtered}
-          />
+          <WordList words={filtered} />
         </div>
       )}
     </div>
