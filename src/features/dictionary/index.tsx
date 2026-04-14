@@ -1,8 +1,7 @@
-import { DotLottieReact } from "@lottiefiles/dotlottie-react";
 import { Loader2 } from "lucide-react";
 import { useDeferredValue, useEffect, useMemo, useState } from "react";
 import type { DictionaryWord } from "@/types/dictionary-word";
-import searchingAnimation from "@/assets/lottie/searching.lottie?url";
+import { EmptyState } from "./components/empty-state";
 import { SearchBar } from "./components/search-bar";
 import { WordList } from "./components/word-list";
 import {
@@ -77,24 +76,6 @@ export default function DictionaryPage() {
           <WordList words={filtered} />
         </div>
       )}
-    </div>
-  );
-}
-
-function EmptyState({ title }: { title?: string }) {
-  return (
-    <div className="flex min-h-[56vh] flex-col items-center justify-center rounded-2xl bg-linear-to-b from-muted/40 to-transparent px-6 py-10 text-center">
-      <div className="mx-auto mb-2 w-full max-w-[240px] shrink-0" aria-hidden>
-        <DotLottieReact src={searchingAnimation} autoplay loop />
-      </div>
-      {title ? (
-        <h2 className="font-heading text-xl font-semibold tracking-tight text-foreground">
-          {title}
-        </h2>
-      ) : null}
-      <p className="mt-2 mx-auto max-w-sm text-muted-foreground text-sm leading-relaxed">
-        Try a word in Hiragana, Katakana, Kanji, Romaji, or Myanmar.
-      </p>
     </div>
   );
 }
