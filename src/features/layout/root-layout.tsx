@@ -15,7 +15,7 @@ const navClass = ({ isActive }: { isActive: boolean }) =>
 
 const mobileTabClass = ({ isActive }: { isActive: boolean }) =>
   cn(
-    "group relative z-10 flex min-h-10 min-w-0 flex-1 items-center justify-center rounded-xl px-2 py-1 text-[10px] font-medium transition-all duration-200",
+    "group relative z-10 flex min-h-11 min-w-0 flex-1 items-center justify-center rounded-full px-2 py-1.5 text-[10px] font-medium transition-all duration-200",
     isActive ? "text-white" : "text-muted-foreground active:scale-[0.98]",
   );
 
@@ -86,16 +86,16 @@ export default function RootLayout() {
       <main
         className={cn(
           "flex-1",
-          "pb-[calc(3.5rem+env(safe-area-inset-bottom,0px))] md:pb-0",
+          "pb-[calc(3.9rem+env(safe-area-inset-bottom,0px))] md:pb-0",
         )}
       >
         <Outlet />
       </main>
 
       <nav className="fixed inset-x-0 bottom-3 z-50 px-3 pb-[env(safe-area-inset-bottom,0px)] md:hidden">
-        <div className="relative mx-auto flex max-w-lg items-center rounded-2xl border border-border/80 bg-background/85 p-1 shadow-[0_8px_30px_rgba(0,0,0,0.12)] backdrop-blur-xl">
+        <div className="relative mx-auto flex max-w-lg items-center rounded-full border border-border/80 bg-background/85 p-1 shadow-[0_8px_30px_rgba(0,0,0,0.12)] backdrop-blur-xl">
           <div
-            className="absolute top-1 bottom-1 left-1 w-[calc((100%-0.5rem)/3)] rounded-xl bg-primary shadow-[0_6px_16px_rgba(233,46,105,0.35)] transition-transform duration-300 ease-out"
+            className="absolute top-1 bottom-1 left-1 w-[calc((100%-0.5rem)/3)] rounded-full bg-primary shadow-[0_6px_16px_rgba(233,46,105,0.35)] transition-transform duration-300 ease-out"
             style={{ transform: `translateX(${activeTabIndex * 100}%)` }}
             aria-hidden
           />
