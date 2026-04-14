@@ -1,3 +1,4 @@
+import { useCallback, useRef } from "react";
 import { BookOpen, Home, Layers } from "lucide-react";
 import { NavLink, Outlet, useLocation } from "react-router-dom";
 import { BrandLinkToHome } from "@/components/brand-lockup";
@@ -20,11 +21,50 @@ const mobileTabClass = ({ isActive }: { isActive: boolean }) =>
 
 export default function RootLayout() {
   const { pathname } = useLocation();
+  const audioContextRef = useRef<AudioContext | null>(null);
   const activeTabIndex = pathname.startsWith("/dictionary")
     ? 1
     : pathname.startsWith("/kanji")
       ? 2
       : 0;
+
+  const playTabClickSound = useCallback(() => {
+    try {
+      const AudioCtx =
+        window.AudioContext ||
+        (window as typeof window & { webkitAudioContext?: typeof AudioContext })
+          .webkitAudioContext;
+      if (!AudioCtx) return;
+
+      if (!audioContextRef.current) {
+        audioContextRef.current = new AudioCtx();
+      }
+
+      const ctx = audioContextRef.current;
+      if (ctx.state === "suspended") {
+        void ctx.resume();
+      }
+
+      const now = ctx.currentTime;
+      const oscillator = ctx.createOscillator();
+      const gain = ctx.createGain();
+
+      oscillator.type = "triangle";
+      oscillator.frequency.setValueAtTime(880, now);
+      oscillator.frequency.exponentialRampToValueAtTime(640, now + 0.045);
+
+      gain.gain.setValueAtTime(0.0001, now);
+      gain.gain.exponentialRampToValueAtTime(0.06, now + 0.008);
+      gain.gain.exponentialRampToValueAtTime(0.0001, now + 0.05);
+
+      oscillator.connect(gain);
+      gain.connect(ctx.destination);
+      oscillator.start(now);
+      oscillator.stop(now + 0.06);
+    } catch {
+      // Best-effort sound effect: ignore audio failures silently.
+    }
+  }, []);
 
   return (
     <div className="flex min-h-svh flex-col bg-background">
@@ -59,7 +99,7 @@ export default function RootLayout() {
             style={{ transform: `translateX(${activeTabIndex * 100}%)` }}
             aria-hidden
           />
-          <NavLink to="/" end className={mobileTabClass}>
+          <NavLink to="/" end className={mobileTabClass} onClick={playTabClickSound}>
             {({ isActive }) => (
               <span className="flex flex-col items-center gap-0.5">
                 <Home
@@ -75,7 +115,11 @@ export default function RootLayout() {
               </span>
             )}
           </NavLink>
-          <NavLink to="/dictionary" className={mobileTabClass}>
+          <NavLink
+            to="/dictionary"
+            className={mobileTabClass}
+            onClick={playTabClickSound}
+          >
             {({ isActive }) => (
               <span className="flex flex-col items-center gap-0.5">
                 <BookOpen
@@ -91,7 +135,11 @@ export default function RootLayout() {
               </span>
             )}
           </NavLink>
-          <NavLink to="/kanji" className={mobileTabClass}>
+          <NavLink
+            to="/kanji"
+            className={mobileTabClass}
+            onClick={playTabClickSound}
+          >
             {({ isActive }) => (
               <span className="flex flex-col items-center gap-0.5">
                 <Layers
