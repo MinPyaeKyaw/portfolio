@@ -1,5 +1,5 @@
 import { DotLottieReact } from "@lottiefiles/dotlottie-react";
-import searchingAnimation from "@/assets/lottie/Searching.lottie?url";
+import searchingAnimation from "@/assets/lottie/searching.lottie?url";
 
 type EmptyStateProps = {
   title?: string;
