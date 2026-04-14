@@ -1,12 +1,13 @@
-import { BookOpen, Loader2, Search } from "lucide-react";
+import { DotLottieReact } from "@lottiefiles/dotlottie-react";
+import { Loader2 } from "lucide-react";
 import {
   useDeferredValue,
   useEffect,
   useMemo,
   useState,
-  type ReactNode,
 } from "react";
 import type { DictionaryWord } from "@/types/dictionary-word";
+import searchingAnimation from "@/assets/lottie/Searching.lottie?url";
 import { SearchBar } from "./components/search-bar";
 import { WordList } from "./components/word-list";
 import {
@@ -67,27 +68,9 @@ export default function DictionaryPage() {
           <p className="text-muted-foreground text-sm">Loading dictionary…</p>
         </div>
       ) : showHint ? (
-        <EmptyState
-          icon={
-            <BookOpen
-              className="size-10 stroke-1 text-muted-foreground"
-              aria-hidden
-            />
-          }
-          title="Start searching"
-          description="Type at least one character to filter the word list in real time."
-        />
+        <EmptyState />
       ) : showEmpty ? (
-        <EmptyState
-          icon={
-            <Search
-              className="size-10 stroke-1 text-muted-foreground"
-              aria-hidden
-            />
-          }
-          title="No words found"
-          description="Try different spelling, Romaji, or Myanmar keywords."
-        />
+        <EmptyState title="No words found" />
       ) : (
         <div className="space-y-3">
           {truncated ? (
@@ -105,28 +88,19 @@ export default function DictionaryPage() {
   );
 }
 
-function EmptyState({
-  icon,
-  title,
-  description,
-}: {
-  icon: ReactNode;
-  title: string;
-  description: string;
-}) {
+function EmptyState({ title }: { title?: string }) {
   return (
-    <div
-      className="flex flex-col items-center justify-center rounded-2xl border border-dashed border-border/80 bg-muted/20 px-6 py-16 text-center"
-      role="status"
-    >
-      <div className="mb-4 flex size-16 items-center justify-center rounded-full bg-muted/60">
-        {icon}
+    <div className="flex min-h-[56vh] flex-col items-center justify-center rounded-2xl bg-linear-to-b from-muted/40 to-transparent px-6 py-10 text-center">
+      <div className="mx-auto mb-2 w-full max-w-[240px] shrink-0" aria-hidden>
+        <DotLottieReact src={searchingAnimation} autoplay loop />
       </div>
-      <h2 className="font-heading text-lg font-medium text-foreground">
-        {title}
-      </h2>
-      <p className="mt-2 max-w-sm text-muted-foreground text-sm leading-relaxed">
-        {description}
+      {title ? (
+        <h2 className="font-heading text-xl font-semibold tracking-tight text-foreground">
+          {title}
+        </h2>
+      ) : null}
+      <p className="mt-2 mx-auto max-w-sm text-muted-foreground text-sm leading-relaxed">
+        Try a word in Hiragana, Katakana, Kanji, Romaji, or Myanmar.
       </p>
     </div>
   );
