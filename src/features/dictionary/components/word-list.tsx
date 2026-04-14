@@ -14,7 +14,7 @@ type WordListProps = {
 export function WordList({ words }: WordListProps) {
   return (
     <div className="relative">
-      <ScrollArea className="h-[calc(100vh-220px)]">
+      <ScrollArea className="h-[calc(100vh-230px)]">
         <ul className="space-y-3 py-1" role="list">
           {words.map((w) => {
             const primary = getPrimaryHeadword(w);
@@ -44,7 +44,7 @@ export function WordList({ words }: WordListProps) {
         </ul>
       </ScrollArea>
       <div
-        className="pointer-events-none absolute right-0 bottom-0 left-0 h-16 bg-linear-to-t from-white/99 via-white/70 to-transparent dark:from-black/45 dark:via-black/20"
+        className="pointer-events-none absolute right-0 bottom-0 left-0 h-16 bg-linear-to-t from-white/99 via-white/90 to-transparent dark:from-black/45 dark:via-black/20"
         aria-hidden
       />
     </div>

@@ -52,7 +52,7 @@ export default function RootLayout() {
         <Outlet />
       </main>
 
-      <nav className="fixed inset-x-0 bottom-1 z-50 px-3 pb-[env(safe-area-inset-bottom,0px)] md:hidden">
+      <nav className="fixed inset-x-0 bottom-3 z-50 px-3 pb-[env(safe-area-inset-bottom,0px)] md:hidden">
         <div className="relative mx-auto flex max-w-lg items-center rounded-2xl border border-border/80 bg-background/85 p-1 shadow-[0_8px_30px_rgba(0,0,0,0.12)] backdrop-blur-xl">
           <div
             className="absolute top-1 bottom-1 left-1 w-[calc((100%-0.5rem)/3)] rounded-xl bg-primary shadow-[0_6px_16px_rgba(233,46,105,0.35)] transition-transform duration-300 ease-out"

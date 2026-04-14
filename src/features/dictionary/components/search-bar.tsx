@@ -24,7 +24,7 @@ export function SearchBar({
         value={value}
         onChange={(e) => onChange(e.target.value)}
         placeholder="Search Hiragana, Katakana, Kanji, Romaji, or မြန်မာ…"
-        className="h-11 rounded-xl border-border/80 bg-card pr-3 pl-10 text-base shadow-sm md:h-10 md:text-sm"
+        className="h-11 rounded-xl border-border/80 bg-card pr-3 pl-10 text-base focus-visible:border-primary focus-visible:ring-0 md:h-10 md:text-sm"
         autoComplete="off"
         spellCheck={false}
         aria-label="Dictionary search"
