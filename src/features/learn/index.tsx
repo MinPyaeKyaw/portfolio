@@ -14,7 +14,7 @@ const learnCards = [
     description:
       "စကားလုံး၊ အကြောင်းအရာနှင့် အဓိပ္ပါယ်ကို တွဲဖက်ပြီး ဖတ်ရှုလေ့ကျင့်ပါ။",
     icon: BookOpen,
-    to: "/dictionary",
+    to: "/reading",
     accent: "from-violet-500/10 via-transparent to-transparent",
   },
   {
