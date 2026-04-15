@@ -22,7 +22,7 @@ const learnCards = [
     description:
       "Kanji ကို ရေးဆွဲပြီး မှတ်သားခွဲခြားလေ့ကျင့်ခြင်းဖြင့် သင်ယူပါ။",
     icon: Languages,
-    to: "/kanji",
+    to: "/learn/kanji",
     accent: "from-primary/15 via-transparent to-transparent",
   },
   {
