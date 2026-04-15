@@ -28,6 +28,10 @@ export default function RootLayout() {
       ? 2
       : 0;
 
+  /** Exact list routes: inner list scrolls; other routes scroll `main`. */
+  const isScrollableListRoute =
+    pathname === "/reading" || pathname === "/grammar";
+
   const playTabClickSound = useCallback(() => {
     try {
       const AudioCtx =
@@ -67,7 +71,7 @@ export default function RootLayout() {
   }, []);
 
   return (
-    <div className="flex min-h-svh flex-col bg-background">
+    <div className="flex h-svh max-h-svh min-h-0 flex-col overflow-hidden bg-background">
       <header className="sticky top-0 z-40 flex h-[3.75rem] flex-nowrap items-center justify-between gap-3 border-border border-b bg-background/95 px-4 backdrop-blur-sm md:px-6">
         <BrandLinkToHome />
         <div className="flex items-center gap-1 md:gap-2">
@@ -85,7 +89,8 @@ export default function RootLayout() {
 
       <main
         className={cn(
-          "flex-1",
+          "flex min-h-0 flex-1 flex-col",
+          isScrollableListRoute ? "overflow-hidden" : "overflow-y-auto",
           "pb-[calc(3.9rem+env(safe-area-inset-bottom,0px))] md:pb-0",
         )}
       >

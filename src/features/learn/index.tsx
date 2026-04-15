@@ -6,7 +6,7 @@ const learnCards = [
     title: "Grammar",
     description: "ဝါကျဖွဲ့စည်းပုံနှင့် အရေးကြီးသော သဒ္ဒါအချက်များကို လေ့လာပါ။",
     icon: FileText,
-    to: "/dictionary",
+    to: "/grammar",
     accent: "from-pink-500/10 via-transparent to-transparent",
   },
   {

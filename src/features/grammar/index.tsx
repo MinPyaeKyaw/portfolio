@@ -1,22 +1,36 @@
-import { ArrowLeft, BookOpen, ChevronRight } from "lucide-react";
+import { ArrowLeft, ChevronRight, FileText, Search } from "lucide-react";
 import { useMemo, useState } from "react";
 import { Link } from "react-router-dom";
+import { Input } from "@/components/ui/input";
 import { cn } from "@/lib/utils";
-import type { ReadingPassage } from "@/types/reading";
-import { reading } from "@/utils/reading";
+import type { GrammarItem } from "@/types/grammar";
+import { grammer } from "@/utils/grammer";
 
-const passages = reading as ReadingPassage[];
+const items = grammer as GrammarItem[];
 
 const LEVELS = ["all", "n5", "n4", "n3", "n2", "n1"] as const;
 type LevelFilter = (typeof LEVELS)[number];
 
-export default function ReadingListPage() {
+export default function GrammarListPage() {
   const [level, setLevel] = useState<LevelFilter>("all");
+  const [query, setQuery] = useState("");
 
   const filtered = useMemo(() => {
-    if (level === "all") return passages;
-    return passages.filter((p) => p.level.toLowerCase() === level);
-  }, [level]);
+    const byLevel =
+      level === "all"
+        ? items
+        : items.filter((p) => p.level.toLowerCase() === level);
+
+    const q = query.trim().toLowerCase();
+    if (!q) return byLevel;
+
+    return byLevel.filter((g) =>
+      [g.jpTitle, g.mmTitle, g.structure, g.mmExplanation]
+        .join(" ")
+        .toLowerCase()
+        .includes(q),
+    );
+  }, [level, query]);
 
   return (
     <div className="mx-auto flex min-h-0 w-full max-w-2xl flex-1 flex-col px-4 pt-4 md:pt-8">
@@ -31,14 +45,14 @@ export default function ReadingListPage() {
 
         <div className="mb-5 flex items-center gap-3">
           <div className="flex size-11 items-center justify-center rounded-2xl bg-primary/10 text-primary">
-            <BookOpen className="size-6" aria-hidden />
+            <FileText className="size-6" aria-hidden />
           </div>
           <div>
             <h1 className="font-heading text-xl font-semibold tracking-tight md:text-2xl">
-              Reading
+              Grammar
             </h1>
             <p className="text-muted-foreground text-xs">
-              ဖတ်ရှုခြင်း — အဆင့်အလိုက် ရွေးပြီး ဖတ်ပါ
+              သဒ္ဒါ — အဆင့်အလိုက် ရွေးပြီး လေ့လာပါ
             </p>
           </div>
         </div>
@@ -70,8 +84,27 @@ export default function ReadingListPage() {
           </div>
         </div>
 
+        <div className="mb-2 mt-4">
+          <div className="relative">
+            <Search
+              className="pointer-events-none absolute left-3 top-1/2 size-4 -translate-y-1/2 text-muted-foreground"
+              aria-hidden
+            />
+            <Input
+              type="search"
+              value={query}
+              onChange={(e) => setQuery(e.target.value)}
+              placeholder="Search grammar…"
+              className="h-11 rounded-full border-border/80 bg-card pl-10 pr-3 text-base focus-visible:border-primary focus-visible:ring-0 md:h-10 md:text-sm"
+              autoComplete="off"
+              spellCheck={false}
+              aria-label="Grammar search"
+            />
+          </div>
+        </div>
+
         <p className="mt-3 text-muted-foreground text-xs">
-          {filtered.length} passage{filtered.length === 1 ? "" : "s"}
+          {filtered.length} item{filtered.length === 1 ? "" : "s"}
         </p>
       </div>
 
@@ -79,25 +112,28 @@ export default function ReadingListPage() {
         {filtered.length === 0 ? (
           <div className="rounded-2xl border border-dashed border-border/80 bg-muted/20 px-4 py-12 text-center">
             <p className="text-muted-foreground text-sm">
-              No passages for this level yet.
+              No grammar items for this level yet.
             </p>
           </div>
         ) : (
           <ul className="space-y-2 pb-1" role="list">
-            {filtered.map((p: ReadingPassage) => (
-              <li key={p.id}>
+            {filtered.map((g: GrammarItem) => (
+              <li key={g.id}>
                 <Link
-                  to={`/reading/${p.id}`}
+                  to={`/grammar/${g.id}`}
                   className="group flex items-start gap-3 rounded-2xl border border-border/70 bg-white p-4 transition-all duration-200 hover:-translate-y-px hover:border-primary/35 hover:shadow-md dark:bg-card"
                 >
                   <div className="min-w-0 flex-1">
                     <div className="mb-1 flex flex-wrap items-center gap-2">
                       <span className="rounded-md bg-muted px-2 py-0.5 font-medium text-muted-foreground text-[10px] uppercase tracking-wide">
-                        {p.level.toUpperCase()}
+                        {g.level.toUpperCase()}
                       </span>
                     </div>
                     <p className="font-heading text-foreground text-base font-medium leading-snug tracking-tight">
-                      {p.title}
+                      {g.jpTitle}
+                    </p>
+                    <p className="myanmar-text mt-1 text-muted-foreground text-sm leading-relaxed">
+                      {g.mmTitle}
                     </p>
                   </div>
                   <ChevronRight className="mt-1 size-5 shrink-0 text-muted-foreground transition-transform group-hover:translate-x-0.5" />

@@ -53,9 +53,9 @@ export default function ReadingDetailPage() {
           <div className="flex size-10 items-center justify-center rounded-xl bg-primary/10 text-primary">
             <BookOpen className="size-5" aria-hidden />
           </div>
-          <div>
+          <div className="min-w-0">
             <h1 className="font-heading text-xl font-semibold tracking-tight md:text-2xl">
-              Reading
+              {passage.title}
             </h1>
             <p className="text-muted-foreground text-xs">
               ဖတ်ရှုခြင်း လေ့ကျင့်ခန်း
