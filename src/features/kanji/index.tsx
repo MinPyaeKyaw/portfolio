@@ -209,7 +209,7 @@ export default function KanjiPage() {
   };
 
   return (
-    <div className="mx-auto max-w-3xl px-4 pt-3 text-left md:pt-10">
+    <div className="w-full px-4 pt-3 text-left md:pt-10">
       <div>
         {lexicon === null ? (
           <p className="mt-2 text-muted-foreground text-sm">
