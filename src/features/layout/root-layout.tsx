@@ -4,6 +4,7 @@ import { NavLink, Outlet, useLocation } from "react-router-dom";
 import { BrandLinkToHome } from "@/components/brand-lockup";
 import { ThemeToggle } from "@/components/theme-toggle";
 import { cn } from "@/lib/utils";
+import { KanjiSelectionTools } from "./kanji-selection-tools";
 
 /** Mobile pill: label/icon follow the sliding indicator index. */
 const mobileTabClass = (tabIndex: number, activeTabIndex: number) =>
@@ -199,6 +200,8 @@ export default function RootLayout() {
           </NavLink>
         </div>
       </nav>
+
+      <KanjiSelectionTools />
     </div>
   );
 }
