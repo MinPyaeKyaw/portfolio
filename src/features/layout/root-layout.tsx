@@ -28,9 +28,11 @@ export default function RootLayout() {
       ? 2
       : 0;
 
-  /** Exact list routes: inner list scrolls; other routes scroll `main`. */
+  /** List routes: inner list scrolls + bottom fade; other routes scroll `main`. */
   const isScrollableListRoute =
-    pathname === "/reading" || pathname === "/grammar";
+    pathname === "/reading" ||
+    pathname === "/grammar" ||
+    pathname === "/learn/kanji";
 
   const playTabClickSound = useCallback(() => {
     try {

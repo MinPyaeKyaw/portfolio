@@ -1,6 +1,7 @@
 import { ArrowLeft, ChevronRight, FileText, Search } from "lucide-react";
 import { useMemo, useState } from "react";
 import { Link } from "react-router-dom";
+import { ListBottomFade } from "@/components/list-bottom-fade";
 import { Input } from "@/components/ui/input";
 import { cn } from "@/lib/utils";
 import type { GrammarItem } from "@/types/grammar";
@@ -108,40 +109,43 @@ export default function GrammarListPage() {
         </p>
       </div>
 
-      <div className="min-h-0 flex-1 overflow-y-auto overscroll-contain pb-6 [-webkit-overflow-scrolling:touch]">
-        {filtered.length === 0 ? (
-          <div className="rounded-2xl border border-dashed border-border/80 bg-muted/20 px-4 py-12 text-center">
-            <p className="text-muted-foreground text-sm">
-              No grammar items for this level yet.
-            </p>
-          </div>
-        ) : (
-          <ul className="space-y-2 pb-1" role="list">
-            {filtered.map((g: GrammarItem) => (
-              <li key={g.id}>
-                <Link
-                  to={`/grammar/${g.id}`}
-                  className="group flex items-start gap-3 rounded-2xl border border-border/70 bg-white p-4 transition-all duration-200 hover:-translate-y-px hover:border-primary/35 hover:shadow-md dark:bg-card"
-                >
-                  <div className="min-w-0 flex-1">
-                    <div className="mb-1 flex flex-wrap items-center gap-2">
-                      <span className="rounded-md bg-muted px-2 py-0.5 font-medium text-muted-foreground text-[10px] uppercase tracking-wide">
-                        {g.level.toUpperCase()}
-                      </span>
+      <div className="relative min-h-0 flex-1">
+        <div className="h-full min-h-0 overflow-y-auto overscroll-contain pb-6 [-webkit-overflow-scrolling:touch]">
+          {filtered.length === 0 ? (
+            <div className="rounded-2xl border border-dashed border-border/80 bg-muted/20 px-4 py-12 text-center">
+              <p className="text-muted-foreground text-sm">
+                No grammar items for this level yet.
+              </p>
+            </div>
+          ) : (
+            <ul className="space-y-2 pb-1" role="list">
+              {filtered.map((g: GrammarItem) => (
+                <li key={g.id}>
+                  <Link
+                    to={`/grammar/${g.id}`}
+                    className="group flex items-start gap-3 rounded-2xl border border-border/70 bg-white p-4 transition-all duration-200 hover:-translate-y-px hover:border-primary/35 hover:shadow-md dark:bg-card"
+                  >
+                    <div className="min-w-0 flex-1">
+                      <div className="mb-1 flex flex-wrap items-center gap-2">
+                        <span className="rounded-md bg-muted px-2 py-0.5 font-medium text-muted-foreground text-[10px] uppercase tracking-wide">
+                          {g.level.toUpperCase()}
+                        </span>
+                      </div>
+                      <p className="font-heading text-foreground text-base font-medium leading-snug tracking-tight">
+                        {g.jpTitle}
+                      </p>
+                      <p className="myanmar-text mt-1 text-muted-foreground text-sm leading-relaxed">
+                        {g.mmTitle}
+                      </p>
                     </div>
-                    <p className="font-heading text-foreground text-base font-medium leading-snug tracking-tight">
-                      {g.jpTitle}
-                    </p>
-                    <p className="myanmar-text mt-1 text-muted-foreground text-sm leading-relaxed">
-                      {g.mmTitle}
-                    </p>
-                  </div>
-                  <ChevronRight className="mt-1 size-5 shrink-0 text-muted-foreground transition-transform group-hover:translate-x-0.5" />
-                </Link>
-              </li>
-            ))}
-          </ul>
-        )}
+                    <ChevronRight className="mt-1 size-5 shrink-0 text-muted-foreground transition-transform group-hover:translate-x-0.5" />
+                  </Link>
+                </li>
+              ))}
+            </ul>
+          )}
+        </div>
+        <ListBottomFade />
       </div>
     </div>
   );

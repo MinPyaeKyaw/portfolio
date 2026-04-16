@@ -9,6 +9,7 @@ import {
 } from "react";
 import { DotLottieReact } from "@lottiefiles/dotlottie-react";
 import { Link } from "react-router-dom";
+import { ListBottomFade } from "@/components/list-bottom-fade";
 import { Button } from "@/components/ui/button";
 import handDrawingAnimation from "@/assets/lottie/hand-drawing.lottie?url";
 import { useKanjiRecognizer } from "@/hooks/use-kanji-recognizer";
@@ -260,24 +261,27 @@ export default function KanjiPage() {
                 {matchedWords.length} words
               </span>
             </div>
-            <ul className="h-[calc(100vh-410px)] pb-3 space-y-3 overflow-y-auto pr-1">
-              {matchedWords.map((word) => (
-                <li key={word.id}>
-                  <Link
-                    to={`/dictionary/${word.id}`}
-                    className="flex w-full items-center justify-between rounded-xl border border-border/60 bg-white px-4 py-3.5 text-left transition-colors hover:bg-white/95 focus-visible:ring-2 focus-visible:ring-ring focus-visible:outline-none dark:bg-muted/30 dark:hover:bg-muted/45"
-                  >
-                    <span className="font-heading text-lg font-medium tracking-tight text-foreground">
-                      {word.kanji}
-                    </span>
-                    <ChevronRight
-                      className="size-4 shrink-0 text-muted-foreground"
-                      aria-hidden
-                    />
-                  </Link>
-                </li>
-              ))}
-            </ul>
+            <div className="relative h-[calc(100vh-410px)]">
+              <ul className="h-full space-y-3 overflow-y-auto overscroll-contain pb-3 pr-1 [-webkit-overflow-scrolling:touch]">
+                {matchedWords.map((word) => (
+                  <li key={word.id}>
+                    <Link
+                      to={`/dictionary/${word.id}`}
+                      className="flex w-full items-center justify-between rounded-xl border border-border/60 bg-white px-4 py-3.5 text-left transition-colors hover:bg-white/95 focus-visible:ring-2 focus-visible:ring-ring focus-visible:outline-none dark:bg-muted/30 dark:hover:bg-muted/45"
+                    >
+                      <span className="font-heading text-lg font-medium tracking-tight text-foreground">
+                        {word.kanji}
+                      </span>
+                      <ChevronRight
+                        className="size-4 shrink-0 text-muted-foreground"
+                        aria-hidden
+                      />
+                    </Link>
+                  </li>
+                ))}
+              </ul>
+              <ListBottomFade />
+            </div>
           </>
         )}
       </div>

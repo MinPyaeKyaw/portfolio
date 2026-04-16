@@ -1,3 +1,4 @@
+import { ListBottomFade } from "@/components/list-bottom-fade";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import type { DictionaryWord } from "@/types/dictionary-word";
 import { Link } from "react-router-dom";
@@ -43,10 +44,7 @@ export function WordList({ words }: WordListProps) {
           })}
         </ul>
       </ScrollArea>
-      <div
-        className="pointer-events-none absolute right-0 bottom-0 left-0 h-16 bg-linear-to-t from-background via-background/80 to-transparent"
-        aria-hidden
-      />
+      <ListBottomFade />
     </div>
   );
 }
