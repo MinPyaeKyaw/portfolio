@@ -57,10 +57,10 @@ export default function ReadingListPage() {
                   type="button"
                   onClick={() => setLevel(lv)}
                   className={cn(
-                    "rounded-full px-3.5 py-1.5 text-xs font-medium transition-all",
+                    "rounded-full border px-3.5 py-1.5 text-xs font-medium transition-all",
                     active
-                      ? "bg-primary text-primary-foreground shadow-[0_4px_14px_rgba(233,46,105,0.35)]"
-                      : "bg-muted/80 text-muted-foreground hover:bg-muted",
+                      ? "border-transparent bg-primary text-primary-foreground shadow-[0_4px_14px_rgba(233,46,105,0.35)]"
+                      : "border-border/70 bg-white text-muted-foreground hover:border-primary/35 hover:shadow-md dark:bg-card",
                   )}
                 >
                   {label}

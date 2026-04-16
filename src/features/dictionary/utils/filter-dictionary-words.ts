@@ -12,7 +12,7 @@ function wordMatches(w: DictionaryWord, q: string): boolean {
     w.mm,
     ...(w.forms?.map((f) => f.word) ?? []),
   ];
-  return fields.some((s) => normalizeForSearch(s).includes(q));
+  return fields.some((s) => normalizeForSearch(s).startsWith(q));
 }
 
 export function filterDictionaryWords(
