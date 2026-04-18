@@ -2,7 +2,7 @@ import { useState, type FormEvent } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { AuthLayout } from "./auth-layout";
+import { AuthLayout } from "../../components/layouts/auth-layout";
 import { useAuth } from "./use-auth";
 import {
   isValidEmail,

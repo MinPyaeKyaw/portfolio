@@ -41,11 +41,13 @@ export function AuthLayout({
     return (
       <div className={cn("flex min-h-0 w-full flex-1 flex-col", className)}>
         <div className="relative min-h-0 flex-1">
-          <div className="h-full min-h-0 overflow-y-auto overscroll-contain px-4 py-8 pb-10 [-webkit-overflow-scrolling:touch] md:py-14">
-            <div className="mx-auto w-full max-w-md">
-              <div className={cardShellClass}>
-                <AuthHeader title={title} description={description} />
-                <div className="space-y-4 px-0 md:px-4">{children}</div>
+          <div className="h-full min-h-0 overflow-y-auto overscroll-contain [-webkit-overflow-scrolling:touch]">
+            <div className="flex min-h-full flex-col justify-center px-4 py-8 pb-10 md:py-14">
+              <div className="mx-auto w-full max-w-md">
+                <div className={cardShellClass}>
+                  <AuthHeader title={title} description={description} />
+                  <div className="space-y-4 px-0 md:px-4">{children}</div>
+                </div>
               </div>
             </div>
           </div>

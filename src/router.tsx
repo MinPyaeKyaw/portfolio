@@ -1,5 +1,5 @@
 import { createBrowserRouter } from "react-router-dom";
-import RootLayout from "./features/layout/root-layout";
+import RootLayout from "./components/layouts/root-layout";
 import DictionaryPage from "./features/dictionary";
 import DictionaryWordDetailPage from "./features/dictionary/detail";
 import KanjiPage from "./features/kanji";

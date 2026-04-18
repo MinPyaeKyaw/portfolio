@@ -20,7 +20,7 @@ const mobileTabClass = (tabIndex: number, activeTabIndex: number) =>
 const desktopNavLinkClass = (tabIndex: number, activeTabIndex: number) =>
   cn(
     "relative z-10 flex-1 whitespace-nowrap px-3 py-2 text-center text-sm font-medium transition-colors duration-200",
-    activeTabIndex === tabIndex
+    activeTabIndex >= 0 && activeTabIndex === tabIndex
       ? "text-foreground"
       : "text-muted-foreground hover:text-foreground",
   );
@@ -40,6 +40,14 @@ export default function RootLayout() {
     : pathname.startsWith("/kanji")
       ? 2
       : 0;
+
+  const isAuthRoute =
+    pathname === "/login" ||
+    pathname === "/sign-up" ||
+    pathname === "/forgot-password";
+
+  /** On auth routes, desktop tabs show no active segment (Learn/Dictionary/Kanji still visible). */
+  const desktopTabIndex = isAuthRoute ? -1 : activeTabIndex;
 
   /** Routes where `main` is overflow-hidden so inner content scrolls (e.g. list + fade, sign-up). */
   const isScrollableListRoute =
@@ -93,30 +101,32 @@ export default function RootLayout() {
         <div className="flex items-center gap-1 md:gap-2">
           <nav className="relative hidden md:block" aria-label="Main">
             <div className="relative flex min-w-[220px]">
-              <div
-                className={cn(
-                  "pointer-events-none absolute bottom-0 left-0 h-0.5 w-1/3 rounded-full bg-primary",
-                  tabIndicatorSlideClass,
-                )}
-                style={{ transform: `translateX(${activeTabIndex * 100}%)` }}
-                aria-hidden
-              />
+              {!isAuthRoute ? (
+                <div
+                  className={cn(
+                    "pointer-events-none absolute bottom-0 left-0 h-0.5 w-1/3 rounded-full bg-primary",
+                    tabIndicatorSlideClass,
+                  )}
+                  style={{ transform: `translateX(${activeTabIndex * 100}%)` }}
+                  aria-hidden
+                />
+              ) : null}
               <NavLink
                 to="/"
                 end
-                className={() => desktopNavLinkClass(0, activeTabIndex)}
+                className={() => desktopNavLinkClass(0, desktopTabIndex)}
               >
                 Learn
               </NavLink>
               <NavLink
                 to="/dictionary"
-                className={() => desktopNavLinkClass(1, activeTabIndex)}
+                className={() => desktopNavLinkClass(1, desktopTabIndex)}
               >
                 Dictionary
               </NavLink>
               <NavLink
                 to="/kanji"
-                className={() => desktopNavLinkClass(2, activeTabIndex)}
+                className={() => desktopNavLinkClass(2, desktopTabIndex)}
               >
                 Kanji
               </NavLink>
@@ -177,12 +187,15 @@ export default function RootLayout() {
         className={cn(
           "flex min-h-0 flex-1 flex-col",
           isScrollableListRoute ? "overflow-hidden" : "overflow-y-auto",
-          "pb-[calc(3.9rem+env(safe-area-inset-bottom,0px))] md:pb-0",
+          isAuthRoute
+            ? "pb-[env(safe-area-inset-bottom,0px)] md:pb-0"
+            : "pb-[calc(3.9rem+env(safe-area-inset-bottom,0px))] md:pb-0",
         )}
       >
         <Outlet />
       </main>
 
+      {!isAuthRoute ? (
       <nav className="fixed inset-x-0 bottom-3 z-50 px-3 pb-[env(safe-area-inset-bottom,0px)] md:hidden">
         <div className="relative mx-auto flex max-w-lg items-center rounded-full border border-border/80 bg-background/85 p-1 shadow-[0_8px_30px_rgba(0,0,0,0.12)] backdrop-blur-xl">
           <div
@@ -251,6 +264,7 @@ export default function RootLayout() {
           </NavLink>
         </div>
       </nav>
+      ) : null}
     </div>
   );
 }

@@ -2,7 +2,7 @@ import { useState, type FormEvent } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { AuthLayout } from "./auth-layout";
+import { AuthLayout } from "../../components/layouts/auth-layout";
 import { GoogleIcon } from "./components/google-icon";
 import { useAuth } from "./use-auth";
 import { handleGoogleLogin } from "./google-auth";
@@ -97,7 +97,9 @@ export default function LoginView() {
           <span className="w-full border-border border-t" />
         </div>
         <div className="relative flex justify-center text-xs uppercase">
-          <span className="bg-background px-2 text-muted-foreground md:bg-card">Or</span>
+          <span className="bg-background px-2 text-muted-foreground md:bg-card">
+            Or
+          </span>
         </div>
       </div>
 

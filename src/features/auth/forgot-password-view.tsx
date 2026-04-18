@@ -2,7 +2,7 @@ import { useState, type FormEvent } from "react";
 import { Link } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { AuthLayout } from "./auth-layout";
+import { AuthLayout } from "../../components/layouts/auth-layout";
 import { isValidEmail } from "./utils/validation";
 
 export default function ForgotPasswordView() {
