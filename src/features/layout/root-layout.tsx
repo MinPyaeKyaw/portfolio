@@ -1,8 +1,10 @@
 import { useCallback, useRef } from "react";
-import { BookOpen, GraduationCap, Layers } from "lucide-react";
-import { NavLink, Outlet, useLocation } from "react-router-dom";
+import { BookOpen, GraduationCap, Layers, LogIn, LogOut } from "lucide-react";
+import { Link, NavLink, Outlet, useLocation } from "react-router-dom";
 import { BrandLinkToHome } from "@/components/brand-lockup";
+import { Button, buttonVariants } from "@/components/ui/button";
 import { ThemeToggle } from "@/components/theme-toggle";
+import { useAuth } from "@/features/auth/use-auth";
 import { cn } from "@/lib/utils";
 
 /** Mobile pill: label/icon follow the sliding indicator index. */
@@ -31,6 +33,7 @@ const tabIndicatorGlowClass =
 
 export default function RootLayout() {
   const { pathname } = useLocation();
+  const { isAuthenticated, logout } = useAuth();
   const audioContextRef = useRef<AudioContext | null>(null);
   const activeTabIndex = pathname.startsWith("/dictionary")
     ? 1
@@ -119,6 +122,53 @@ export default function RootLayout() {
             </div>
           </nav>
           <ThemeToggle />
+          {isAuthenticated ? (
+            <>
+              <Button
+                type="button"
+                variant="ghost"
+                size="icon"
+                className="shrink-0 text-foreground md:hidden"
+                onClick={logout}
+                aria-label="Log out"
+              >
+                <LogOut className="size-[1.125rem]" aria-hidden />
+              </Button>
+              <Button
+                type="button"
+                variant="outline"
+                size="sm"
+                className="hidden shrink-0 gap-1.5 transition-colors hover:border-primary/40 hover:bg-muted/80 md:inline-flex"
+                onClick={logout}
+              >
+                <LogOut className="size-4" aria-hidden />
+                Logout
+              </Button>
+            </>
+          ) : (
+            <>
+              <Link
+                to="/login"
+                className={cn(
+                  buttonVariants({ variant: "ghost", size: "icon" }),
+                  "shrink-0 text-foreground md:hidden",
+                )}
+                aria-label="Sign in"
+              >
+                <LogIn className="size-[1.125rem]" aria-hidden />
+              </Link>
+              <Link
+                to="/login"
+                className={cn(
+                  buttonVariants({ variant: "outline", size: "sm" }),
+                  "hidden shrink-0 gap-1.5 transition-colors hover:border-primary/40 hover:bg-muted/80 md:inline-flex",
+                )}
+              >
+                <LogIn className="size-4" aria-hidden />
+                Login
+              </Link>
+            </>
+          )}
         </div>
       </header>
 

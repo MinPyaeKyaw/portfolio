@@ -10,6 +10,9 @@ import GrammarListPage from "./features/learn/grammar";
 import GrammarDetailPage from "./features/learn/grammar/detail";
 import ReadingListPage from "./features/learn/reading";
 import ReadingDetailPage from "./features/learn/reading/detail";
+import ForgotPasswordView from "./features/auth/forgot-password-view";
+import LoginView from "./features/auth/login-view";
+import SignUpView from "./features/auth/sign-up-view";
 
 export const router = createBrowserRouter([
   {
@@ -26,6 +29,9 @@ export const router = createBrowserRouter([
       { path: "dictionary", element: <DictionaryPage /> },
       { path: "dictionary/:id", element: <DictionaryWordDetailPage /> },
       { path: "kanji", element: <KanjiPage /> },
+      { path: "login", element: <LoginView /> },
+      { path: "sign-up", element: <SignUpView /> },
+      { path: "forgot-password", element: <ForgotPasswordView /> },
     ],
   },
 ]);

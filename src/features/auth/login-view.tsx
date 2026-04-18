@@ -1,0 +1,130 @@
+import { useState, type FormEvent } from "react";
+import { Link, useNavigate } from "react-router-dom";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { AuthLayout } from "./auth-layout";
+import { GoogleIcon } from "./components/google-icon";
+import { useAuth } from "./use-auth";
+import { handleGoogleLogin } from "./google-auth";
+import { isValidEmail } from "./utils/validation";
+
+type FieldErrors = {
+  email?: string;
+  password?: string;
+};
+
+export default function LoginView() {
+  const navigate = useNavigate();
+  const { login } = useAuth();
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [errors, setErrors] = useState<FieldErrors>({});
+
+  function validate(): boolean {
+    const next: FieldErrors = {};
+    if (!isValidEmail(email)) {
+      next.email = "Enter a valid email address.";
+    }
+    if (!password.trim()) {
+      next.password = "Password is required.";
+    }
+    setErrors(next);
+    return Object.keys(next).length === 0;
+  }
+
+  function onSubmit(e: FormEvent) {
+    e.preventDefault();
+    if (!validate()) return;
+    login(email.trim());
+    navigate("/", { replace: true });
+  }
+
+  function onGoogleClick() {
+    handleGoogleLogin();
+  }
+
+  return (
+    <AuthLayout
+      title="Sign in"
+      description="Welcome back. Sign in to continue learning."
+    >
+      <form className="space-y-4" onSubmit={onSubmit} noValidate>
+        <div className="space-y-2">
+          <label htmlFor="login-email" className="text-sm font-medium text-foreground">
+            Email
+          </label>
+          <Input
+            id="login-email"
+            type="email"
+            name="email"
+            autoComplete="email"
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
+            className="h-10 md:h-9"
+            placeholder="you@example.com"
+            aria-invalid={!!errors.email}
+          />
+          {errors.email ? (
+            <p className="text-destructive text-xs">{errors.email}</p>
+          ) : null}
+        </div>
+        <div className="space-y-2">
+          <label htmlFor="login-password" className="text-sm font-medium text-foreground">
+            Password
+          </label>
+          <Input
+            id="login-password"
+            type="password"
+            name="password"
+            autoComplete="current-password"
+            value={password}
+            onChange={(e) => setPassword(e.target.value)}
+            className="h-10 md:h-9"
+            placeholder="••••••••"
+            aria-invalid={!!errors.password}
+          />
+          {errors.password ? (
+            <p className="text-destructive text-xs">{errors.password}</p>
+          ) : null}
+        </div>
+        <Button type="submit" className="h-10 w-full md:h-9">
+          Sign In
+        </Button>
+      </form>
+
+      <div className="relative py-1">
+        <div className="absolute inset-0 flex items-center" aria-hidden>
+          <span className="w-full border-border border-t" />
+        </div>
+        <div className="relative flex justify-center text-xs uppercase">
+          <span className="bg-card px-2 text-muted-foreground">Or</span>
+        </div>
+      </div>
+
+      <Button
+        type="button"
+        variant="outline"
+        className="h-10 w-full gap-2 border-border/80 md:h-9"
+        onClick={onGoogleClick}
+      >
+        <GoogleIcon className="size-4" />
+        Login with Google
+      </Button>
+
+      <div className="flex flex-col gap-2 text-center text-sm sm:flex-row sm:justify-between sm:gap-0">
+        <Link
+          to="/forgot-password"
+          className="text-primary underline-offset-4 transition-colors hover:underline"
+        >
+          Forgot Password
+        </Link>
+        <Link
+          to="/sign-up"
+          className="text-muted-foreground transition-colors hover:text-foreground"
+        >
+          Sign Up
+        </Link>
+      </div>
+    </AuthLayout>
+  );
+}
