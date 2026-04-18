@@ -1,10 +1,12 @@
 {
+  "id": "/",
   "name": "Myanhon",
   "short_name": "Myanhon",
-  "description": "Japan-Myanmar dictionary and Japanese learning tools.",
+  "description": "Your Japanese Learning Companion. Japan–Myanmar dictionary and Japanese learning tools.",
   "start_url": "/",
   "scope": "/",
   "display": "standalone",
+  "display_override": ["standalone", "browser"],
   "background_color": "#ffffff",
   "theme_color": "#e92e69",
   "icons": [

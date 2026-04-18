@@ -4,7 +4,6 @@ import { NavLink, Outlet, useLocation } from "react-router-dom";
 import { BrandLinkToHome } from "@/components/brand-lockup";
 import { ThemeToggle } from "@/components/theme-toggle";
 import { cn } from "@/lib/utils";
-import { KanjiSelectionTools } from "./kanji-selection-tools";
 
 /** Mobile pill: label/icon follow the sliding indicator index. */
 const mobileTabClass = (tabIndex: number, activeTabIndex: number) =>
@@ -27,7 +26,8 @@ const desktopNavLinkClass = (tabIndex: number, activeTabIndex: number) =>
 /** Same slide motion as the mobile tab indicator. */
 const tabIndicatorSlideClass = "transition-transform duration-300 ease-out";
 
-const tabIndicatorGlowClass = "shadow-[0_6px_16px_rgba(233,46,105,0.35)]";
+const tabIndicatorGlowClass =
+  "shadow-[0_6px_16px_rgba(233,46,105,0.35)]";
 
 export default function RootLayout() {
   const { pathname } = useLocation();
@@ -200,8 +200,6 @@ export default function RootLayout() {
           </NavLink>
         </div>
       </nav>
-
-      <KanjiSelectionTools />
     </div>
   );
 }

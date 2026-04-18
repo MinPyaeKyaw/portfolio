@@ -1,0 +1,80 @@
+import { useEffect, useRef, useState } from "react";
+import logo from "@/assets/logo.svg";
+import { BRAND_NAME } from "@/components/brand-lockup";
+import { cn } from "@/lib/utils";
+
+const SESSION_KEY = "myanhon-splash-shown";
+const DISPLAY_MS = 2000;
+const FADE_MS = 380;
+
+export function PwaSplashScreen() {
+  const [phase, setPhase] = useState<"hidden" | "visible" | "exiting">(() => {
+    try {
+      return sessionStorage.getItem(SESSION_KEY) ? "hidden" : "visible";
+    } catch {
+      return "visible";
+    }
+  });
+  const timerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+  const fadeTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+
+  useEffect(() => {
+    if (phase !== "visible") return;
+
+    timerRef.current = window.setTimeout(() => {
+      setPhase("exiting");
+    }, DISPLAY_MS);
+
+    return () => {
+      if (timerRef.current) clearTimeout(timerRef.current);
+    };
+  }, [phase]);
+
+  useEffect(() => {
+    if (phase !== "exiting") return;
+
+    try {
+      sessionStorage.setItem(SESSION_KEY, "1");
+    } catch {
+      // ignore
+    }
+
+    fadeTimerRef.current = window.setTimeout(() => {
+      setPhase("hidden");
+    }, FADE_MS);
+
+    return () => {
+      if (fadeTimerRef.current) clearTimeout(fadeTimerRef.current);
+    };
+  }, [phase]);
+
+  if (phase === "hidden") return null;
+
+  return (
+    <div
+      className={cn(
+        "fixed inset-0 z-100 flex flex-col items-center justify-center gap-6 bg-background px-6 transition-opacity duration-300 ease-out",
+        phase === "exiting" ? "pointer-events-none opacity-0" : "opacity-100",
+      )}
+      role="presentation"
+      aria-hidden={phase === "exiting"}
+    >
+      <img
+        src={logo}
+        alt=""
+        width={120}
+        height={120}
+        className="size-[120px] shrink-0 object-contain md:size-32"
+        decoding="async"
+      />
+      <div className="flex max-w-sm flex-col items-center gap-2 text-center">
+        <h1 className="font-heading text-3xl font-semibold tracking-tight text-primary md:text-4xl">
+          {BRAND_NAME}
+        </h1>
+        <p className="text-muted-foreground text-sm leading-relaxed md:text-base">
+          Your Japanese Learning Companion.
+        </p>
+      </div>
+    </div>
+  );
+}

@@ -1,6 +1,11 @@
 import { useEffect, useState } from "react";
 import { Copy, Search } from "lucide-react";
-import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
+import {
+  Dialog,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+} from "@/components/ui/dialog";
 import type { KanjiLearningItem } from "@/types/kanji-learning";
 import { kanji as rawKanji } from "@/utils/kanji";
 
@@ -95,12 +100,17 @@ export function KanjiSelectionTools() {
 
   if (!selection) {
     return (
-      <Dialog open={!!dialogItem} onOpenChange={(open) => !open && setDialogItem(null)}>
+      <Dialog
+        open={!!dialogItem}
+        onOpenChange={(open) => !open && setDialogItem(null)}
+      >
         {dialogItem ? (
           <DialogContent className="max-w-sm">
             <DialogHeader>
               <DialogTitle className="flex items-center gap-3">
-                <span className="font-heading text-3xl">{dialogItem.kanji}</span>
+                <span className="font-heading text-3xl">
+                  {dialogItem.kanji}
+                </span>
                 <span className="rounded-md bg-muted px-2 py-0.5 text-[10px] font-semibold uppercase tracking-wide text-muted-foreground">
                   {dialogItem.level}
                 </span>
@@ -108,7 +118,9 @@ export function KanjiSelectionTools() {
             </DialogHeader>
             <div className="space-y-3">
               <div>
-                <p className="text-sm font-medium text-foreground">{dialogItem.hiragana}</p>
+                <p className="text-sm font-medium text-foreground">
+                  {dialogItem.hiragana}
+                </p>
                 <p className="myanmar-text mt-1 text-sm text-muted-foreground">
                   {dialogItem.meaning}
                 </p>
@@ -141,7 +153,9 @@ export function KanjiSelectionTools() {
                         <p className="font-heading text-sm leading-none text-foreground">
                           {ex.kanji}
                         </p>
-                        <p className="text-[11px] text-muted-foreground">{ex.hiragana}</p>
+                        <p className="text-[11px] text-muted-foreground">
+                          {ex.hiragana}
+                        </p>
                         <p className="myanmar-text mt-0.5 text-[13px] leading-snug text-muted-foreground">
                           {ex.meaning}
                         </p>
@@ -173,7 +187,10 @@ export function KanjiSelectionTools() {
       />
       <div
         className="fixed z-[49] -translate-x-1/2 rounded-full border border-border/80 bg-background px-1.5 py-0.5 shadow-md"
-        style={{ top: Math.max(top, 8), left: Math.min(Math.max(left, 24), window.innerWidth - 24) }}
+        style={{
+          top: Math.max(top, 8),
+          left: Math.min(Math.max(left, 24), window.innerWidth - 24),
+        }}
       >
         <div className="flex items-center gap-0.5">
           <button
@@ -194,12 +211,17 @@ export function KanjiSelectionTools() {
           </button>
         </div>
       </div>
-      <Dialog open={!!dialogItem} onOpenChange={(open) => !open && setDialogItem(null)}>
+      <Dialog
+        open={!!dialogItem}
+        onOpenChange={(open) => !open && setDialogItem(null)}
+      >
         {dialogItem ? (
           <DialogContent className="max-w-sm">
             <DialogHeader>
               <DialogTitle className="flex items-center gap-3">
-                <span className="font-heading text-3xl">{dialogItem.kanji}</span>
+                <span className="font-heading text-3xl">
+                  {dialogItem.kanji}
+                </span>
                 <span className="rounded-md bg-muted px-2 py-0.5 text-[10px] font-semibold uppercase tracking-wide text-muted-foreground">
                   {dialogItem.level}
                 </span>
@@ -207,7 +229,9 @@ export function KanjiSelectionTools() {
             </DialogHeader>
             <div className="space-y-3">
               <div>
-                <p className="text-sm font-medium text-foreground">{dialogItem.hiragana}</p>
+                <p className="text-sm font-medium text-foreground">
+                  {dialogItem.hiragana}
+                </p>
                 <p className="myanmar-text mt-1 text-sm text-muted-foreground">
                   {dialogItem.meaning}
                 </p>
@@ -240,7 +264,9 @@ export function KanjiSelectionTools() {
                         <p className="font-heading text-sm leading-none text-foreground">
                           {ex.kanji}
                         </p>
-                        <p className="text-[11px] text-muted-foreground">{ex.hiragana}</p>
+                        <p className="text-[11px] text-muted-foreground">
+                          {ex.hiragana}
+                        </p>
                         <p className="myanmar-text mt-0.5 text-[13px] leading-snug text-muted-foreground">
                           {ex.meaning}
                         </p>
@@ -256,4 +282,3 @@ export function KanjiSelectionTools() {
     </>
   );
 }
-
