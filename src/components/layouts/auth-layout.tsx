@@ -14,7 +14,7 @@ type AuthLayoutProps = {
 const cardShellClass = cn(
   "flex w-full max-w-md flex-col gap-6",
   "bg-transparent py-2",
-  "md:gap-4 md:rounded-xl md:border md:border-border/80 md:bg-card md:py-4 md:text-sm md:text-card-foreground md:shadow-[0_12px_40px_rgba(0,0,0,0.08)] md:ring-1 md:ring-border/60 dark:md:shadow-[0_12px_40px_rgba(0,0,0,0.35)]",
+  "md:gap-4 md:rounded-xl md:border md:border-border/80 md:bg-card md:py-4 md:text-sm md:text-card-foreground md:ring-1 md:ring-border/60",
 );
 
 function AuthHeader({ title, description }: { title: string; description?: string }) {

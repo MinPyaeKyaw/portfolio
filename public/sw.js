@@ -1,5 +1,11 @@
 const CACHE_NAME = "myanhon-app-v1";
-const APP_SHELL = ["/", "/manifest.webmanifest", "/favicon.svg", "/icons.svg"];
+const APP_SHELL = [
+  "/",
+  "/manifest.webmanifest",
+  "/favicon.svg",
+  "/logo-mark.svg",
+  "/pwa-icon.svg",
+];
 
 self.addEventListener("install", (event) => {
   event.waitUntil(
