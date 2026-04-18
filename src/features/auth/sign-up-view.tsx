@@ -54,14 +54,12 @@ export default function SignUpView() {
 
   return (
     <AuthLayout
+      scrollable
       title="Create account"
       description="Join Myanhon and start your Japanese learning journey."
     >
       <form className="space-y-4" onSubmit={onSubmit} noValidate>
         <div className="space-y-2">
-          <label htmlFor="signup-name" className="text-sm font-medium text-foreground">
-            Name
-          </label>
           <Input
             id="signup-name"
             type="text"
@@ -69,8 +67,7 @@ export default function SignUpView() {
             autoComplete="name"
             value={name}
             onChange={(e) => setName(e.target.value)}
-            className="h-10 md:h-9"
-            placeholder="Your name"
+            placeholder="Name"
             aria-invalid={!!errors.name}
           />
           {errors.name ? (
@@ -78,9 +75,6 @@ export default function SignUpView() {
           ) : null}
         </div>
         <div className="space-y-2">
-          <label htmlFor="signup-email" className="text-sm font-medium text-foreground">
-            Email
-          </label>
           <Input
             id="signup-email"
             type="email"
@@ -88,8 +82,7 @@ export default function SignUpView() {
             autoComplete="email"
             value={email}
             onChange={(e) => setEmail(e.target.value)}
-            className="h-10 md:h-9"
-            placeholder="you@example.com"
+            placeholder="Email"
             aria-invalid={!!errors.email}
           />
           {errors.email ? (
@@ -97,9 +90,6 @@ export default function SignUpView() {
           ) : null}
         </div>
         <div className="space-y-2">
-          <label htmlFor="signup-password" className="text-sm font-medium text-foreground">
-            Password
-          </label>
           <Input
             id="signup-password"
             type="password"
@@ -107,8 +97,7 @@ export default function SignUpView() {
             autoComplete="new-password"
             value={password}
             onChange={(e) => setPassword(e.target.value)}
-            className="h-10 md:h-9"
-            placeholder={`At least ${PASSWORD_MIN_LENGTH} characters`}
+            placeholder={`Password (min. ${PASSWORD_MIN_LENGTH} characters)`}
             aria-invalid={!!errors.password}
           />
           {errors.password ? (
@@ -116,12 +105,6 @@ export default function SignUpView() {
           ) : null}
         </div>
         <div className="space-y-2">
-          <label
-            htmlFor="signup-confirm"
-            className="text-sm font-medium text-foreground"
-          >
-            Confirm password
-          </label>
           <Input
             id="signup-confirm"
             type="password"
@@ -129,8 +112,7 @@ export default function SignUpView() {
             autoComplete="new-password"
             value={confirmPassword}
             onChange={(e) => setConfirmPassword(e.target.value)}
-            className="h-10 md:h-9"
-            placeholder="Repeat password"
+            placeholder="Confirm password"
             aria-invalid={!!errors.confirmPassword}
           />
           {errors.confirmPassword ? (

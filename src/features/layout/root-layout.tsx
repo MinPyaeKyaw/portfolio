@@ -41,11 +41,12 @@ export default function RootLayout() {
       ? 2
       : 0;
 
-  /** List routes: inner list scrolls + bottom fade; other routes scroll `main`. */
+  /** Routes where `main` is overflow-hidden so inner content scrolls (e.g. list + fade, sign-up). */
   const isScrollableListRoute =
     pathname === "/reading" ||
     pathname === "/grammar" ||
-    pathname === "/learn/kanji";
+    pathname === "/learn/kanji" ||
+    pathname === "/sign-up";
 
   const playTabClickSound = useCallback(() => {
     try {

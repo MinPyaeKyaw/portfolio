@@ -50,9 +50,6 @@ export default function LoginView() {
     >
       <form className="space-y-4" onSubmit={onSubmit} noValidate>
         <div className="space-y-2">
-          <label htmlFor="login-email" className="text-sm font-medium text-foreground">
-            Email
-          </label>
           <Input
             id="login-email"
             type="email"
@@ -60,8 +57,7 @@ export default function LoginView() {
             autoComplete="email"
             value={email}
             onChange={(e) => setEmail(e.target.value)}
-            className="h-10 md:h-9"
-            placeholder="you@example.com"
+            placeholder="Email"
             aria-invalid={!!errors.email}
           />
           {errors.email ? (
@@ -69,9 +65,6 @@ export default function LoginView() {
           ) : null}
         </div>
         <div className="space-y-2">
-          <label htmlFor="login-password" className="text-sm font-medium text-foreground">
-            Password
-          </label>
           <Input
             id="login-password"
             type="password"
@@ -79,13 +72,20 @@ export default function LoginView() {
             autoComplete="current-password"
             value={password}
             onChange={(e) => setPassword(e.target.value)}
-            className="h-10 md:h-9"
-            placeholder="••••••••"
+            placeholder="Password"
             aria-invalid={!!errors.password}
           />
           {errors.password ? (
             <p className="text-destructive text-xs">{errors.password}</p>
           ) : null}
+        </div>
+        <div className="flex justify-end">
+          <Link
+            to="/forgot-password"
+            className="text-sm text-primary underline-offset-4 transition-colors hover:underline"
+          >
+            Forgot Password
+          </Link>
         </div>
         <Button type="submit" className="h-10 w-full md:h-9">
           Sign In
@@ -97,7 +97,7 @@ export default function LoginView() {
           <span className="w-full border-border border-t" />
         </div>
         <div className="relative flex justify-center text-xs uppercase">
-          <span className="bg-card px-2 text-muted-foreground">Or</span>
+          <span className="bg-background px-2 text-muted-foreground md:bg-card">Or</span>
         </div>
       </div>
 
@@ -111,20 +111,15 @@ export default function LoginView() {
         Login with Google
       </Button>
 
-      <div className="flex flex-col gap-2 text-center text-sm sm:flex-row sm:justify-between sm:gap-0">
-        <Link
-          to="/forgot-password"
-          className="text-primary underline-offset-4 transition-colors hover:underline"
-        >
-          Forgot Password
-        </Link>
+      <p className="text-center text-sm text-muted-foreground">
+        Don&apos;t have an account?{" "}
         <Link
           to="/sign-up"
-          className="text-muted-foreground transition-colors hover:text-foreground"
+          className="font-medium text-primary underline-offset-4 transition-colors hover:underline"
         >
           Sign Up
         </Link>
-      </div>
+      </p>
     </AuthLayout>
   );
 }

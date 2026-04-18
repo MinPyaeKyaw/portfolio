@@ -1,16 +1,23 @@
 import { Search } from "lucide-react";
 import { Input } from "@/components/ui/input";
 
+const DEFAULT_PLACEHOLDER =
+  "Search Hiragana, Katakana, Kanji, Romaji, or မြန်မာ…";
+
 type SearchBarProps = {
   value: string;
   onChange: (value: string) => void;
   id?: string;
+  placeholder?: string;
+  "aria-label"?: string;
 };
 
 export function SearchBar({
   value,
   onChange,
-  id = "dictionary-search",
+  id,
+  placeholder = DEFAULT_PLACEHOLDER,
+  "aria-label": ariaLabel = "Search",
 }: SearchBarProps) {
   return (
     <div className="relative">
@@ -23,11 +30,11 @@ export function SearchBar({
         type="search"
         value={value}
         onChange={(e) => onChange(e.target.value)}
-        placeholder="Search Hiragana, Katakana, Kanji, Romaji, or မြန်မာ…"
-        className="h-11 rounded-full border-border/80 bg-card pr-3 pl-10 text-base focus-visible:border-primary focus-visible:ring-0 md:h-10 md:text-sm"
+        placeholder={placeholder}
+        className="pl-10 pr-3"
         autoComplete="off"
         spellCheck={false}
-        aria-label="Dictionary search"
+        aria-label={ariaLabel}
       />
     </div>
   );

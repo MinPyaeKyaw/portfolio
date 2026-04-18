@@ -1,7 +1,7 @@
 import { useDeferredValue, useEffect, useMemo, useState } from "react";
 import type { DictionaryWord } from "@/types/dictionary-word";
 import { EmptyState } from "./components/empty-state";
-import { SearchBar } from "./components/search-bar";
+import { SearchBar } from "@/components/search-bar";
 import { WordList } from "./components/word-list";
 import {
   MAX_DICTIONARY_RESULTS,
@@ -44,7 +44,11 @@ export default function DictionaryPage() {
   return (
     <div className="mx-auto max-w-3xl px-4 pb-0 pt-3 md:pb-10 md:pt-8">
       <div className="mb-4">
-        <SearchBar value={query} onChange={setQuery} />
+        <SearchBar
+          value={query}
+          onChange={setQuery}
+          aria-label="Dictionary search"
+        />
       </div>
 
       {showHint ? (

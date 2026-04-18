@@ -1,8 +1,8 @@
-import { ArrowLeft, ChevronRight, FileText, Search } from "lucide-react";
+import { ArrowLeft, ChevronRight, FileText } from "lucide-react";
 import { useMemo, useState } from "react";
 import { Link } from "react-router-dom";
 import { ListBottomFade } from "@/components/list-bottom-fade";
-import { Input } from "@/components/ui/input";
+import { SearchBar } from "@/components/search-bar";
 import { cn } from "@/lib/utils";
 import type { GrammarItem } from "@/types/grammar";
 import { grammer } from "@/utils/grammer";
@@ -86,22 +86,12 @@ export default function GrammarListPage() {
         </div>
 
         <div className="mb-2 mt-4">
-          <div className="relative">
-            <Search
-              className="pointer-events-none absolute left-3 top-1/2 size-4 -translate-y-1/2 text-muted-foreground"
-              aria-hidden
-            />
-            <Input
-              type="search"
-              value={query}
-              onChange={(e) => setQuery(e.target.value)}
-              placeholder="Search grammar…"
-              className="h-11 rounded-full border-border/80 bg-card pl-10 pr-3 text-base focus-visible:border-primary focus-visible:ring-0 md:h-10 md:text-sm"
-              autoComplete="off"
-              spellCheck={false}
-              aria-label="Grammar search"
-            />
-          </div>
+          <SearchBar
+            value={query}
+            onChange={setQuery}
+            placeholder="Search grammar…"
+            aria-label="Grammar search"
+          />
         </div>
 
         <p className="mt-3 text-muted-foreground text-xs">

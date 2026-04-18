@@ -38,9 +38,6 @@ export default function ForgotPasswordView() {
       {!sent ? (
         <form className="space-y-4" onSubmit={onSubmit} noValidate>
           <div className="space-y-2">
-            <label htmlFor="forgot-email" className="text-sm font-medium text-foreground">
-              Email
-            </label>
             <Input
               id="forgot-email"
               type="email"
@@ -48,8 +45,7 @@ export default function ForgotPasswordView() {
               autoComplete="email"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
-              className="h-10 md:h-9"
-              placeholder="you@example.com"
+              placeholder="Email"
               aria-invalid={!!error}
             />
             {error ? <p className="text-destructive text-xs">{error}</p> : null}
