@@ -1,0 +1,67 @@
+import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
+import { useAuthStore } from '@/stores/auth-store';
+import { authKeys } from './key';
+import {
+  forgotPassword,
+  getMe,
+  resetPassword,
+  signIn,
+  signUp,
+} from './service';
+import type {
+  ForgotPasswordPayload,
+  ResetPasswordPayload,
+  SignInPayload,
+  SignUpPayload,
+} from './types';
+
+export const useMe = () => {
+  const isAuthenticated = useAuthStore((s) => s.isAuthenticated);
+  return useQuery({
+    queryKey: authKeys.me,
+    queryFn: () => getMe(),
+    select: (response) => response.data.data,
+    enabled: isAuthenticated,
+  });
+};
+
+export const useUserSignUp = () => {
+  const login = useAuthStore((s) => s.login);
+  return useMutation({
+    mutationFn: (data: SignUpPayload) => signUp(data),
+    onSuccess: (response) => {
+      login(response.data.data);
+    },
+  });
+};
+
+export const useUserSignIn = () => {
+  const login = useAuthStore((s) => s.login);
+  return useMutation({
+    mutationFn: (data: SignInPayload) => signIn(data),
+    onSuccess: (response) => {
+      login(response.data.data);
+    },
+  });
+};
+
+export const useUserSignOut = () => {
+  const queryClient = useQueryClient();
+  const logout = useAuthStore((s) => s.logout);
+  return useMutation({
+    mutationFn: async () => {
+      logout();
+      queryClient.clear();
+    },
+  });
+};
+
+export const useForgotPassword = () =>
+  useMutation({
+    mutationFn: (data: ForgotPasswordPayload) => forgotPassword(data),
+  });
+
+export const useResetPassword = () =>
+  useMutation({
+    mutationFn: (data: ResetPasswordPayload) => resetPassword(data),
+  });

@@ -10,7 +10,7 @@ function wordMatches(w: DictionaryWord, q: string): boolean {
     w.katakana,
     w.romaji,
     w.mm,
-    ...(w.forms?.map((f) => f.word) ?? []),
+    ...(w.forms?.flatMap((f) => [f.word, f.mm ?? ""]) ?? []),
   ];
   return fields.some((s) => normalizeForSearch(s).startsWith(q));
 }

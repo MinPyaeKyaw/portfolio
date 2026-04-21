@@ -16,7 +16,7 @@ export default function DictionaryWordDetailPage() {
 
   useEffect(() => {
     let cancelled = false;
-    import("@/utils/words")
+    import("@/utils/new-words")
       .then((module) => {
         if (!cancelled) {
           setLexicon(module.words as DictionaryWord[]);
@@ -127,6 +127,11 @@ export default function DictionaryWordDetailPage() {
                 >
                   <p className="text-muted-foreground text-xs">{form.name}</p>
                   <p className="text-sm">{form.word}</p>
+                  {form.mm?.trim() ? (
+                    <p className="myanmar-text mt-1 text-muted-foreground text-xs leading-relaxed">
+                      {form.mm}
+                    </p>
+                  ) : null}
                 </li>
               ))}
             </ul>
@@ -144,15 +149,8 @@ export default function DictionaryWordDetailPage() {
                   key={index}
                   className="rounded-lg bg-white/90 p-3 text-sm dark:bg-background/50"
                 >
-                  {example.japaneseWithKanji.trim() ? (
-                    <p className="mb-1 font-medium">
-                      {example.japaneseWithKanji}
-                    </p>
-                  ) : null}
-                  {example.japaneseWithHiragana.trim() ? (
-                    <p className="mb-1 text-muted-foreground">
-                      {example.japaneseWithHiragana}
-                    </p>
+                  {example.jp.trim() ? (
+                    <p className="mb-1 font-medium">{example.jp}</p>
                   ) : null}
                   {example.mm.trim() ? (
                     <p className="myanmar-text text-muted-foreground leading-relaxed">

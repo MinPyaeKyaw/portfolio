@@ -1,33 +1,26 @@
-import {
-  useCallback,
-  useMemo,
-  useState,
-  type ReactNode,
-} from "react";
+import { useMemo, type ReactNode } from "react";
 import { AuthContext } from "./auth-context-base";
+import { useAuthStore } from "@/stores/auth-store";
 
+/**
+ * Bridges the Zustand auth store into React Context so existing components
+ * that call useAuth() continue to work without changes.
+ */
 export function AuthProvider({ children }: { children: ReactNode }) {
-  const [isAuthenticated, setIsAuthenticated] = useState(false);
-  const [userEmail, setUserEmail] = useState<string | null>(null);
-
-  const login = useCallback((email: string) => {
-    setUserEmail(email.trim());
-    setIsAuthenticated(true);
-  }, []);
-
-  const logout = useCallback(() => {
-    setUserEmail(null);
-    setIsAuthenticated(false);
-  }, []);
+  const user = useAuthStore((s) => s.user);
+  const isAuthenticated = useAuthStore((s) => s.isAuthenticated);
+  const isLoading = useAuthStore((s) => s.isLoading);
+  const logout = useAuthStore((s) => s.logout);
 
   const value = useMemo(
     () => ({
+      user,
+      userEmail: user?.email ?? null,
       isAuthenticated,
-      userEmail,
-      login,
+      isLoading,
       logout,
     }),
-    [isAuthenticated, userEmail, login, logout],
+    [user, isAuthenticated, isLoading, logout]
   );
 
   return (

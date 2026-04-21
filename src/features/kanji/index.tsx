@@ -145,7 +145,7 @@ export default function KanjiPage() {
 
   useEffect(() => {
     let cancelled = false;
-    import("@/utils/words")
+    import("@/utils/new-words")
       .then((module) => {
         if (!cancelled) {
           setLexicon(module.words as DictionaryWord[]);
@@ -240,7 +240,7 @@ export default function KanjiPage() {
         ) : !prediction ? (
           <p className="mt-2 text-muted-foreground text-sm">
             Recognize a kanji to search matches in{" "}
-            <code>src/utils/words.ts</code>.
+            <code>src/utils/new-words.ts</code>.
           </p>
         ) : matchedWords.length === 0 ? (
           <>

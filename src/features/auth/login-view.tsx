@@ -4,18 +4,19 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { AuthLayout } from "../../components/layouts/auth-layout";
 import { GoogleIcon } from "./components/google-icon";
-import { useAuth } from "./use-auth";
 import { handleGoogleLogin } from "./google-auth";
 import { isValidEmail } from "./utils/validation";
+import { useUserSignIn } from "@/api/auth/query";
 
 type FieldErrors = {
   email?: string;
   password?: string;
+  form?: string;
 };
 
 export default function LoginView() {
   const navigate = useNavigate();
-  const { login } = useAuth();
+  const signInMutation = useUserSignIn();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [errors, setErrors] = useState<FieldErrors>({});
@@ -35,12 +36,21 @@ export default function LoginView() {
   function onSubmit(e: FormEvent) {
     e.preventDefault();
     if (!validate()) return;
-    login(email.trim());
-    navigate("/", { replace: true });
-  }
 
-  function onGoogleClick() {
-    handleGoogleLogin();
+    signInMutation.mutate(
+      { email: email.trim(), password },
+      {
+        onSuccess: () => {
+          navigate("/", { replace: true });
+        },
+        onError: (err) => {
+          const message =
+            (err as { response?: { data?: { message?: string } } })
+              .response?.data?.message ?? "Sign in failed. Please try again.";
+          setErrors({ form: message });
+        },
+      }
+    );
   }
 
   return (
@@ -59,6 +69,7 @@ export default function LoginView() {
             onChange={(e) => setEmail(e.target.value)}
             placeholder="Email"
             aria-invalid={!!errors.email}
+            disabled={signInMutation.isPending}
           />
           {errors.email ? (
             <p className="text-destructive text-xs">{errors.email}</p>
@@ -74,11 +85,19 @@ export default function LoginView() {
             onChange={(e) => setPassword(e.target.value)}
             placeholder="Password"
             aria-invalid={!!errors.password}
+            disabled={signInMutation.isPending}
           />
           {errors.password ? (
             <p className="text-destructive text-xs">{errors.password}</p>
           ) : null}
         </div>
+
+        {errors.form ? (
+          <p role="status" className="text-destructive text-xs">
+            {errors.form}
+          </p>
+        ) : null}
+
         <div className="flex justify-end">
           <Link
             to="/forgot-password"
@@ -87,8 +106,12 @@ export default function LoginView() {
             Forgot Password
           </Link>
         </div>
-        <Button type="submit" className="h-10 w-full md:h-9">
-          Sign In
+        <Button
+          type="submit"
+          className="h-10 w-full md:h-9"
+          disabled={signInMutation.isPending}
+        >
+          {signInMutation.isPending ? "Signing in…" : "Sign In"}
         </Button>
       </form>
 
@@ -107,7 +130,8 @@ export default function LoginView() {
         type="button"
         variant="outline"
         className="h-10 w-full gap-2 border-border/80 md:h-9"
-        onClick={onGoogleClick}
+        onClick={handleGoogleLogin}
+        disabled={signInMutation.isPending}
       >
         <GoogleIcon className="size-4" />
         Login with Google

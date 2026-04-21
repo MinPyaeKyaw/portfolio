@@ -16,7 +16,7 @@ export default function DictionaryPage() {
 
   useEffect(() => {
     let cancelled = false;
-    import("@/utils/words")
+    import("@/utils/new-words")
       .then((m) => {
         if (!cancelled) {
           setLexicon(m.words as DictionaryWord[]);

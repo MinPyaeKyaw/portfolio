@@ -1,9 +1,26 @@
-import type { DictionaryWord } from "@/types/dictionary-word";
+import type { DictionaryWord, WordLexicalType } from "@/types/dictionary-word";
+
+const TYPE_LABELS: Partial<Record<WordLexicalType, string>> = {
+  "verb-ru": "Verb · 一段動詞",
+  "verb-u": "Verb · 五段動詞",
+  "verb-irregular": "Verb · 不規則動詞",
+  "i-adjective": "い-adjective · 形容詞",
+  "na-adjective": "な-adjective · 形容動詞",
+  noun: "Noun · 名詞",
+  adverb: "Adverb · 副詞",
+  particle: "Particle · 助詞",
+  pronoun: "Pronoun · 代名詞",
+  conjunction: "Conjunction · 接続詞",
+  interjection: "Interjection · 感嘆詞",
+};
 
 /**
- * Heuristic part-of-speech label (dataset has no explicit POS field).
+ * Part-of-speech label from the lexicon `type` field, with heuristics as fallback.
  */
 export function inferPartOfSpeech(w: DictionaryWord): string {
+  const fromType = TYPE_LABELS[w.type];
+  if (fromType) return fromType;
+
   const h = w.hiragana.replace(/\s+/g, "");
   const k = w.kanji.trim();
   const kt = w.katakana.trim();
