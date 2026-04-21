@@ -4,7 +4,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { AuthLayout } from "../../components/layouts/auth-layout";
 import { GoogleIcon } from "./components/google-icon";
-import { handleGoogleLogin } from "./google-auth";
+import { useGoogleAuth } from "./google-auth";
 import { isValidEmail } from "./utils/validation";
 import { useUserSignIn } from "@/api/auth/query";
 
@@ -17,6 +17,7 @@ type FieldErrors = {
 export default function LoginView() {
   const navigate = useNavigate();
   const signInMutation = useUserSignIn();
+  const { handleGoogleLogin, isPending: isGooglePending } = useGoogleAuth();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [errors, setErrors] = useState<FieldErrors>({});
@@ -131,7 +132,7 @@ export default function LoginView() {
         variant="outline"
         className="h-10 w-full gap-2 border-border/80 md:h-9"
         onClick={handleGoogleLogin}
-        disabled={signInMutation.isPending}
+        disabled={signInMutation.isPending || isGooglePending}
       >
         <GoogleIcon className="size-4" />
         Login with Google

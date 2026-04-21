@@ -4,6 +4,8 @@ import type {
   AuthResult,
   AuthTokens,
   ForgotPasswordPayload,
+  GoogleAuthUrlPayload,
+  GoogleAuthUrlResult,
   ResetPasswordPayload,
   SignInPayload,
   SignUpPayload,
@@ -31,3 +33,15 @@ export const forgotPassword = (data: ForgotPasswordPayload) =>
 
 export const resetPassword = (data: ResetPasswordPayload) =>
   apiClient.post<ApiResponse<null>>('/api/user-auth/reset-password', data);
+
+export const getGoogleAuthUrl = (data?: GoogleAuthUrlPayload) =>
+  apiClient.post<ApiResponse<GoogleAuthUrlResult>>('/api/user-auth/google', data ?? {}, {
+    withCredentials: true,
+  });
+
+export const exchangeSession = () =>
+  apiClient.post<ApiResponse<AuthResult>>(
+    '/api/user-auth/session/exchange',
+    undefined,
+    { withCredentials: true }
+  );

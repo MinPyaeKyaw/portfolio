@@ -29,3 +29,11 @@ export interface AuthTokens {
 export interface AuthResult extends AuthTokens {
   user: AppUser;
 }
+
+export interface GoogleAuthUrlPayload {
+  callbackURL?: string;
+}
+
+export interface GoogleAuthUrlResult {
+  url: string;
+}

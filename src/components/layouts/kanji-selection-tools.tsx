@@ -122,7 +122,7 @@ export function KanjiSelectionTools() {
                   {dialogItem.hiragana}
                 </p>
                 <p className="myanmar-text mt-1 text-sm text-muted-foreground">
-                  {dialogItem.meaning}
+                  {dialogItem.mm}
                 </p>
               </div>
               <div className="grid grid-cols-1 gap-2 sm:grid-cols-2">
@@ -139,13 +139,13 @@ export function KanjiSelectionTools() {
                   <p className="text-sm">{dialogItem.onYomi}</p>
                 </div>
               </div>
-              {dialogItem.others?.length ? (
+              {dialogItem.exampleWords?.length ? (
                 <div>
                   <p className="mb-1 text-[11px] font-semibold uppercase tracking-wide text-muted-foreground">
                     Example words
                   </p>
                   <ul className="space-y-1.5">
-                    {dialogItem.others.slice(0, 4).map((ex) => (
+                    {dialogItem.exampleWords.slice(0, 4).map((ex) => (
                       <li
                         key={`${dialogItem.id}-${ex.kanji}-${ex.hiragana}`}
                         className="rounded-lg bg-muted/40 px-2.5 py-1.5"
@@ -233,7 +233,7 @@ export function KanjiSelectionTools() {
                   {dialogItem.hiragana}
                 </p>
                 <p className="myanmar-text mt-1 text-sm text-muted-foreground">
-                  {dialogItem.meaning}
+                  {dialogItem.mm}
                 </p>
               </div>
               <div className="grid grid-cols-1 gap-2 sm:grid-cols-2">
@@ -250,13 +250,13 @@ export function KanjiSelectionTools() {
                   <p className="text-sm">{dialogItem.onYomi}</p>
                 </div>
               </div>
-              {dialogItem.others?.length ? (
+              {dialogItem.exampleWords?.length ? (
                 <div>
                   <p className="mb-1 text-[11px] font-semibold uppercase tracking-wide text-muted-foreground">
                     Example words
                   </p>
                   <ul className="space-y-1.5">
-                    {dialogItem.others.slice(0, 4).map((ex) => (
+                    {dialogItem.exampleWords.slice(0, 4).map((ex) => (
                       <li
                         key={`${dialogItem.id}-${ex.kanji}-${ex.hiragana}`}
                         className="rounded-lg bg-muted/40 px-2.5 py-1.5"

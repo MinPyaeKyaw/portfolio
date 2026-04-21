@@ -2,7 +2,9 @@ import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import { useAuthStore } from '@/stores/auth-store';
 import { authKeys } from './key';
 import {
+  exchangeSession,
   forgotPassword,
+  getGoogleAuthUrl,
   getMe,
   resetPassword,
   signIn,
@@ -10,6 +12,7 @@ import {
 } from './service';
 import type {
   ForgotPasswordPayload,
+  GoogleAuthUrlPayload,
   ResetPasswordPayload,
   SignInPayload,
   SignUpPayload,
@@ -65,3 +68,18 @@ export const useResetPassword = () =>
   useMutation({
     mutationFn: (data: ResetPasswordPayload) => resetPassword(data),
   });
+
+export const useGoogleAuthUrl = () =>
+  useMutation({
+    mutationFn: (data?: GoogleAuthUrlPayload) => getGoogleAuthUrl(data),
+  });
+
+export const useExchangeSession = () => {
+  const login = useAuthStore((s) => s.login);
+  return useMutation({
+    mutationFn: () => exchangeSession(),
+    onSuccess: (response) => {
+      login(response.data.data);
+    },
+  });
+};

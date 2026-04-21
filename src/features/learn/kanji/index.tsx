@@ -28,10 +28,12 @@ export default function KanjiLearningPage() {
         item.kanji,
         item.level,
         item.hiragana,
-        item.meaning,
+        item.mm,
         item.kunYomi,
         item.onYomi,
-        ...item.others.map((o) => `${o.kanji} ${o.hiragana} ${o.meaning}`),
+        ...item.exampleWords.map(
+          (o) => `${o.kanji} ${o.hiragana} ${o.meaning}`,
+        ),
       ]
         .join(" ")
         .toLowerCase()
@@ -125,7 +127,7 @@ export default function KanjiLearningPage() {
                     {item.hiragana}
                   </p>
                   <p className="myanmar-text mt-1 line-clamp-2 text-sm leading-relaxed text-foreground">
-                    {item.meaning}
+                    {item.mm}
                   </p>
                 </Link>
               </li>

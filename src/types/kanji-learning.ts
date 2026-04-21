@@ -7,11 +7,11 @@ export interface KanjiWordExample {
 export interface KanjiLearningItem {
   id: number;
   level: string;
-  image: string;
   kanji: string;
   kunYomi: string;
   onYomi: string;
   hiragana: string;
-  meaning: string;
-  others: KanjiWordExample[];
+  /** Myanmar gloss for the character */
+  mm: string;
+  exampleWords: KanjiWordExample[];
 }

@@ -14,6 +14,8 @@ import HiraganaLearningPage from "./features/learn/hiragana";
 import KatakanaLearningPage from "./features/learn/katakana";
 import ForgotPasswordView from "./features/auth/forgot-password-view";
 import LoginView from "./features/auth/login-view";
+import OAuthCallbackView from "./features/auth/oauth-callback-view";
+import ResetPasswordView from "./features/auth/reset-password-view";
 import SignUpView from "./features/auth/sign-up-view";
 
 export const router = createBrowserRouter([
@@ -36,6 +38,8 @@ export const router = createBrowserRouter([
       { path: "login", element: <LoginView /> },
       { path: "sign-up", element: <SignUpView /> },
       { path: "forgot-password", element: <ForgotPasswordView /> },
+      { path: "reset-password", element: <ResetPasswordView /> },
+      { path: "oauth/callback", element: <OAuthCallbackView /> },
     ],
   },
 ]);

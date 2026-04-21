@@ -3,9 +3,11 @@ import { Link } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { AuthLayout } from "../../components/layouts/auth-layout";
+import { useForgotPassword } from "@/api/auth/query";
 import { isValidEmail } from "./utils/validation";
 
 export default function ForgotPasswordView() {
+  const forgotPasswordMutation = useForgotPassword();
   const [email, setEmail] = useState("");
   const [error, setError] = useState<string | undefined>();
   const [sent, setSent] = useState(false);
@@ -22,8 +24,25 @@ export default function ForgotPasswordView() {
   function onSubmit(e: FormEvent) {
     e.preventDefault();
     if (!validate()) return;
-    setSent(true);
-    console.log("[auth] Password reset requested for:", email.trim());
+
+    forgotPasswordMutation.mutate(
+      {
+        email: email.trim(),
+        redirectTo: `${window.location.origin}/reset-password`,
+      },
+      {
+        onSuccess: () => {
+          setSent(true);
+        },
+        onError: (err) => {
+          const message =
+            (err as { response?: { data?: { message?: string } } })
+              .response?.data?.message ??
+            "Failed to send reset email. Please try again.";
+          setError(message);
+        },
+      }
+    );
   }
 
   return (
@@ -47,11 +66,18 @@ export default function ForgotPasswordView() {
               onChange={(e) => setEmail(e.target.value)}
               placeholder="Email"
               aria-invalid={!!error}
+              disabled={forgotPasswordMutation.isPending}
             />
             {error ? <p className="text-destructive text-xs">{error}</p> : null}
           </div>
-          <Button type="submit" className="h-10 w-full md:h-9">
-            Send Reset Instructions
+          <Button
+            type="submit"
+            className="h-10 w-full md:h-9"
+            disabled={forgotPasswordMutation.isPending}
+          >
+            {forgotPasswordMutation.isPending
+              ? "Sending…"
+              : "Send Reset Instructions"}
           </Button>
         </form>
       ) : (
