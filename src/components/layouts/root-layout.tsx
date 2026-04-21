@@ -51,6 +51,7 @@ export default function RootLayout() {
 
   /** Routes where `main` is overflow-hidden so inner content scrolls (e.g. list + fade, sign-up). */
   const isScrollableListRoute =
+    pathname === "/" ||
     pathname === "/reading" ||
     pathname === "/grammar" ||
     pathname === "/learn/kanji" ||
