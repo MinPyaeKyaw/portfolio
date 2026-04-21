@@ -3,7 +3,7 @@ import { Link, useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { AuthLayout } from "../../components/layouts/auth-layout";
-import { useAuth } from "./use-auth";
+import { useUserSignUp } from "@/api/auth/query";
 import {
   isValidEmail,
   isValidPassword,
@@ -16,11 +16,12 @@ type FieldErrors = {
   email?: string;
   password?: string;
   confirmPassword?: string;
+  form?: string;
 };
 
 export default function SignUpView() {
   const navigate = useNavigate();
-  const { login } = useAuth();
+  const signUpMutation = useUserSignUp();
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -48,8 +49,21 @@ export default function SignUpView() {
   function onSubmit(e: FormEvent) {
     e.preventDefault();
     if (!validate()) return;
-    login(email.trim());
-    navigate("/", { replace: true });
+
+    signUpMutation.mutate(
+      { name: name.trim(), email: email.trim(), password },
+      {
+        onSuccess: () => {
+          navigate("/", { replace: true });
+        },
+        onError: (err) => {
+          const message =
+            (err as { response?: { data?: { message?: string } } })
+              .response?.data?.message ?? "Sign up failed. Please try again.";
+          setErrors({ form: message });
+        },
+      }
+    );
   }
 
   return (
@@ -69,6 +83,7 @@ export default function SignUpView() {
             onChange={(e) => setName(e.target.value)}
             placeholder="Name"
             aria-invalid={!!errors.name}
+            disabled={signUpMutation.isPending}
           />
           {errors.name ? (
             <p className="text-destructive text-xs">{errors.name}</p>
@@ -84,6 +99,7 @@ export default function SignUpView() {
             onChange={(e) => setEmail(e.target.value)}
             placeholder="Email"
             aria-invalid={!!errors.email}
+            disabled={signUpMutation.isPending}
           />
           {errors.email ? (
             <p className="text-destructive text-xs">{errors.email}</p>
@@ -99,6 +115,7 @@ export default function SignUpView() {
             onChange={(e) => setPassword(e.target.value)}
             placeholder={`Password (min. ${PASSWORD_MIN_LENGTH} characters)`}
             aria-invalid={!!errors.password}
+            disabled={signUpMutation.isPending}
           />
           {errors.password ? (
             <p className="text-destructive text-xs">{errors.password}</p>
@@ -114,13 +131,25 @@ export default function SignUpView() {
             onChange={(e) => setConfirmPassword(e.target.value)}
             placeholder="Confirm password"
             aria-invalid={!!errors.confirmPassword}
+            disabled={signUpMutation.isPending}
           />
           {errors.confirmPassword ? (
             <p className="text-destructive text-xs">{errors.confirmPassword}</p>
           ) : null}
         </div>
-        <Button type="submit" className="h-10 w-full md:h-9">
-          Create Account
+
+        {errors.form ? (
+          <p role="status" className="text-destructive text-xs">
+            {errors.form}
+          </p>
+        ) : null}
+
+        <Button
+          type="submit"
+          className="h-10 w-full md:h-9"
+          disabled={signUpMutation.isPending}
+        >
+          {signUpMutation.isPending ? "Creating account…" : "Create Account"}
         </Button>
       </form>
 

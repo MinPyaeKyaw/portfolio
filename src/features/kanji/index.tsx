@@ -11,7 +11,6 @@ import { DotLottieReact } from "@lottiefiles/dotlottie-react";
 import { Link } from "react-router-dom";
 import { ListBottomFade } from "@/components/list-bottom-fade";
 import { Button } from "@/components/ui/button";
-import handDrawingAnimation from "@/assets/lottie/hand-drawing.lottie?url";
 import { useKanjiRecognizer } from "@/hooks/use-kanji-recognizer";
 import type { DictionaryWord } from "@/types/dictionary-word";
 
@@ -222,7 +221,7 @@ export default function KanjiPage() {
               className="mx-auto mb-2 w-full max-w-[240px] shrink-0"
               aria-hidden
             >
-              <DotLottieReact src={handDrawingAnimation} autoplay loop />
+              <DotLottieReact src="/lottie/hand-drawing.lottie" autoplay loop />
             </div>
             <p className="mt-2 mx-auto max-w-sm text-muted-foreground text-sm leading-relaxed">
               Draw a kanji and click search button.
