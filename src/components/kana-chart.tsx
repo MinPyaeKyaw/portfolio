@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { useSpeech } from "@/hooks/use-speech";
 import { cn } from "@/lib/utils";
 import type { KanaScript } from "@/types/kana";
 import { kanaSections } from "@/utils/kana";
@@ -9,6 +10,7 @@ interface KanaChartProps {
 
 export function KanaChart({ script }: KanaChartProps) {
   const [selectedKey, setSelectedKey] = useState<string | null>(null);
+  const { speak } = useSpeech();
 
   return (
     <div className="space-y-6">
@@ -44,11 +46,12 @@ export function KanaChart({ script }: KanaChartProps) {
                   <button
                     key={cellKey}
                     type="button"
-                    onClick={() =>
+                    onClick={() => {
                       setSelectedKey((prev) =>
                         prev === cellKey ? null : cellKey,
-                      )
-                    }
+                      );
+                      speak(character, { id: cellKey });
+                    }}
                     className={cn(
                       "group flex aspect-square flex-col items-center justify-center rounded-xl border bg-muted/20 px-1 transition-all",
                       isSelected

@@ -1,6 +1,7 @@
 import { ArrowLeft, Loader2 } from "lucide-react";
 import { useEffect, useMemo, useState } from "react";
 import { Link, useParams } from "react-router-dom";
+import { PronounceButton } from "@/components/pronounce-button";
 import type { DictionaryWord } from "@/types/dictionary-word";
 import { getValidExamples } from "./utils/examples";
 import {
@@ -91,7 +92,16 @@ export default function DictionaryWordDetailPage() {
 
       <div className="space-y-3 pb-4">
         <section className="rounded-xl bg-white p-4 dark:bg-muted/30">
-          <h1 className="font-heading text-2xl tracking-tight">{primary}</h1>
+          <div className="flex items-start justify-between gap-3">
+            <h1 className="font-heading text-2xl tracking-tight">{primary}</h1>
+            <PronounceButton
+              text={primary}
+              id={`word-${word.id}-primary`}
+              size="icon"
+              variant="outline"
+              label={`Play pronunciation of ${primary}`}
+            />
+          </div>
           {reading && reading !== primary ? (
             <p className="mt-1 text-muted-foreground text-sm">{reading}</p>
           ) : null}
@@ -126,7 +136,15 @@ export default function DictionaryWordDetailPage() {
                   className="rounded-lg bg-white/90 px-3 py-2 dark:bg-background/50"
                 >
                   <p className="text-muted-foreground text-xs">{form.name}</p>
-                  <p className="text-sm">{form.word}</p>
+                  <div className="flex items-center justify-between gap-2">
+                    <p className="text-sm">{form.word}</p>
+                    <PronounceButton
+                      text={form.word}
+                      id={`word-${word.id}-form-${form.name}`}
+                      size="icon-xs"
+                      label={`Play pronunciation of ${form.word}`}
+                    />
+                  </div>
                   {form.mm?.trim() ? (
                     <p className="myanmar-text mt-1 text-muted-foreground text-xs leading-relaxed">
                       {form.mm}
@@ -150,7 +168,16 @@ export default function DictionaryWordDetailPage() {
                   className="rounded-lg bg-white/90 p-3 text-sm dark:bg-background/50"
                 >
                   {example.jp.trim() ? (
-                    <p className="mb-1 font-medium">{example.jp}</p>
+                    <div className="mb-1 flex items-start justify-between gap-2">
+                      <p className="font-medium">{example.jp}</p>
+                      <PronounceButton
+                        text={example.jp}
+                        id={`word-${word.id}-example-${index}`}
+                        size="icon-xs"
+                        rate={0.85}
+                        label="Play example pronunciation"
+                      />
+                    </div>
                   ) : null}
                   {example.mm.trim() ? (
                     <p className="myanmar-text text-muted-foreground leading-relaxed">
