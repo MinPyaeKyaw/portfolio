@@ -10,6 +10,8 @@ import GrammarListPage from "./features/learn/grammar";
 import GrammarDetailPage from "./features/learn/grammar/detail";
 import ReadingListPage from "./features/learn/reading";
 import ReadingDetailPage from "./features/learn/reading/detail";
+import HiraganaLearningPage from "./features/learn/hiragana";
+import KatakanaLearningPage from "./features/learn/katakana";
 import ForgotPasswordView from "./features/auth/forgot-password-view";
 import LoginView from "./features/auth/login-view";
 import SignUpView from "./features/auth/sign-up-view";
@@ -26,6 +28,8 @@ export const router = createBrowserRouter([
       { path: "reading/:id", element: <ReadingDetailPage /> },
       { path: "learn/kanji", element: <KanjiLearningPage /> },
       { path: "learn/kanji/:id", element: <KanjiLearningDetailPage /> },
+      { path: "learn/hiragana", element: <HiraganaLearningPage /> },
+      { path: "learn/katakana", element: <KatakanaLearningPage /> },
       { path: "dictionary", element: <DictionaryPage /> },
       { path: "dictionary/:id", element: <DictionaryWordDetailPage /> },
       { path: "kanji", element: <KanjiPage /> },

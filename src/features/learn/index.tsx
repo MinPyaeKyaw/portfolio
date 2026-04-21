@@ -1,4 +1,11 @@
-import { BookOpen, FileText, Headphones, Languages } from "lucide-react";
+import {
+  BookOpen,
+  FileText,
+  Headphones,
+  Languages,
+  Sparkles,
+  Type,
+} from "lucide-react";
 import { Link } from "react-router-dom";
 
 const learnCards = [
@@ -32,6 +39,22 @@ const learnCards = [
     icon: Headphones,
     to: "/dictionary",
     accent: "from-sky-500/10 via-transparent to-transparent",
+  },
+  {
+    title: "Hiragana",
+    description:
+      "ဟိရဂန အက္ခရာ ၄၆ လုံးကို ဇယားဖြင့် တစ်လုံးချင်း လေ့လာပါ။",
+    icon: Sparkles,
+    to: "/learn/hiragana",
+    accent: "from-emerald-500/10 via-transparent to-transparent",
+  },
+  {
+    title: "Katakana",
+    description:
+      "ကတခန အက္ခရာများကို ဇယားဖြင့် ကြည့်ရှု၍ မှတ်သားပါ။",
+    icon: Type,
+    to: "/learn/katakana",
+    accent: "from-amber-500/10 via-transparent to-transparent",
   },
 ] as const;
 

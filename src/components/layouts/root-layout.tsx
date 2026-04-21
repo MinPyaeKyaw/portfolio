@@ -54,6 +54,8 @@ export default function RootLayout() {
     pathname === "/reading" ||
     pathname === "/grammar" ||
     pathname === "/learn/kanji" ||
+    pathname === "/learn/hiragana" ||
+    pathname === "/learn/katakana" ||
     pathname === "/sign-up";
 
   const playTabClickSound = useCallback(() => {
