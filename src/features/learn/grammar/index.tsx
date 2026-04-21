@@ -1,7 +1,6 @@
 import { ArrowLeft, ChevronRight, FileText } from "lucide-react";
 import { useMemo, useState } from "react";
 import { Link } from "react-router-dom";
-import { ListBottomFade } from "@/components/list-bottom-fade";
 import { SearchBar } from "@/components/search-bar";
 import { cn } from "@/lib/utils";
 import type { GrammarItem } from "@/types/grammar";
@@ -135,7 +134,6 @@ export default function GrammarListPage() {
             </ul>
           )}
         </div>
-        <ListBottomFade />
       </div>
     </div>
   );

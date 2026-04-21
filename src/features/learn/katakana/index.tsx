@@ -1,7 +1,6 @@
 import { ArrowLeft, Type } from "lucide-react";
 import { Link } from "react-router-dom";
 import { KanaChart } from "@/components/kana-chart";
-import { ListBottomFade } from "@/components/list-bottom-fade";
 
 export default function KatakanaLearningPage() {
   return (
@@ -34,7 +33,6 @@ export default function KatakanaLearningPage() {
         <div className="h-full min-h-0 overflow-y-auto overscroll-contain pb-6 [-webkit-overflow-scrolling:touch]">
           <KanaChart script="katakana" />
         </div>
-        <ListBottomFade />
       </div>
     </div>
   );

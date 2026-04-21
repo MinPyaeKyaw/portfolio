@@ -7,7 +7,6 @@ import {
   Type,
 } from "lucide-react";
 import { Link } from "react-router-dom";
-import { ListBottomFade } from "@/components/list-bottom-fade";
 
 const learnCards = [
   {
@@ -94,7 +93,6 @@ export default function LearnPage() {
             })}
           </div>
         </div>
-        <ListBottomFade />
       </div>
     </div>
   );

@@ -1,7 +1,6 @@
 import { ArrowLeft, Sparkles } from "lucide-react";
 import { Link } from "react-router-dom";
 import { KanaChart } from "@/components/kana-chart";
-import { ListBottomFade } from "@/components/list-bottom-fade";
 
 export default function HiraganaLearningPage() {
   return (
@@ -34,7 +33,6 @@ export default function HiraganaLearningPage() {
         <div className="h-full min-h-0 overflow-y-auto overscroll-contain pb-6 [-webkit-overflow-scrolling:touch]">
           <KanaChart script="hiragana" />
         </div>
-        <ListBottomFade />
       </div>
     </div>
   );

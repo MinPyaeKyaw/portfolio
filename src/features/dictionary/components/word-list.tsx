@@ -1,4 +1,3 @@
-import { ListBottomFade } from "@/components/list-bottom-fade";
 import { PronounceButton } from "@/components/pronounce-button";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import type { DictionaryWord } from "@/types/dictionary-word";
@@ -51,7 +50,6 @@ export function WordList({ words }: WordListProps) {
           })}
         </ul>
       </ScrollArea>
-      <ListBottomFade />
     </div>
   );
 }

@@ -2,6 +2,7 @@ import { useCallback, useRef } from "react";
 import { BookOpen, GraduationCap, Layers, LogIn, LogOut } from "lucide-react";
 import { Link, NavLink, Outlet, useLocation } from "react-router-dom";
 import { BrandLinkToHome } from "@/components/brand-lockup";
+import { ListBottomFade } from "@/components/list-bottom-fade";
 import { Button, buttonVariants } from "@/components/ui/button";
 import { ThemeToggle } from "@/components/theme-toggle";
 import { useAuth } from "@/features/auth/use-auth";
@@ -197,6 +198,16 @@ export default function RootLayout() {
       >
         <Outlet />
       </main>
+
+      <ListBottomFade
+        position="fixed"
+        className={cn(
+          "z-30",
+          !isAuthRoute
+            ? "bottom-[calc(3.75rem+env(safe-area-inset-bottom,0px))] md:bottom-0"
+            : "bottom-[env(safe-area-inset-bottom,0px)] md:bottom-0",
+        )}
+      />
 
       {!isAuthRoute ? (
       <nav className="fixed inset-x-0 bottom-3 z-50 px-3 pb-[env(safe-area-inset-bottom,0px)] md:hidden">

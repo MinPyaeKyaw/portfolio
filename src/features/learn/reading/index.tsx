@@ -1,7 +1,6 @@
 import { ArrowLeft, BookOpen, ChevronRight } from "lucide-react";
 import { useMemo, useState } from "react";
 import { Link } from "react-router-dom";
-import { ListBottomFade } from "@/components/list-bottom-fade";
 import { cn } from "@/lib/utils";
 import type { ReadingPassage } from "@/types/reading";
 import { reading } from "@/utils/reading";
@@ -109,7 +108,6 @@ export default function ReadingListPage() {
             </ul>
           )}
         </div>
-        <ListBottomFade />
       </div>
     </div>
   );

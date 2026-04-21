@@ -9,7 +9,6 @@ import {
 } from "react";
 import { DotLottieReact } from "@lottiefiles/dotlottie-react";
 import { Link } from "react-router-dom";
-import { ListBottomFade } from "@/components/list-bottom-fade";
 import { Button } from "@/components/ui/button";
 import { useKanjiRecognizer } from "@/hooks/use-kanji-recognizer";
 import type { DictionaryWord } from "@/types/dictionary-word";
@@ -279,7 +278,6 @@ export default function KanjiPage() {
                   </li>
                 ))}
               </ul>
-              <ListBottomFade />
             </div>
           </>
         )}

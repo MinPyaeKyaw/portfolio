@@ -1,5 +1,4 @@
 import type { ReactNode } from "react";
-import { ListBottomFade } from "@/components/list-bottom-fade";
 import { cn } from "@/lib/utils";
 
 type AuthLayoutProps = {
@@ -51,7 +50,6 @@ export function AuthLayout({
               </div>
             </div>
           </div>
-          <ListBottomFade />
         </div>
       </div>
     );
