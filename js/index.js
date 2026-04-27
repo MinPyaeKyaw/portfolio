@@ -1,13 +1,13 @@
 const mobileNavToggleBtn = document.querySelector(".mobile-nav-toggle");
 const mobileNavLinks = document.querySelector(".mobile-nav-links");
 const mobileNavToggleLine2 = document.querySelector(
-  ".mobile-nav-toggle-line-2"
+  ".mobile-nav-toggle-line-2",
 );
 const mobileNavToggleLine3 = document.querySelector(
-  ".mobile-nav-toggle-line-3"
+  ".mobile-nav-toggle-line-3",
 );
 const mobileNavToggleLine1 = document.querySelector(
-  ".mobile-nav-toggle-line-1"
+  ".mobile-nav-toggle-line-1",
 );
 
 function toggleMobileNav() {
@@ -29,3 +29,17 @@ mobileNavLinks.addEventListener("click", (e) => {
     toggleMobileNav();
   }
 });
+
+const titles = document.querySelectorAll("h1");
+
+const titleObserver = new IntersectionObserver((entries) => {
+  entries.forEach((entry) => {
+    if (entry.isIntersecting) {
+      entry.target.classList.add("show-title");
+    } else {
+      entry.target.classList.remove("show-title");
+    }
+  });
+});
+
+titles.forEach((title) => titleObserver.observe(title));

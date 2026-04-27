@@ -53,6 +53,14 @@ h6 {
   font-family: var(--font-family-title);
   color: var(--white);
   letter-spacing: 10px;
+  transform: translateY(100px);
+  opacity: 0;
+  transition: all ease 1s;
+}
+
+.show-title {
+  transform: translateY(0px);
+  opacity: 1;
 }
 
 .btn {

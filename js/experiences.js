@@ -46,3 +46,30 @@ experiences.forEach((exp) => {
 
   expTimeline.innerHTML += timelineItem;
 });
+
+const rightContents = document.querySelectorAll(
+  ".timeline-item:nth-child(even) .content",
+);
+const leftContents = document.querySelectorAll(".timeline-item .content");
+const leftDates = document.querySelectorAll(
+  " .timeline-item:nth-child(even) .date",
+);
+const rightDates = document.querySelectorAll(" .timeline-item .date");
+
+const expObserver = new IntersectionObserver(
+  (entries) => {
+    entries.forEach((entry) => {
+      if (entry.isIntersecting) {
+        entry.target.classList.add("show-content");
+      } else {
+        entry.target.classList.remove("show-content");
+      }
+    });
+  },
+  { threshold: 0.8 },
+);
+
+rightContents.forEach((content) => expObserver.observe(content));
+leftContents.forEach((content) => expObserver.observe(content));
+rightDates.forEach((date) => expObserver.observe(date));
+leftDates.forEach((date) => expObserver.observe(date));

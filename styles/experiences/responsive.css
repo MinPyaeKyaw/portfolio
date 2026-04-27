@@ -118,6 +118,15 @@
 
   .timeline-item:nth-child(even) .content {
     text-align: right;
+    transform: translateX(-50px);
+    /* opacity: 0; */
+    transition: all ease 1s;
+  }
+
+  .show-content {
+    opacity: 1;
+    transform: translateX(0px);
+    background: blue;
   }
 
   .timeline-item:nth-child(even) .date {
@@ -160,10 +169,33 @@
 
   .timeline-item:nth-child(even) .content {
     text-align: right;
+    transform: translateX(-50px);
+    transition: all ease 1s;
+    opacity: 0;
+  }
+
+  .timeline-item .content {
+    transform: translateX(50px);
+    transition: all ease 1s;
+    opacity: 0;
+  }
+
+  .show-content {
+    opacity: 1 !important;
+    transform: translateX(0px) !important;
   }
 
   .timeline-item:nth-child(even) .date {
     text-align: left;
+    transform: translateX(50px);
+    transition: all ease 1s;
+    opacity: 0;
+  }
+
+  .timeline-item .date {
+    transform: translateX(-50px);
+    transition: all ease 1s;
+    opacity: 0;
   }
 
   .exp-img-1 {
