@@ -1,9 +1,3 @@
-// JLPT N5 Vocabulary - Batch 1 (Words 1-50)
-// Format: Japanese word with Burmese translation, forms, and example sentences
-// Types used: "verb-u" (godan), "verb-ru" (ichidan), "verb-irregular",
-//             "i-adjective", "na-adjective", "noun", "adverb", "particle",
-//             "pronoun", "conjunction", "interjection"
-
 export const words = [
   // ========== VERBS ==========
   {
