@@ -119,14 +119,13 @@
   .timeline-item:nth-child(even) .content {
     text-align: right;
     transform: translateX(-50px);
-    /* opacity: 0; */
+    opacity: 0;
     transition: all ease 1s;
   }
 
   .show-content {
     opacity: 1;
     transform: translateX(0px);
-    background: blue;
   }
 
   .timeline-item:nth-child(even) .date {

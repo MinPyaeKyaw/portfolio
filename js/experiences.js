@@ -15,7 +15,7 @@ const experiences = [
     year: "April 2023 - Jun 2024",
   },
   {
-    company: "Web3re Technologies",
+    company: "Web3re",
     position: "Web Developer",
     year: "May 2022 - March 2023",
   },
