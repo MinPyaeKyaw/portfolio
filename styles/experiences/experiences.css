@@ -13,11 +13,13 @@
 .exp-img-1 {
   position: absolute;
   z-index: -1;
+  animation: rotate 10s linear infinite;
 }
 
 .exp-img-2 {
   position: absolute;
   z-index: -1;
+  animation: rotate 10s linear infinite;
 }
 
 .timeline {

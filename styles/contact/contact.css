@@ -50,27 +50,32 @@
   top: 10%;
   left: 10px;
   width: 300px;
+  animation: upDown 1s linear infinite;
 }
 
 .contact-img-2 {
   top: 10%;
   right: 10px;
   width: 300px;
+  animation: upDown 1s linear infinite;
 }
 
 .contact-img-3 {
   bottom: 15%;
   left: 10px;
   width: 300px;
+  animation: upDown 1s linear infinite;
 }
 
 .contact-img-4 {
   bottom: 15%;
   right: 10px;
   width: 300px;
+  animation: upDown 1s linear infinite;
 }
 
 .contact-img-5 {
   bottom: 10%;
   width: 200px;
+  animation: upDown 1s linear infinite;
 }

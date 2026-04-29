@@ -43,3 +43,15 @@ const titleObserver = new IntersectionObserver((entries) => {
 });
 
 titles.forEach((title) => titleObserver.observe(title));
+
+function type(text, element) {
+  let index = 0;
+  element.textContent = "";
+  const interval = setInterval(() => {
+    element.textContent += text.charAt(index);
+    index++;
+  }, 100);
+  if (index == text.length) {
+    clearInterval(interval);
+  }
+}
