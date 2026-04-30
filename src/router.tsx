@@ -12,6 +12,7 @@ import ReadingListPage from "./features/learn/reading";
 import ReadingDetailPage from "./features/learn/reading/detail";
 import HiraganaLearningPage from "./features/learn/hiragana";
 import KatakanaLearningPage from "./features/learn/katakana";
+import LandingPage from "./features/landing";
 import ForgotPasswordView from "./features/auth/forgot-password-view";
 import LoginView from "./features/auth/login-view";
 import OAuthCallbackView from "./features/auth/oauth-callback-view";
@@ -35,6 +36,7 @@ export const router = createBrowserRouter([
       { path: "dictionary", element: <DictionaryPage /> },
       { path: "dictionary/:id", element: <DictionaryWordDetailPage /> },
       { path: "kanji", element: <KanjiPage /> },
+      { path: "welcome", element: <LandingPage /> },
       { path: "login", element: <LoginView /> },
       { path: "sign-up", element: <SignUpView /> },
       { path: "forgot-password", element: <ForgotPasswordView /> },

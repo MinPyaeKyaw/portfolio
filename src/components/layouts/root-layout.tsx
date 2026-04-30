@@ -45,7 +45,8 @@ export default function RootLayout() {
   const isAuthRoute =
     pathname === "/login" ||
     pathname === "/sign-up" ||
-    pathname === "/forgot-password";
+    pathname === "/forgot-password" ||
+    pathname === "/welcome";
 
   /** On auth routes, desktop tabs show no active segment (Learn/Dictionary/Kanji still visible). */
   const desktopTabIndex = isAuthRoute ? -1 : activeTabIndex;
