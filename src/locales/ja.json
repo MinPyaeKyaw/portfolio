@@ -1,0 +1,28 @@
+{
+  "common": {
+    "back": "戻る",
+    "save": "保存",
+    "cancel": "キャンセル",
+    "loading": "読み込み中…"
+  },
+  "settings": {
+    "title": "設定",
+    "appearance": {
+      "title": "外観",
+      "themeLabel": "テーマ",
+      "lightMode": "ライトモード",
+      "darkMode": "ダークモード",
+      "themeHint": "{{mode}} — トグルをタップして切り替えてください。"
+    },
+    "language": {
+      "title": "言語",
+      "label": "アプリの言語",
+      "hint": "アプリで使用する言語を選択してください。"
+    }
+  },
+  "languages": {
+    "en": "English",
+    "mm": "မြန်မာ",
+    "ja": "日本語"
+  }
+}

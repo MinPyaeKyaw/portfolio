@@ -1,9 +1,10 @@
 import { useCallback, useRef } from "react";
-import { BookOpen, GraduationCap, Layers, LogIn, LogOut } from "lucide-react";
+import { BookOpen, GraduationCap, Layers, LogIn } from "lucide-react";
 import { Link, NavLink, Outlet, useLocation } from "react-router-dom";
 import { BrandLinkToHome } from "@/components/brand-lockup";
+import { HeaderProfileButton } from "@/components/header-profile-button";
 import { ListBottomFade } from "@/components/list-bottom-fade";
-import { Button, buttonVariants } from "@/components/ui/button";
+import { buttonVariants } from "@/components/ui/button";
 import { ThemeToggle } from "@/components/theme-toggle";
 import { useAuth } from "@/features/auth/use-auth";
 import { cn } from "@/lib/utils";
@@ -34,7 +35,7 @@ const tabIndicatorGlowClass =
 
 export default function RootLayout() {
   const { pathname } = useLocation();
-  const { isAuthenticated, logout } = useAuth();
+  const { isAuthenticated } = useAuth();
   const audioContextRef = useRef<AudioContext | null>(null);
   const activeTabIndex = pathname.startsWith("/dictionary")
     ? 1
@@ -46,7 +47,8 @@ export default function RootLayout() {
     pathname === "/login" ||
     pathname === "/sign-up" ||
     pathname === "/forgot-password" ||
-    pathname === "/welcome";
+    pathname === "/welcome" ||
+    pathname === "/set-up";
 
   /** On auth routes, desktop tabs show no active segment (Learn/Dictionary/Kanji still visible). */
   const desktopTabIndex = isAuthRoute ? -1 : activeTabIndex;
@@ -139,28 +141,7 @@ export default function RootLayout() {
           </nav>
           <ThemeToggle />
           {isAuthenticated ? (
-            <>
-              <Button
-                type="button"
-                variant="ghost"
-                size="icon"
-                className="shrink-0 text-foreground md:hidden"
-                onClick={logout}
-                aria-label="Log out"
-              >
-                <LogOut className="size-[1.125rem]" aria-hidden />
-              </Button>
-              <Button
-                type="button"
-                variant="outline"
-                size="sm"
-                className="hidden shrink-0 gap-1.5 transition-colors hover:border-primary/40 hover:bg-muted/80 md:inline-flex"
-                onClick={logout}
-              >
-                <LogOut className="size-4" aria-hidden />
-                Logout
-              </Button>
-            </>
+            <HeaderProfileButton />
           ) : (
             <>
               <Link

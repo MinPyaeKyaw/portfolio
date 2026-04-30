@@ -28,6 +28,9 @@ export const refreshTokens = (refreshToken: string) =>
 export const getMe = () =>
   apiClient.get<ApiResponse<AppUser>>('/api/user-auth/me');
 
+export const deleteMyAccount = () =>
+  apiClient.delete<ApiResponse<null>>('/api/user-auth/me');
+
 export const forgotPassword = (data: ForgotPasswordPayload) =>
   apiClient.post<ApiResponse<null>>('/api/user-auth/forgot-password', data);
 

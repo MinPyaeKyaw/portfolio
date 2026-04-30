@@ -21,7 +21,7 @@ export default function KanjiLearningDetailPage() {
 
   if (!item) {
     return (
-      <div className="w-full px-4 py-10">
+      <div className="mx-auto w-full max-w-3xl px-4 py-10">
         <Link
           to="/learn/kanji"
           className="mb-4 inline-flex items-center gap-2 text-muted-foreground text-sm transition-colors hover:text-foreground"
@@ -35,7 +35,7 @@ export default function KanjiLearningDetailPage() {
   }
 
   return (
-    <div className="w-full px-4 pb-8 pt-4 md:pb-12 md:pt-8">
+    <div className="mx-auto w-full max-w-3xl px-4 pb-8 pt-4 md:pb-12 md:pt-8">
       <Link
         to="/learn/kanji"
         className="mb-4 inline-flex items-center gap-2 text-muted-foreground text-sm transition-colors hover:text-foreground"

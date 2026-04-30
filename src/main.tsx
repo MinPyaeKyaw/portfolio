@@ -5,7 +5,9 @@ import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import "@fontsource/noto-sans-myanmar/400.css";
 import { PwaSplashScreen } from "@/components/pwa-splash-screen";
 import { ThemeProvider } from "@/components/theme-provider";
+import { ThemedToaster } from "@/components/themed-toaster";
 import { AuthProvider } from "@/features/auth/auth-provider";
+import "./locales/i18n";
 import "./index.css";
 import { router } from "./router";
 
@@ -31,6 +33,7 @@ createRoot(document.getElementById("root")!).render(
         <AuthProvider>
           <PwaSplashScreen />
           <RouterProvider router={router} />
+          <ThemedToaster />
         </AuthProvider>
       </ThemeProvider>
     </QueryClientProvider>

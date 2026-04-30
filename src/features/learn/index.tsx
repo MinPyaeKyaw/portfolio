@@ -60,9 +60,9 @@ const learnCards = [
 
 export default function LearnPage() {
   return (
-    <div className="mx-auto flex min-h-0 w-full max-w-3xl flex-1 flex-col px-4 pt-4 md:pt-8">
+    <div className="mx-auto flex min-h-0 w-full max-w-3xl flex-1 flex-col px-4">
       <div className="relative min-h-0 flex-1">
-        <div className="h-full min-h-0 overflow-y-auto overscroll-contain pb-6 [-webkit-overflow-scrolling:touch]">
+        <div className="h-full min-h-0 overflow-y-auto overscroll-contain pt-4 pb-6 md:pt-8 [-webkit-overflow-scrolling:touch]">
           <div className="grid grid-cols-2 gap-3">
             {learnCards.map((card, index) => {
               const Icon = card.icon;

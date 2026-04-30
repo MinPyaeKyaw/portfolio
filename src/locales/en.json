@@ -1,0 +1,28 @@
+{
+  "common": {
+    "back": "Back",
+    "save": "Save",
+    "cancel": "Cancel",
+    "loading": "Loading…"
+  },
+  "settings": {
+    "title": "Settings",
+    "appearance": {
+      "title": "Appearance",
+      "themeLabel": "Theme",
+      "lightMode": "Light mode",
+      "darkMode": "Dark mode",
+      "themeHint": "{{mode}} — tap the toggle to switch."
+    },
+    "language": {
+      "title": "Language",
+      "label": "App language",
+      "hint": "Pick the language used across the app."
+    }
+  },
+  "languages": {
+    "en": "English",
+    "mm": "မြန်မာ",
+    "ja": "日本語"
+  }
+}

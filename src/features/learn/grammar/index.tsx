@@ -33,7 +33,7 @@ export default function GrammarListPage() {
   }, [level, query]);
 
   return (
-    <div className="mx-auto flex min-h-0 w-full max-w-2xl flex-1 flex-col px-4 pt-4 md:pt-8">
+    <div className="mx-auto flex min-h-0 w-full max-w-3xl flex-1 flex-col px-4 pt-4 md:pt-8">
       <div className="shrink-0 bg-background pb-4">
         <Link
           to="/"

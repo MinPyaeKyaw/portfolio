@@ -40,7 +40,7 @@ export default function DictionaryWordDetailPage() {
 
   if (lexicon === null) {
     return (
-      <div className="w-full px-4 pb-0 pt-3 md:pb-10 md:pt-8">
+      <div className="mx-auto w-full max-w-3xl px-4 pb-0 pt-3 md:pb-10 md:pt-8">
         <div
           className="flex flex-col items-center justify-center gap-3 rounded-2xl border border-dashed border-border/80 bg-muted/20 py-20"
           role="status"
@@ -58,7 +58,7 @@ export default function DictionaryWordDetailPage() {
 
   if (!word) {
     return (
-      <div className="w-full px-4 pb-0 pt-3 md:pb-10 md:pt-8">
+      <div className="mx-auto w-full max-w-3xl px-4 pb-0 pt-3 md:pb-10 md:pt-8">
         <Link
           to="/dictionary"
           className="mb-4 inline-flex items-center gap-2 text-muted-foreground text-sm transition-colors hover:text-foreground"
@@ -81,7 +81,7 @@ export default function DictionaryWordDetailPage() {
   const forms = word.forms ?? [];
 
   return (
-    <div className="w-full px-4 pb-0 pt-3 md:pb-10 md:pt-8">
+    <div className="mx-auto w-full max-w-3xl px-4 pb-0 pt-3 md:pb-10 md:pt-8">
       <Link
         to="/dictionary"
         className="mb-4 inline-flex items-center gap-2 text-muted-foreground text-sm transition-colors hover:text-foreground"

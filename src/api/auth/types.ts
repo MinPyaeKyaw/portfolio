@@ -2,8 +2,10 @@ import type { AppUser } from '@/types/types';
 
 export interface SignUpPayload {
   name: string;
+  username: string;
   email: string;
   password: string;
+  phone?: string;
 }
 
 export interface SignInPayload {

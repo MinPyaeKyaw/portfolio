@@ -2,6 +2,7 @@ import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import { useAuthStore } from '@/stores/auth-store';
 import { authKeys } from './key';
 import {
+  deleteMyAccount,
   exchangeSession,
   forgotPassword,
   getGoogleAuthUrl,
@@ -53,6 +54,18 @@ export const useUserSignOut = () => {
   const logout = useAuthStore((s) => s.logout);
   return useMutation({
     mutationFn: async () => {
+      logout();
+      queryClient.clear();
+    },
+  });
+};
+
+export const useDeleteAccount = () => {
+  const queryClient = useQueryClient();
+  const logout = useAuthStore((s) => s.logout);
+  return useMutation({
+    mutationFn: () => deleteMyAccount(),
+    onSuccess: () => {
       logout();
       queryClient.clear();
     },

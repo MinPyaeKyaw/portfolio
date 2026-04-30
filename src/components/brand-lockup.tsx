@@ -24,7 +24,7 @@ export function BrandLinkToHome() {
         className="size-[52px] shrink-0 object-contain md:size-14"
         decoding="async"
       />
-      <span className="font-heading truncate text-lg font-semibold leading-tight text-primary md:text-xl">
+      <span className="brand-text truncate text-xl font-semibold leading-tight text-primary md:text-2xl">
         {BRAND_NAME}
       </span>
     </NavLink>
@@ -42,7 +42,7 @@ export function BrandHero() {
         className="size-40 object-contain md:size-44 lg:size-48"
         decoding="async"
       />
-      <h1 className="font-heading text-3xl font-semibold tracking-tight text-primary md:text-4xl">
+      <h1 className="brand-text text-4xl font-semibold text-primary md:text-5xl">
         {BRAND_NAME}
       </h1>
     </div>

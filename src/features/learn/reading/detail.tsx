@@ -23,7 +23,7 @@ export default function ReadingDetailPage() {
 
   if (!passage) {
     return (
-      <div className="mx-auto max-w-2xl px-4 py-10">
+      <div className="mx-auto w-full max-w-3xl px-4 py-10">
         <Link
           to="/reading"
           className="mb-4 inline-flex items-center gap-2 text-muted-foreground text-sm hover:text-foreground"
@@ -39,7 +39,7 @@ export default function ReadingDetailPage() {
   const levelLabel = passage.level.toUpperCase();
 
   return (
-    <div className="mx-auto max-w-2xl px-4 pb-8 pt-4 md:pb-12 md:pt-8">
+    <div className="mx-auto w-full max-w-3xl px-4 pb-8 pt-4 md:pb-12 md:pt-8">
       <Link
         to="/reading"
         className="mb-6 inline-flex items-center gap-2 text-muted-foreground text-sm transition-colors hover:text-foreground"

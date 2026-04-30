@@ -70,7 +70,7 @@ export function PwaSplashScreen() {
       <div className="flex max-w-sm flex-col items-center gap-2 text-center">
         <h1
           className={cn(
-            "font-heading text-3xl font-semibold tracking-tight text-primary md:text-4xl",
+            "brand-text text-4xl font-semibold text-primary md:text-5xl",
             "splash-screen-title",
           )}
         >

@@ -208,7 +208,7 @@ export default function KanjiPage() {
   };
 
   return (
-    <div className="w-full px-4 pt-3 text-left md:pt-10">
+    <div className="mx-auto w-full max-w-3xl px-4 pt-3 text-left md:pt-10">
       <div>
         {lexicon === null ? (
           <p className="mt-2 text-muted-foreground text-sm">
@@ -284,7 +284,7 @@ export default function KanjiPage() {
       </div>
 
       <div className="fixed inset-x-0 bottom-[calc(4.75rem+env(safe-area-inset-bottom,0px))] z-40 flex justify-center px-4">
-        <div className="relative w-full overflow-hidden rounded-xl border border-dashed border-primary bg-white dark:bg-zinc-900">
+        <div className="relative w-full max-w-3xl overflow-hidden rounded-xl border border-dashed border-primary bg-white dark:bg-zinc-900">
           <canvas
             ref={canvasRef}
             className="h-[230px] w-full touch-none bg-white dark:bg-zinc-900"

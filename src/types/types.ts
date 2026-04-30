@@ -20,12 +20,8 @@ export interface PaginatedResponse<T> {
 
 export interface AppUser {
   id: string;
+  betterAuthId: string;
+  username: string;
   email: string;
-  better_auth_user_id?: string;
-  status: 'active' | 'blocked';
-  role_id?: string;
-  role?: string;
-  username?: string;
-  first_name?: string;
-  last_name?: string;
+  phone?: string;
 }

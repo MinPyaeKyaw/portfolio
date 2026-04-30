@@ -1,4 +1,5 @@
 import { createBrowserRouter } from "react-router-dom";
+import AccountLayout from "./components/layouts/account-layout";
 import RootLayout from "./components/layouts/root-layout";
 import DictionaryPage from "./features/dictionary";
 import DictionaryWordDetailPage from "./features/dictionary/detail";
@@ -18,6 +19,9 @@ import LoginView from "./features/auth/login-view";
 import OAuthCallbackView from "./features/auth/oauth-callback-view";
 import ResetPasswordView from "./features/auth/reset-password-view";
 import SignUpView from "./features/auth/sign-up-view";
+import ProfileSetupView from "./features/profile/setup-view";
+import ProfileView from "./features/profile/profile-view";
+import SettingsView from "./features/settings/settings-view";
 
 export const router = createBrowserRouter([
   {
@@ -42,6 +46,15 @@ export const router = createBrowserRouter([
       { path: "forgot-password", element: <ForgotPasswordView /> },
       { path: "reset-password", element: <ResetPasswordView /> },
       { path: "oauth/callback", element: <OAuthCallbackView /> },
+    ],
+  },
+  {
+    path: "/",
+    element: <AccountLayout />,
+    children: [
+      { path: "profile", element: <ProfileView /> },
+      { path: "settings", element: <SettingsView /> },
+      { path: "set-up", element: <ProfileSetupView /> },
     ],
   },
 ]);
