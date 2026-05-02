@@ -22,6 +22,7 @@
     "@tensorflow/tfjs": "^4.22.0",
     "axios": "^1.15.1",
     "class-variance-authority": "^0.7.1",
+    "claude": "^0.1.1",
     "clsx": "^2.1.1",
     "date-fns": "^4.1.0",
     "i18next": "^26.0.8",
