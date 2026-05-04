@@ -2,6 +2,7 @@ import { useCallback, useRef } from "react";
 import { BookOpen, GraduationCap, Layers, LogIn } from "lucide-react";
 import { Link, NavLink, Outlet, useLocation } from "react-router-dom";
 import { BrandLinkToHome } from "@/components/brand-lockup";
+import { FloatingBackButton } from "@/components/floating-back-button";
 import { HeaderProfileButton } from "@/components/header-profile-button";
 import { ListBottomFade } from "@/components/list-bottom-fade";
 import { buttonVariants } from "@/components/ui/button";
@@ -190,6 +191,8 @@ export default function RootLayout() {
             : "bottom-[env(safe-area-inset-bottom,0px)] md:bottom-0",
         )}
       />
+
+      <FloatingBackButton aboveMobileNav={!isAuthRoute} />
 
       {!isAuthRoute ? (
       <nav className="fixed inset-x-0 bottom-3 z-50 px-3 pb-[env(safe-area-inset-bottom,0px)] md:hidden">

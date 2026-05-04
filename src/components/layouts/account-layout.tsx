@@ -1,6 +1,7 @@
 import { ArrowLeft } from "lucide-react";
 import { Outlet, useLocation, useNavigate } from "react-router-dom";
 import { BrandLinkToHome } from "@/components/brand-lockup";
+import { FloatingBackButton } from "@/components/floating-back-button";
 import { ThemeToggle } from "@/components/theme-toggle";
 import { Button } from "@/components/ui/button";
 
@@ -38,6 +39,8 @@ export default function AccountLayout() {
       <main className="flex min-h-0 flex-1 flex-col overflow-y-auto pb-[env(safe-area-inset-bottom,0px)]">
         <Outlet />
       </main>
+
+      <FloatingBackButton />
     </div>
   );
 }

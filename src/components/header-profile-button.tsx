@@ -2,17 +2,11 @@ import { useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import { LogOut, Settings, User as UserIcon, UserRound } from "lucide-react";
 import {
-  Popover,
-  PopoverContent,
-  PopoverTrigger,
-} from "@/components/ui/popover";
-import {
   Sheet,
   SheetContent,
   SheetTitle,
   SheetTrigger,
 } from "@/components/ui/sheet";
-import { useMediaQuery } from "@/hooks/use-media-query";
 import { useMyProfile } from "@/api/user-info/query";
 import { useUserSignOut } from "@/api/auth/query";
 import { cn } from "@/lib/utils";
@@ -141,7 +135,6 @@ export function HeaderProfileButton() {
   const { pathname } = useLocation();
   const { data } = useMyProfile();
   const signOutMutation = useUserSignOut();
-  const isDesktop = useMediaQuery("(min-width: 768px)");
   const [open, setOpen] = useState(false);
 
   const imageUrl = resolveUrl(data?.userInfo?.profileImage);
@@ -171,36 +164,6 @@ export function HeaderProfileButton() {
     });
   }
 
-  if (isDesktop) {
-    return (
-      <Popover open={open} onOpenChange={setOpen}>
-        <PopoverTrigger
-          render={
-            <button
-              type="button"
-              aria-label="Profile menu"
-              aria-current={isActive ? "page" : undefined}
-              className={cn(triggerClass, triggerRingClass)}
-            />
-          }
-        >
-          <Avatar imageUrl={imageUrl} />
-        </PopoverTrigger>
-        <PopoverContent align="end" sideOffset={8} className="w-60 p-0">
-          <ProfileMenu
-            imageUrl={imageUrl}
-            username={data?.username}
-            email={data?.email}
-            onProfile={handleProfile}
-            onSettings={handleSettings}
-            onSignOut={handleSignOut}
-            signOutPending={signOutMutation.isPending}
-          />
-        </PopoverContent>
-      </Popover>
-    );
-  }
-
   return (
     <Sheet open={open} onOpenChange={setOpen}>
       <SheetTrigger
@@ -215,10 +178,7 @@ export function HeaderProfileButton() {
       >
         <Avatar imageUrl={imageUrl} />
       </SheetTrigger>
-      <SheetContent
-        side="bottom"
-        className="rounded-t-2xl pb-[env(safe-area-inset-bottom)]"
-      >
+      <SheetContent side="right" className="pb-[env(safe-area-inset-bottom)]">
         <SheetTitle className="sr-only">Profile menu</SheetTitle>
         <ProfileMenu
           imageUrl={imageUrl}
