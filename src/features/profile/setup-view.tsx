@@ -1,18 +1,20 @@
-import { useEffect, useMemo, useState, type FormEvent } from "react";
+import {
+  useEffect,
+  useMemo,
+  useRef,
+  useState,
+  type ReactNode,
+} from "react";
 import { useNavigate } from "react-router-dom";
 import { ArrowLeft, ArrowRight, Check, Loader2 } from "lucide-react";
 import { toast } from "sonner";
 import { Button } from "@/components/ui/button";
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardHeader,
-  CardTitle,
-} from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { useMyProfile, useUpsertProfile } from "@/api/user-info/query";
-import type { JapaneseLevel } from "@/api/user-info/types";
+import type {
+  JapaneseLevel,
+  UpsertProfilePayload,
+} from "@/api/user-info/types";
 import { cn } from "@/lib/utils";
 import logo from "@/assets/logo.svg";
 import { BRAND_NAME } from "@/components/brand-lockup";
@@ -21,48 +23,36 @@ import { InterestsPicker } from "./components/interests-picker";
 import { ProfileImagePicker } from "./components/profile-image-picker";
 
 const STEPS = [
-  {
-    key: "photo",
-    label: "Photo",
-    title: "Add a profile photo",
-    description: "Optional. Choose an image that represents you.",
-  },
-  {
-    key: "dob",
-    label: "Birthday",
-    title: "When were you born?",
-    description: "Optional. Helps us suggest age-appropriate content.",
-  },
-  {
-    key: "level",
-    label: "Level",
-    title: "Your Japanese level",
-    description: "Pick the closest match. You can change this any time.",
-  },
-  {
-    key: "interests",
-    label: "Interests",
-    title: "Topics you'd like to learn through",
-    description: "Choose any that apply, or add your own.",
-  },
+  { key: "photo" },
+  { key: "dob" },
+  { key: "level" },
+  { key: "interests" },
 ] as const;
 
-type FieldErrors = {
-  dateOfBirth?: string;
-  form?: string;
-};
+type StepKey = (typeof STEPS)[number]["key"];
 
 const INVALID_DOB = "INVALID";
+
+function getApiErrorMessage(err: unknown, fallback: string): string {
+  return (
+    (err as { response?: { data?: { message?: string } } }).response?.data
+      ?.message ?? fallback
+  );
+}
 
 export default function ProfileSetupView() {
   const navigate = useNavigate();
   const { data: profile } = useMyProfile();
   const upsertMutation = useUpsertProfile();
 
-  const isEdit = useMemo(
-    () => Boolean(profile?.userInfo),
-    [profile?.userInfo],
-  );
+  // Capture once: was a profile already set up when we landed?
+  const isEditModeRef = useRef<boolean | null>(null);
+  useEffect(() => {
+    if (isEditModeRef.current === null && profile) {
+      isEditModeRef.current = Boolean(profile.userInfo);
+    }
+  }, [profile]);
+  const isEdit = isEditModeRef.current === true;
 
   const [step, setStep] = useState(0);
   const [direction, setDirection] = useState<"forward" | "backward">("forward");
@@ -73,12 +63,14 @@ export default function ProfileSetupView() {
   const [japaneseLevel, setJapaneseLevel] = useState<JapaneseLevel>("newbie");
   const [interests, setInterests] = useState<string[]>([]);
   const [imageFile, setImageFile] = useState<File | null>(null);
-  const [errors, setErrors] = useState<FieldErrors>({});
+  const [dobError, setDobError] = useState<string | undefined>();
 
-  // Hydrate from existing profile when editing
+  // Hydrate state from existing profile (once it loads).
+  const hydratedRef = useRef(false);
   useEffect(() => {
     const info = profile?.userInfo;
-    if (!info) return;
+    if (!info || hydratedRef.current) return;
+    hydratedRef.current = true;
     if (info.dateOfBirth) {
       const d = new Date(info.dateOfBirth);
       if (Number.isFinite(d.getTime())) {
@@ -110,74 +102,97 @@ export default function ProfileSetupView() {
     return `${y}-${String(m).padStart(2, "0")}-${String(d).padStart(2, "0")}`;
   }, [dobDay, dobMonth, dobYear]);
 
-  function validateDateOfBirth(): boolean {
-    const next: FieldErrors = {};
+  function validateDob(): boolean {
     if (dateOfBirth === INVALID_DOB) {
-      next.dateOfBirth = "Enter a valid day, month, and year.";
-    } else if (dateOfBirth) {
+      setDobError("Enter a valid day, month, and year.");
+      return false;
+    }
+    if (dateOfBirth) {
       const d = new Date(dateOfBirth);
       if (d > new Date()) {
-        next.dateOfBirth = "Date of birth can't be in the future.";
-      } else if (d < new Date("1900-01-01")) {
-        next.dateOfBirth = "Date of birth must be after 1900.";
+        setDobError("Date of birth can't be in the future.");
+        return false;
+      }
+      if (d < new Date("1900-01-01")) {
+        setDobError("Date of birth must be after 1900.");
+        return false;
       }
     }
-    setErrors(next);
-    return Object.keys(next).length === 0;
+    setDobError(undefined);
+    return true;
   }
 
-  function goNext() {
-    if (STEPS[step].key === "dob" && !validateDateOfBirth()) return;
+  function buildStepPayload(key: StepKey): UpsertProfilePayload | null {
+    switch (key) {
+      case "photo":
+        return imageFile ? { imageFile } : null;
+      case "dob":
+        return dateOfBirth && dateOfBirth !== INVALID_DOB
+          ? { dateOfBirth }
+          : null;
+      case "level":
+        return { japaneseLevel };
+      case "interests":
+        return { interests };
+    }
+  }
+
+  function advance() {
     setDirection("forward");
     setStep((s) => Math.min(s + 1, STEPS.length - 1));
   }
 
+  async function saveAndAdvance() {
+    const key = STEPS[step].key;
+
+    if (key === "dob" && !validateDob()) return;
+
+    const payload = buildStepPayload(key);
+    const isLast = step === STEPS.length - 1;
+
+    if (!payload) {
+      // Nothing to save for this step (e.g. user skipped photo) — just advance.
+      if (isLast) {
+        navigate("/profile", { replace: true });
+      } else {
+        advance();
+      }
+      return;
+    }
+
+    const toastId = toast.loading("Saving…");
+    upsertMutation.mutate(payload, {
+      onSuccess: () => {
+        toast.success("Saved.", { id: toastId });
+        if (isLast) {
+          navigate("/profile", { replace: true });
+        } else {
+          // Clear local image file after successful upload so we don't re-upload
+          // on a later step's save.
+          if (key === "photo") setImageFile(null);
+          advance();
+        }
+      },
+      onError: (err) => {
+        toast.error(getApiErrorMessage(err, "Could not save."), {
+          id: toastId,
+        });
+      },
+    });
+  }
+
   function goBack() {
-    setErrors({});
+    setDobError(undefined);
     setDirection("backward");
     setStep((s) => Math.max(s - 1, 0));
   }
 
-  function onSubmit(e: FormEvent) {
-    e.preventDefault();
-    if (!validateDateOfBirth()) return;
-
-    const toastId = toast.loading(
-      isEdit ? "Saving your changes…" : "Setting up your profile…",
-    );
-
-    upsertMutation.mutate(
-      {
-        dateOfBirth:
-          dateOfBirth && dateOfBirth !== INVALID_DOB ? dateOfBirth : undefined,
-        japaneseLevel,
-        interests,
-        imageFile: imageFile ?? undefined,
-      },
-      {
-        onSuccess: () => {
-          toast.success(
-            isEdit ? "Profile updated." : "Profile saved.",
-            { id: toastId },
-          );
-          navigate("/profile", { replace: true });
-        },
-        onError: (err) => {
-          const message =
-            (err as { response?: { data?: { message?: string } } })
-              .response?.data?.message ?? "Could not save your profile.";
-          toast.error(message, { id: toastId });
-          setErrors({ form: message });
-        },
-      },
-    );
-  }
-
-  const isLastStep = step === STEPS.length - 1;
   const current = STEPS[step];
+  const isLastStep = step === STEPS.length - 1;
+  const saving = upsertMutation.isPending;
 
   return (
-    <div className="mx-auto flex min-h-0 w-full max-w-xl flex-1 flex-col px-4 pt-6">
+    <div className="mx-auto flex min-h-0 w-full max-w-xl flex-1 flex-col px-4 pt-6 pb-12">
       <div className="mb-6 flex flex-col items-center gap-2 text-center">
         <img
           src={logo}
@@ -192,205 +207,215 @@ export default function ProfileSetupView() {
         </span>
       </div>
 
-      <header className="mb-5 space-y-1 text-center">
-        <h1 className="font-heading text-xl font-medium leading-snug tracking-tight md:text-2xl">
+      <header className="mb-8 space-y-2 text-center">
+        <h1 className="font-heading text-2xl font-medium leading-snug tracking-tight md:text-3xl">
           {isEdit ? "Edit your profile" : "Set up your profile"}
         </h1>
         <p className="text-sm text-muted-foreground">
           {isEdit
-            ? "Tweak any answer — your changes save when you finish."
-            : "Tell us a little about yourself so we can personalize your learning."}
+            ? "Update what you'd like — each step saves as you go."
+            : "Tell us a little about yourself. We save each step as you go."}
         </p>
       </header>
 
-      <form onSubmit={onSubmit} noValidate>
-        <Card className="overflow-hidden">
-          <CardHeader>
-            <CardTitle>{current.title}</CardTitle>
-            <CardDescription>{current.description}</CardDescription>
-          </CardHeader>
-          <CardContent>
-            <div
-              key={`${step}-${direction}`}
-              className={cn(
-                "duration-300 animate-in fade-in",
-                direction === "forward"
-                  ? "slide-in-from-right-8"
-                  : "slide-in-from-left-8",
-              )}
-            >
-              {current.key === "photo" ? (
-                <ProfileImagePicker
-                  initialUrl={profile?.userInfo?.profileImage}
-                  onChange={setImageFile}
-                  disabled={upsertMutation.isPending}
-                />
-              ) : null}
-
-              {current.key === "dob" ? (
-                <div className="space-y-1.5">
-                  <span className="text-sm font-medium">Date of birth</span>
-                  <div className="grid grid-cols-[1fr_1fr_1.4fr] gap-2">
-                    <div className="space-y-1">
-                      <label
-                        htmlFor="setup-dob-day"
-                        className="text-xs text-muted-foreground"
-                      >
-                        Day
-                      </label>
-                      <Input
-                        id="setup-dob-day"
-                        type="text"
-                        inputMode="numeric"
-                        autoComplete="bday-day"
-                        maxLength={2}
-                        placeholder="DD"
-                        value={dobDay}
-                        onChange={(e) =>
-                          setDobDay(e.target.value.replace(/\D/g, ""))
-                        }
-                        aria-invalid={!!errors.dateOfBirth}
-                        aria-describedby={
-                          errors.dateOfBirth ? "setup-dob-error" : undefined
-                        }
-                        disabled={upsertMutation.isPending}
-                        className="text-center"
-                      />
-                    </div>
-                    <div className="space-y-1">
-                      <label
-                        htmlFor="setup-dob-month"
-                        className="text-xs text-muted-foreground"
-                      >
-                        Month
-                      </label>
-                      <Input
-                        id="setup-dob-month"
-                        type="text"
-                        inputMode="numeric"
-                        autoComplete="bday-month"
-                        maxLength={2}
-                        placeholder="MM"
-                        value={dobMonth}
-                        onChange={(e) =>
-                          setDobMonth(e.target.value.replace(/\D/g, ""))
-                        }
-                        aria-invalid={!!errors.dateOfBirth}
-                        aria-describedby={
-                          errors.dateOfBirth ? "setup-dob-error" : undefined
-                        }
-                        disabled={upsertMutation.isPending}
-                        className="text-center"
-                      />
-                    </div>
-                    <div className="space-y-1">
-                      <label
-                        htmlFor="setup-dob-year"
-                        className="text-xs text-muted-foreground"
-                      >
-                        Year
-                      </label>
-                      <Input
-                        id="setup-dob-year"
-                        type="text"
-                        inputMode="numeric"
-                        autoComplete="bday-year"
-                        maxLength={4}
-                        placeholder="YYYY"
-                        value={dobYear}
-                        onChange={(e) =>
-                          setDobYear(e.target.value.replace(/\D/g, ""))
-                        }
-                        aria-invalid={!!errors.dateOfBirth}
-                        aria-describedby={
-                          errors.dateOfBirth ? "setup-dob-error" : undefined
-                        }
-                        disabled={upsertMutation.isPending}
-                        className="text-center"
-                      />
-                    </div>
-                  </div>
-                  {errors.dateOfBirth ? (
-                    <p
-                      id="setup-dob-error"
-                      className="text-destructive text-xs"
-                    >
-                      {errors.dateOfBirth}
-                    </p>
-                  ) : null}
-                </div>
-              ) : null}
-
-              {current.key === "level" ? (
-                <JapaneseLevelPicker
-                  value={japaneseLevel}
-                  onChange={setJapaneseLevel}
-                  disabled={upsertMutation.isPending}
-                />
-              ) : null}
-
-              {current.key === "interests" ? (
-                <InterestsPicker
-                  value={interests}
-                  onChange={setInterests}
-                  disabled={upsertMutation.isPending}
-                />
-              ) : null}
-            </div>
-          </CardContent>
-        </Card>
-
-        {errors.form ? (
-          <p role="status" className="mt-3 text-destructive text-xs">
-            {errors.form}
-          </p>
+      <div
+        key={`${step}-${direction}`}
+        className={cn(
+          "duration-300 animate-in fade-in",
+          direction === "forward"
+            ? "slide-in-from-right-8"
+            : "slide-in-from-left-8",
+        )}
+      >
+        {current.key === "photo" ? (
+          <Step
+            title="Add a profile photo"
+            description="Optional. Choose an image that represents you."
+          >
+            <ProfileImagePicker
+              initialUrl={profile?.userInfo?.profileImage}
+              onChange={setImageFile}
+              disabled={saving}
+            />
+          </Step>
         ) : null}
 
-        <div className="mt-5 flex items-center justify-between gap-3">
-          <Button
-            type="button"
-            variant="outline"
-            size="lg"
-            onClick={goBack}
-            disabled={step === 0 || upsertMutation.isPending}
+        {current.key === "dob" ? (
+          <Step
+            title="When were you born?"
+            description="Optional. Helps us suggest age-appropriate content."
           >
-            <ArrowLeft aria-hidden />
-            Back
-          </Button>
+            <div className="space-y-1.5">
+              <div className="grid grid-cols-[1fr_1fr_1.4fr] gap-2">
+                <DobField
+                  id="setup-dob-day"
+                  label="Day"
+                  autoComplete="bday-day"
+                  maxLength={2}
+                  placeholder="DD"
+                  value={dobDay}
+                  onChange={setDobDay}
+                  invalid={!!dobError}
+                  disabled={saving}
+                />
+                <DobField
+                  id="setup-dob-month"
+                  label="Month"
+                  autoComplete="bday-month"
+                  maxLength={2}
+                  placeholder="MM"
+                  value={dobMonth}
+                  onChange={setDobMonth}
+                  invalid={!!dobError}
+                  disabled={saving}
+                />
+                <DobField
+                  id="setup-dob-year"
+                  label="Year"
+                  autoComplete="bday-year"
+                  maxLength={4}
+                  placeholder="YYYY"
+                  value={dobYear}
+                  onChange={setDobYear}
+                  invalid={!!dobError}
+                  disabled={saving}
+                />
+              </div>
+              {dobError ? (
+                <p
+                  id="setup-dob-error"
+                  className="text-destructive text-xs"
+                  role="alert"
+                >
+                  {dobError}
+                </p>
+              ) : null}
+            </div>
+          </Step>
+        ) : null}
 
-          {isLastStep ? (
-            <Button
-              type="submit"
-              size="lg"
-              disabled={upsertMutation.isPending}
-              aria-busy={upsertMutation.isPending}
-              className="px-6"
-            >
-              {upsertMutation.isPending ? (
-                <Loader2 className="animate-spin" aria-hidden />
-              ) : (
-                <Check aria-hidden />
-              )}
-              {upsertMutation.isPending
-                ? "Saving…"
-                : isEdit
-                  ? "Save changes"
-                  : "Finish"}
-            </Button>
-          ) : (
-            <Button
-              type="button"
-              size="lg"
-              onClick={goNext}
-              disabled={upsertMutation.isPending}
-              className="px-6"
-            >
-              Next
-              <ArrowRight aria-hidden />
-            </Button>
-          )}
-        </div>
-      </form>
+        {current.key === "level" ? (
+          <Step
+            title="Your Japanese level"
+            description="Pick the closest match. You can change this any time."
+          >
+            <JapaneseLevelPicker
+              value={japaneseLevel}
+              onChange={setJapaneseLevel}
+              disabled={saving}
+            />
+          </Step>
+        ) : null}
+
+        {current.key === "interests" ? (
+          <Step
+            title="Topics you'd like to learn through"
+            description="Choose any that apply, or add your own."
+          >
+            <InterestsPicker
+              value={interests}
+              onChange={setInterests}
+              disabled={saving}
+            />
+          </Step>
+        ) : null}
+      </div>
+
+      <div className="mt-8 flex items-center justify-between gap-3">
+        <Button
+          type="button"
+          variant="outline"
+          size="lg"
+          onClick={goBack}
+          disabled={step === 0 || saving}
+        >
+          <ArrowLeft aria-hidden />
+          Back
+        </Button>
+
+        <Button
+          type="button"
+          size="lg"
+          onClick={saveAndAdvance}
+          disabled={saving}
+          aria-busy={saving}
+          className="px-6"
+        >
+          {saving ? (
+            <Loader2 className="animate-spin" aria-hidden />
+          ) : isLastStep ? (
+            <Check aria-hidden />
+          ) : null}
+          {saving ? "Saving…" : isLastStep ? "Finish" : "Continue"}
+          {!saving && !isLastStep ? <ArrowRight aria-hidden /> : null}
+        </Button>
+      </div>
+    </div>
+  );
+}
+
+function Step({
+  title,
+  description,
+  children,
+}: {
+  title: string;
+  description: string;
+  children: ReactNode;
+}) {
+  return (
+    <section className="space-y-5">
+      <div className="space-y-1">
+        <h2 className="font-heading text-xl font-medium leading-snug tracking-tight md:text-2xl">
+          {title}
+        </h2>
+        <p className="text-sm text-muted-foreground">{description}</p>
+      </div>
+      <div>{children}</div>
+    </section>
+  );
+}
+
+function DobField({
+  id,
+  label,
+  autoComplete,
+  maxLength,
+  placeholder,
+  value,
+  onChange,
+  invalid,
+  disabled,
+}: {
+  id: string;
+  label: string;
+  autoComplete: string;
+  maxLength: number;
+  placeholder: string;
+  value: string;
+  onChange: (next: string) => void;
+  invalid: boolean;
+  disabled: boolean;
+}) {
+  return (
+    <div className="space-y-1">
+      <label htmlFor={id} className="text-xs text-muted-foreground">
+        {label}
+      </label>
+      <Input
+        id={id}
+        type="text"
+        inputMode="numeric"
+        autoComplete={autoComplete}
+        maxLength={maxLength}
+        placeholder={placeholder}
+        value={value}
+        onChange={(e) => onChange(e.target.value.replace(/\D/g, ""))}
+        aria-invalid={invalid}
+        aria-describedby={invalid ? "setup-dob-error" : undefined}
+        disabled={disabled}
+        className="text-center"
+      />
     </div>
   );
 }

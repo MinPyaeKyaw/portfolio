@@ -1,45 +1,30 @@
 import { ArrowLeft, ChevronRight, Languages } from "lucide-react";
-import { useMemo, useState } from "react";
+import { useState } from "react";
 import { Link } from "react-router-dom";
+import { useKanjiList } from "@/api/kanji/query";
+import { ApiErrorState } from "@/components/api-error-state";
 import { SearchBar } from "@/components/search-bar";
+import { GridSkeleton } from "@/components/list-skeleton";
+import { useDebouncedValue } from "@/hooks/use-debounced-value";
 import { cn } from "@/lib/utils";
-import type { KanjiLearningItem } from "@/types/kanji-learning";
-import { kanji } from "@/utils/kanji";
 
-const kanjiItems = kanji as KanjiLearningItem[];
 const LEVELS = ["all", "n5", "n4", "n3", "n2", "n1"] as const;
 type LevelFilter = (typeof LEVELS)[number];
 
 export default function KanjiLearningPage() {
   const [query, setQuery] = useState("");
   const [level, setLevel] = useState<LevelFilter>("all");
+  const debouncedQuery = useDebouncedValue(query);
 
-  const filtered = useMemo(() => {
-    const byLevel =
-      level === "all"
-        ? kanjiItems
-        : kanjiItems.filter((item) => item.level.toLowerCase() === level);
+  const { data, isLoading, isError, refetch } = useKanjiList({
+    page: 0,
+    size: 10000,
+    level: level === "all" ? undefined : level,
+    keyword: debouncedQuery.trim() || undefined,
+  });
 
-    const q = query.trim().toLowerCase();
-    if (!q) return byLevel;
-
-    return byLevel.filter((item) =>
-      [
-        item.kanji,
-        item.level,
-        item.hiragana,
-        item.mm,
-        item.kunYomi,
-        item.onYomi,
-        ...item.exampleWords.map(
-          (o) => `${o.kanji} ${o.hiragana} ${o.meaning}`,
-        ),
-      ]
-        .join(" ")
-        .toLowerCase()
-        .includes(q),
-    );
-  }, [level, query]);
+  const items = data?.data ?? [];
+  const total = data?.meta.totalCount ?? 0;
 
   return (
     <div className="mx-auto flex min-h-0 w-full max-w-3xl flex-1 flex-col px-4 pt-4 md:pb-12 md:pt-8">
@@ -100,39 +85,56 @@ export default function KanjiLearningPage() {
           />
         </div>
 
-        <p className="mb-3 text-muted-foreground text-xs">
-          {filtered.length} item{filtered.length === 1 ? "" : "s"}
-        </p>
+        {!isLoading && !isError ? (
+          <p className="mb-3 text-muted-foreground text-xs">
+            {total} item{total === 1 ? "" : "s"}
+          </p>
+        ) : null}
       </div>
 
       <div className="relative min-h-0 flex-1">
         <div className="h-full min-h-0 overflow-y-auto overscroll-contain pb-6 [-webkit-overflow-scrolling:touch]">
-          <ul className="grid grid-cols-2 gap-3" role="list">
-            {filtered.map((item) => (
-              <li key={item.id}>
-                <Link
-                  to={`/learn/kanji/${item.id}`}
-                  className="group flex h-full flex-col rounded-2xl border border-border/70 bg-white p-4 transition-all duration-200 hover:-translate-y-px hover:border-primary/35 hover:shadow-md dark:bg-card"
-                >
-                  <div className="mb-2 flex items-start justify-between gap-2">
-                    <span className="font-heading text-3xl leading-none">
-                      {item.kanji}
+          {isLoading ? (
+            <GridSkeleton count={8} />
+          ) : isError ? (
+            <ApiErrorState
+              title="Couldn't load kanji"
+              onRetry={() => refetch()}
+            />
+          ) : items.length === 0 ? (
+            <div className="rounded-2xl border border-dashed border-border/80 bg-muted/20 px-4 py-12 text-center">
+              <p className="text-muted-foreground text-sm">
+                No kanji match this filter.
+              </p>
+            </div>
+          ) : (
+            <ul className="grid grid-cols-2 gap-3" role="list">
+              {items.map((item) => (
+                <li key={item.id}>
+                  <Link
+                    to={`/learn/kanji/${item.id}`}
+                    className="group flex h-full flex-col rounded-2xl border border-border/70 bg-white p-4 transition-all duration-200 hover:-translate-y-px hover:border-primary/35 hover:shadow-md dark:bg-card"
+                  >
+                    <div className="mb-2 flex items-start justify-between gap-2">
+                      <span className="font-heading text-3xl leading-none">
+                        {item.kanji}
+                      </span>
+                      <ChevronRight className="size-4 shrink-0 text-muted-foreground transition-transform group-hover:translate-x-0.5" />
+                    </div>
+                    <span className="mb-1 w-fit rounded-md bg-muted px-2 py-0.5 font-medium text-[10px] text-muted-foreground uppercase tracking-wide">
+                      {item.level.toUpperCase()}
                     </span>
-                    <ChevronRight className="size-4 shrink-0 text-muted-foreground transition-transform group-hover:translate-x-0.5" />
-                  </div>
-                  <span className="mb-1 w-fit rounded-md bg-muted px-2 py-0.5 font-medium text-[10px] text-muted-foreground uppercase tracking-wide">
-                    {item.level.toUpperCase()}
-                  </span>
-                  <p className="text-muted-foreground text-xs">
-                    {item.hiragana}
-                  </p>
-                  <p className="myanmar-text mt-1 line-clamp-2 text-sm leading-relaxed text-foreground">
-                    {item.mm}
-                  </p>
-                </Link>
-              </li>
-            ))}
-          </ul>
+                    <p className="text-muted-foreground text-xs">
+                      {item.hiragana}
+                    </p>
+                    <p className="myanmar-text mt-1 line-clamp-2 text-sm leading-relaxed text-foreground">
+                      {item.mm}
+                    </p>
+                  </Link>
+                </li>
+              ))}
+            </ul>
+          )}
         </div>
       </div>
     </div>

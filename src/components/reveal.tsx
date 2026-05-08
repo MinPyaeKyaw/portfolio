@@ -11,6 +11,11 @@ type RevealProps = {
   from?: "up" | "down" | "left" | "right" | "none";
   /** As-tag for semantic wrappers. */
   as?: "div" | "section" | "article" | "header" | "footer";
+  /**
+   * When true (default) the reveal fires once and stays visible.
+   * When false the reveal re-plays each time the element enters the viewport.
+   */
+  once?: boolean;
 };
 
 const fromClass: Record<NonNullable<RevealProps["from"]>, string> = {
@@ -27,8 +32,9 @@ export function Reveal({
   delay = 0,
   from = "up",
   as: Tag = "div",
+  once = true,
 }: RevealProps) {
-  const { ref, visible } = useScrollReveal<HTMLDivElement>();
+  const { ref, visible } = useScrollReveal<HTMLDivElement>({ once });
 
   return (
     <Tag

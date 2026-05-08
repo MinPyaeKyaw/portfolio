@@ -42,7 +42,7 @@ export default function LoginView() {
       { email: email.trim(), password },
       {
         onSuccess: () => {
-          navigate("/", { replace: true });
+          navigate("/dictionary", { replace: true });
         },
         onError: (err) => {
           const message =

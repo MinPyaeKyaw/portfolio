@@ -25,336 +25,275 @@ import {
   CardTitle,
 } from "@/components/ui/card";
 import { cn } from "@/lib/utils";
-import {
-  BannerCarousel,
-  type BannerSlide,
-} from "./components/banner-carousel";
-
-const slides: BannerSlide[] = [
-  {
-    id: "hero",
-    eyebrow: "Myanhon",
-    title: (
-      <>
-        Learn Japanese, in <span className="text-primary">Myanmar</span>
-      </>
-    ),
-    titleMm: "ဂျပန်ဘာသာစကားကို မြန်မာဘာသာဖြင့် လွယ်လင့်တကူ လေ့လာပါ။",
-    description:
-      "A free, mobile-first dictionary, kanji recognizer, and grammar trainer — designed for Myanmar speakers learning Japanese.",
-    ctaLabel: "Get Started",
-    ctaTo: "/sign-up",
-    gradient:
-      "bg-[radial-gradient(ellipse_at_top,theme(colors.primary/0.18),transparent_60%),linear-gradient(to_bottom,var(--background),var(--background))]",
-    decor: "日本語",
-  },
-  {
-    id: "dictionary",
-    eyebrow: "Dictionary",
-    title: <>Search any word, instantly</>,
-    titleMm: "မည်သည့်စကားလုံးကိုမဆို ချက်ချင်းရှာဖွေပါ",
-    description:
-      "Hiragana, Katakana, Kanji, Romaji, or Myanmar — bilingual meanings with examples and audio.",
-    ctaLabel: "Try the Dictionary",
-    ctaTo: "/dictionary",
-    gradient:
-      "bg-[radial-gradient(ellipse_at_left,theme(colors.violet.500/0.18),transparent_55%),linear-gradient(to_bottom_right,var(--background),var(--background))]",
-    decor: "辞書",
-  },
-  {
-    id: "kanji",
-    eyebrow: "Kanji Recognition",
-    title: <>Draw the kanji, on-device AI reads it</>,
-    titleMm: "Kanji ရေးဆွဲပြီး AI ကို မှတ်မိစေပါ",
-    description:
-      "Powered by TensorFlow.js — recognise handwritten kanji directly in your browser, no upload needed.",
-    ctaLabel: "Open Kanji Recognizer",
-    ctaTo: "/kanji",
-    gradient:
-      "bg-[radial-gradient(ellipse_at_right,theme(colors.pink.500/0.20),transparent_55%),linear-gradient(to_bottom_left,var(--background),var(--background))]",
-    decor: "漢字",
-  },
-  {
-    id: "grammar",
-    eyebrow: "Grammar & Reading",
-    title: <>Structured lessons, in your language</>,
-    titleMm: "သင်ဆုံးမတဲ့ ဘာသာစကားနဲ့ စနစ်တကျ သင်ခန်းစာများ",
-    description:
-      "Grammar points and bilingual reading passages with vocabulary breakdowns to grow with you.",
-    ctaLabel: "Browse Lessons",
-    ctaTo: "/grammar",
-    gradient:
-      "bg-[radial-gradient(ellipse_at_bottom,theme(colors.emerald.500/0.16),transparent_55%),linear-gradient(to_top,var(--background),var(--background))]",
-    decor: "文法",
-  },
-];
+import { HeroCard } from "./components/hero-card";
+import { SiteFooter } from "./components/site-footer";
 
 const features = [
   {
-    title: "Dictionary",
-    titleMm: "အဘိဓာန်",
+    title: "အဘိဓာန်",
     description:
-      "Search any word in Hiragana, Katakana, Kanji, Romaji, or Myanmar — with bilingual meanings.",
+      "ဟိရဂန၊ ခတခန၊ ခန်းဂျိ၊ Romaji သို့မဟုတ် မြန်မာဘာသာဖြင့် မည်သည့်စကားလုံးကိုမဆို ရှာဖွေနိုင်ပါသည်။",
     icon: BookOpen,
     to: "/dictionary",
-    accent: "from-primary/15 via-transparent to-transparent",
   },
   {
-    title: "Kanji Recognition",
-    titleMm: "Kanji ရေးဆွဲခြင်း",
-    description:
-      "Draw a kanji on screen and let on-device AI recognise it. Powered by TensorFlow.js.",
+    title: "ခန်းဂျိ ရှာဖွေခြင်း",
+    description: "ခန်းဂျိစာလုံးကို ရေးဆွဲပြီး ရှာဖွေနိုင်ပါသည်။",
     icon: Languages,
     to: "/kanji",
-    accent: "from-pink-500/12 via-transparent to-transparent",
   },
   {
-    title: "Grammar Lessons",
-    titleMm: "သဒ္ဒါသင်ခန်းစာ",
+    title: "သဒ္ဒါ သင်ခန်းစာများ",
     description:
-      "Structured grammar points explained simply — in both Japanese and Myanmar.",
+      "ဂျပန်နှင့် မြန်မာ နှစ်ဘာသာဖြင့် ရှင်းလင်းစွာ ရှင်းပြထားသော စနစ်တကျ သဒ္ဒါအချက်များ။",
     icon: FileText,
     to: "/grammar",
-    accent: "from-violet-500/10 via-transparent to-transparent",
   },
   {
-    title: "Reading Practice",
-    titleMm: "ဖတ်ရှုလေ့ကျင့်ခန်း",
-    description:
-      "Short bilingual reading passages with vocabulary breakdowns.",
+    title: "စာဖတ်လေ့ကျင့်ခြင်း",
+    description: "level အဆင့်ဆင့်ခွဲခြားထားသော လေ့ကျင့်စရာ စာပိုဒ်များ။",
     icon: Sparkles,
     to: "/reading",
-    accent: "from-emerald-500/10 via-transparent to-transparent",
   },
   {
-    title: "Hiragana & Katakana",
-    titleMm: "ဟိရဂန နှင့် ကတခန",
+    title: "နားကြားစွမ်းရည်လေ့ကျင့်ခြင်း",
     description:
-      "Master the foundational kana with interactive charts and pronunciation.",
+      "ဂျပန်စာအသံထွက်များကို နားထောင်းပြီး နားကြားစွမ်းရည်ကို ကျွမ်းကျင်အောင် လေ့လာပါ။",
+    icon: Type,
+    to: "/listen",
+  },
+  {
+    title: "ဟိရဂန နှင့် ခတခန",
+    description:
+      "စကားလုံးများကို ဇယားများ၊ အသံထွက်ဖြင့် အခြေခံကို ကျွမ်းကျင်အောင် လေ့လာပါ။",
     icon: Type,
     to: "/learn/hiragana",
-    accent: "from-amber-500/10 via-transparent to-transparent",
   },
 ] as const;
 
 const whyItems = [
   {
     icon: Heart,
-    label: "Built for Myanmar learners",
-    sub: "Every translation in မြန်မာ — never a foreign-only experience.",
+    label: "မြန်မာကျောင်းသား/သူများအတွက်",
+    sub: "ဘာသာပြန်တိုင်း မြန်မာဘာသာဖြင့် — နိုင်ငံခြားဘာသာချည်းသက်သက် မဟုတ်ပါ။",
   },
   {
     icon: Wifi,
-    label: "Works offline",
-    sub: "Install once and keep learning on the bus, on the train, anywhere.",
+    label: "အင်တာနက်မရှိလည်း အသုံးပြနိုင်",
+    sub: "တစ်ကြိမ် download လုပ်ပြီးလျှင် မည်သည့်အချိန်၊ မည်သည့်နေရာတွင်မဆို လေ့လာနိုင်ပါသည်။",
   },
   {
     icon: Globe,
-    label: "Free and open",
-    sub: "No paywalls, no ads. New lessons added every week.",
+    label: "အခမဲ့",
+    sub: "ဂျပန်စာသင်ခန်းစာများ နဲ့ အဘိဓာန်ကို အခမဲ့အသုံးပြုပါ။",
   },
 ] as const;
 
 const androidSteps = [
   {
     icon: Smartphone,
-    title: "Open Myanhon in Chrome",
-    body: "Visit the site on your Android device using the Chrome browser.",
+    title: "Chrome တွင် Myanhon ကို ဖွင့်ပါ",
+    body: "သင့်ဖုန်းတွင် Chrome browser ဖြင့်ဝင်ကြည့်ပါ။",
   },
   {
     icon: MoreVertical,
-    title: "Tap the menu (three dots)",
-    body: "It's at the top-right of Chrome. Look for the vertical dots.",
+    title: "Menu (အစက်သုံးစက်) ကို နှိပ်ပါ",
+    body: "Chrome ၏ ညာဘက်အပေါ်ထောင့်တွင် ဒေါင်လိုက်အစက်သုံးစက်ကို ရှာပါ။",
   },
   {
     icon: Download,
-    title: "Choose “Install app”",
-    body: "Some phones show “Add to Home screen”. Either option works.",
+    title: "“Install app” ကို ရွေးပါ",
+    body: "ဖုန်းအချို့တွင် “Add to Home screen” ဟု ပြသနိုင်သည်။",
   },
   {
     icon: PlusSquare,
-    title: "Confirm and launch",
-    body: "Myanhon will appear on your home screen like a native app.",
+    title: "အတည်ပြုပြီး စတင်ဖွင့်ပါ",
+    body: "Myanhon သည် မူလအက်ပ်တစ်ခုကဲ့သို့ ပင်မစခရင်ပေါ်တွင် ပေါ်လာပါမည်။",
   },
 ] as const;
 
 const iosSteps = [
   {
     icon: Smartphone,
-    title: "Open Myanhon in Safari",
-    body: "On iPhone or iPad, you must use Safari — Chrome on iOS can't install PWAs.",
+    title: "Safari တွင် Myanhon ကို ဖွင့်ပါ",
+    body: "iPhone သို့မဟုတ် iPad တွင် Safari ကိုသာ သုံးပါ။",
   },
   {
     icon: Share,
-    title: "Tap the Share button",
-    body: "The square with an upward arrow, at the bottom of the Safari toolbar.",
+    title: "Share ခလုတ်ကို နှိပ်ပါ",
+    body: "Safari တူးလ်ဘားအောက်ခြေတွင် မြှားအထက်သို့ပြထားသော စတုရန်းပုံကို ရှာပါ။",
   },
   {
     icon: PlusSquare,
-    title: "Choose “Add to Home Screen”",
-    body: "Scroll the share sheet if you don't see it right away.",
+    title: "“Add to Home Screen” ကို ရွေးပါ",
+    body: "ချက်ချင်း မမြင်ရပါက Share စာရွက်ကို အပေါ်အောက် ဆွဲကြည့်ပြီး ရွေးပါ။",
   },
   {
     icon: PlusSquare,
-    title: "Tap “Add”",
-    body: "Myanhon will appear on your home screen with its own icon.",
+    title: "“Add” ကို နှိပ်ပါ",
+    body: "home screen ပေါ်တွင် Myanhon ပေါ်လာပါမည်။",
   },
 ] as const;
 
 export default function LandingPage() {
   return (
-    <div className="flex w-full flex-col gap-16 pb-12 md:gap-24 md:pb-20">
-      {/* Hero banner */}
-      <Reveal from="none" className="w-full">
-        <BannerCarousel slides={slides} />
-      </Reveal>
+    <div className="flex w-full flex-col">
+      <main className="flex w-full flex-col gap-16 pb-12 md:gap-24 md:pb-20">
+        {/* Hero — full bleed */}
+        <HeroCard />
 
-      {/* Features */}
-      <Reveal as="section" className="w-full px-4 md:px-8">
-        <div className="mx-auto w-full max-w-6xl">
-          <SectionHeading
-            eyebrow="Features"
-            title="Everything you need in one app"
-            subtitle="From your first hiragana stroke to reading natural Japanese — Myanhon grows with you."
-          />
-          <div className="mt-8 grid grid-cols-1 gap-3 sm:grid-cols-2 lg:grid-cols-3">
-            {features.map((feature, i) => {
-              const Icon = feature.icon;
-              return (
-                <Reveal
-                  key={feature.title}
-                  delay={i * 80}
-                  from="up"
-                  className="h-full"
-                >
-                  <Link
-                    to={feature.to}
-                    className="group relative flex h-full flex-col overflow-hidden rounded-2xl border border-border/70 bg-card p-5 transition-all duration-300 hover:-translate-y-0.5 hover:border-primary/30 hover:shadow-[0_10px_24px_rgba(0,0,0,0.08)]"
+        {/* Features — numbered editorial rows */}
+        <Reveal as="section" once={false} className="w-full px-4 md:px-8">
+          <div className="mx-auto w-full max-w-6xl">
+            <SectionHeading
+              eyebrow="features"
+              title="Myanhon မှာလေ့လာနိုင်သောအရာများ"
+              subtitle="အခြေခံမှစပြီး N1 အောင်သည်အထိ Myanhon နဲ့အတူတူလေ့လာပါ"
+            />
+            <ul className="mt-10 divide-y divide-border/70 border-y border-border/70">
+              {features.map((feature, i) => {
+                const Icon = feature.icon;
+                return (
+                  <Reveal
+                    as="article"
+                    key={feature.title}
+                    delay={i * 60}
+                    from="up"
+                    once={false}
                   >
-                    <div
-                      className={cn(
-                        "pointer-events-none absolute inset-0 bg-linear-to-br",
-                        feature.accent,
-                      )}
-                      aria-hidden
-                    />
-                    <div className="relative">
-                      <div className="mb-3 inline-flex rounded-xl bg-primary/10 p-2 text-primary transition-transform duration-300 group-hover:scale-105">
+                    <Link
+                      to={feature.to}
+                      className="group flex flex-col gap-4 py-6 transition-colors md:grid md:grid-cols-[5rem_minmax(0,1fr)_auto] md:items-center md:gap-8 md:py-7"
+                    >
+                      <span className="font-heading text-sm font-medium tabular-nums text-muted-foreground md:text-base">
+                        {String(i + 1).padStart(2, "0")}
+                      </span>
+                      <div className="flex flex-col gap-1.5">
+                        <div className="flex items-center gap-3">
+                          <span className="inline-flex rounded-xl bg-primary/10 p-2 text-primary transition-transform duration-300 group-hover:scale-105 md:hidden">
+                            <Icon className="size-5" aria-hidden />
+                          </span>
+                          <h3 className="myanmar-text text-lg font-semibold tracking-tight md:text-xl">
+                            {feature.title}
+                          </h3>
+                        </div>
+                        <p className="myanmar-text max-w-2xl text-sm leading-relaxed text-muted-foreground md:text-base">
+                          {feature.description}
+                        </p>
+                      </div>
+                      <div className="hidden items-center gap-3 md:flex">
+                        <span className="inline-flex rounded-xl bg-primary/10 p-2.5 text-primary transition-transform duration-300 group-hover:scale-105">
+                          <Icon className="size-5" aria-hidden />
+                        </span>
+                        <ArrowRight
+                          className="size-4 text-muted-foreground transition-all duration-200 group-hover:translate-x-0.5 group-hover:text-foreground"
+                          aria-hidden
+                        />
+                      </div>
+                    </Link>
+                  </Reveal>
+                );
+              })}
+            </ul>
+          </div>
+        </Reveal>
+
+        {/* Why */}
+        <Reveal as="section" once={false} className="w-full px-4 md:px-8">
+          <div className="mx-auto w-full max-w-6xl">
+            <SectionHeading
+              eyebrow="ဘာကြောင့် Myanhon"
+              title="သင်လေ့လာတဲ့ပုံစံအတွက် အထူးဖန်တီးထား"
+            />
+            <div className="mt-8 grid grid-cols-1 gap-3 sm:grid-cols-3">
+              {whyItems.map((item, i) => {
+                const Icon = item.icon;
+                return (
+                  <Reveal
+                    key={item.label}
+                    delay={i * 100}
+                    from={i === 0 ? "left" : i === 2 ? "right" : "up"}
+                    once={false}
+                  >
+                    <div className="h-full rounded-2xl border border-border/70 bg-card p-5">
+                      <div className="mb-3 inline-flex rounded-xl bg-primary/10 p-2 text-primary">
                         <Icon className="size-5" aria-hidden />
                       </div>
-                      <h3 className="font-heading text-lg font-semibold tracking-tight">
-                        {feature.title}
-                      </h3>
-                      <p className="myanmar-text mt-0.5 text-xs text-muted-foreground">
-                        {feature.titleMm}
-                      </p>
-                      <p className="mt-2 text-sm leading-relaxed text-muted-foreground">
-                        {feature.description}
+                      <p className="myanmar-text font-medium">{item.label}</p>
+                      <p className="myanmar-text mt-1 text-sm text-muted-foreground">
+                        {item.sub}
                       </p>
                     </div>
-                  </Link>
-                </Reveal>
-              );
-            })}
+                  </Reveal>
+                );
+              })}
+            </div>
           </div>
-        </div>
-      </Reveal>
+        </Reveal>
 
-      {/* Why */}
-      <Reveal as="section" className="w-full px-4 md:px-8">
-        <div className="mx-auto w-full max-w-6xl">
-          <SectionHeading
-            eyebrow="Why Myanhon"
-            title="Made for the way you actually study"
-          />
-          <div className="mt-8 grid grid-cols-1 gap-3 sm:grid-cols-3">
-            {whyItems.map((item, i) => {
-              const Icon = item.icon;
-              return (
-                <Reveal
-                  key={item.label}
-                  delay={i * 100}
-                  from={i === 0 ? "left" : i === 2 ? "right" : "up"}
-                >
-                  <div className="h-full rounded-2xl border border-border/70 bg-card p-5">
-                    <div className="mb-3 inline-flex rounded-xl bg-primary/10 p-2 text-primary">
-                      <Icon className="size-5" aria-hidden />
-                    </div>
-                    <p className="font-medium">{item.label}</p>
-                    <p className="mt-1 text-sm text-muted-foreground">
-                      {item.sub}
-                    </p>
-                  </div>
-                </Reveal>
-              );
-            })}
+        {/* Install */}
+        <Reveal as="section" once={false} className="w-full px-4 md:px-8">
+          <div className="mx-auto w-full max-w-6xl">
+            <SectionHeading
+              eyebrow="PWA အဖြစ် အသုံးပြုပါ"
+              title="Myanhon ကို သင့်ဖုန်းတွင် install ပြုလုပ်ပါ"
+              subtitle="အင်တာနက်မရှိလည်း အက်ပ်တစ်ခုကဲ့သို့ အသုံးပြုနိုင်သည်။"
+            />
+            <div className="mt-8 grid grid-cols-1 gap-4 md:grid-cols-2">
+              <Reveal delay={0} from="left" once={false}>
+                <InstallGuide
+                  title="Android တွင် ထည့်သွင်းနည်း"
+                  platformLabel="Android · Chrome"
+                  steps={androidSteps}
+                />
+              </Reveal>
+              <Reveal delay={120} from="right" once={false}>
+                <InstallGuide
+                  title="iOS တွင် ထည့်သွင်းနည်း"
+                  platformLabel="iOS · Safari"
+                  steps={iosSteps}
+                />
+              </Reveal>
+            </div>
+            <p className="myanmar-text mt-4 text-center text-xs text-muted-foreground">
+              ဒက်စ်တော့ Chrome တွင် address bar ထဲက install အိုင်ကွန်ကို ရှာပါ။
+            </p>
           </div>
-        </div>
-      </Reveal>
+        </Reveal>
 
-      {/* Install */}
-      <Reveal as="section" className="w-full px-4 md:px-8">
-        <div className="mx-auto w-full max-w-6xl">
-          <SectionHeading
-            eyebrow="Install as a PWA"
-            title="Add Myanhon to your home screen"
-            subtitle="Get an app-like experience with offline support — no app store needed."
-          />
-          <div className="mt-8 grid grid-cols-1 gap-4 md:grid-cols-2">
-            <Reveal delay={0} from="left">
-              <InstallGuide
-                platform="Android"
-                platformLabel="Android · Chrome"
-                steps={androidSteps}
-              />
-            </Reveal>
-            <Reveal delay={120} from="right">
-              <InstallGuide
-                platform="iOS"
-                platformLabel="iOS · Safari"
-                steps={iosSteps}
-              />
-            </Reveal>
+        {/* Closing CTA — slim, leads into footer */}
+        <Reveal
+          as="section"
+          from="up"
+          once={false}
+          className="w-full px-4 md:px-8"
+        >
+          <div className="mx-auto flex w-full max-w-6xl flex-col items-center gap-4 rounded-3xl border border-border/70 bg-card px-6 py-10 text-center md:flex-row md:justify-between md:gap-8 md:px-10 md:text-left">
+            <div className="flex flex-col gap-2">
+              <h2 className="myanmar-text text-2xl font-semibold tracking-tight md:text-3xl">
+                စတင်ဖို့ အသင့်ဖြစ်ပြီလား?
+              </h2>
+              <p className="myanmar-text text-sm text-muted-foreground md:text-base">
+                ဂျပန်စာခရီးစတင်ဖို့ အချိန်တန်ပြီ...
+              </p>
+            </div>
+            <div className="flex flex-wrap items-center justify-center gap-3 md:justify-end">
+              <Link
+                to="/login"
+                className={cn(
+                  buttonVariants({ size: "lg" }),
+                  "myanmar-text gap-2 px-5",
+                )}
+              >
+                အခမဲ့ account ဖောက်ပါ
+                <ArrowRight className="size-4" aria-hidden />
+              </Link>
+            </div>
           </div>
-          <p className="mt-4 text-center text-xs text-muted-foreground">
-            On desktop Chrome, look for the install icon in the address bar.
-          </p>
-        </div>
-      </Reveal>
+        </Reveal>
+      </main>
 
-      {/* Final CTA — full-width strip */}
-      <Reveal
-        as="section"
-        from="up"
-        className="w-full bg-[radial-gradient(ellipse_at_center,theme(colors.primary/0.18),transparent_65%)] px-4 py-14 md:py-20"
-      >
-        <div className="mx-auto w-full max-w-3xl rounded-3xl border border-border/70 bg-card p-6 text-center md:p-10">
-          <h2 className="font-heading text-2xl font-semibold tracking-tight md:text-3xl">
-            Ready to start?
-          </h2>
-          <p className="myanmar-text mt-2 text-sm text-muted-foreground md:text-base">
-            ဂျပန်ဘာသာစကား ခရီးစတင်ဖို့ အချိန်တန်ပြီ။
-          </p>
-          <div className="mt-5 flex flex-wrap items-center justify-center gap-3">
-            <Link
-              to="/sign-up"
-              className={cn(buttonVariants({ size: "lg" }), "gap-2 px-5")}
-            >
-              Create free account
-              <ArrowRight className="size-4" aria-hidden />
-            </Link>
-            <Link
-              to="/"
-              className={cn(
-                buttonVariants({ variant: "ghost", size: "lg" }),
-                "px-5",
-              )}
-            >
-              Browse first
-            </Link>
-          </div>
-        </div>
-      </Reveal>
+      <SiteFooter />
     </div>
   );
 }
@@ -370,14 +309,14 @@ function SectionHeading({
 }) {
   return (
     <div className="flex flex-col items-center text-center">
-      <span className="rounded-full bg-primary/10 px-3 py-1 text-xs font-medium text-primary">
+      <span className="myanmar-text rounded-full bg-primary/10 px-3 py-1 text-xs font-medium text-primary">
         {eyebrow}
       </span>
-      <h2 className="font-heading mt-3 text-2xl font-semibold tracking-tight md:text-3xl">
+      <h2 className="myanmar-text mt-3 text-2xl font-semibold tracking-tight md:text-3xl">
         {title}
       </h2>
       {subtitle ? (
-        <p className="mt-2 max-w-xl text-sm text-muted-foreground md:text-base">
+        <p className="myanmar-text mt-2 max-w-xl text-sm text-muted-foreground md:text-base">
           {subtitle}
         </p>
       ) : null}
@@ -386,11 +325,11 @@ function SectionHeading({
 }
 
 function InstallGuide({
-  platform,
+  title,
   platformLabel,
   steps,
 }: {
-  platform: "Android" | "iOS";
+  title: string;
   platformLabel: string;
   steps: ReadonlyArray<{
     icon: typeof Smartphone;
@@ -404,9 +343,9 @@ function InstallGuide({
         <span className="text-xs font-medium uppercase tracking-wide text-muted-foreground">
           {platformLabel}
         </span>
-        <CardTitle>Install on {platform}</CardTitle>
-        <CardDescription>
-          Four quick taps and you're done.
+        <CardTitle className="myanmar-text">{title}</CardTitle>
+        <CardDescription className="myanmar-text">
+          လေးချက်နှိပ်လိုက်ရုံနှင့် ပြီးပါပြီ။
         </CardDescription>
       </CardHeader>
       <CardContent>
@@ -424,9 +363,9 @@ function InstallGuide({
                       className="size-4 text-muted-foreground"
                       aria-hidden
                     />
-                    <p className="font-medium">{step.title}</p>
+                    <p className="myanmar-text font-medium">{step.title}</p>
                   </div>
-                  <p className="mt-0.5 text-sm text-muted-foreground">
+                  <p className="myanmar-text mt-0.5 text-sm text-muted-foreground">
                     {step.body}
                   </p>
                 </div>

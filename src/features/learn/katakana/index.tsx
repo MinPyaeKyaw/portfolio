@@ -5,7 +5,7 @@ import { KanaChart } from "@/components/kana-chart";
 export default function KatakanaLearningPage() {
   return (
     <div className="mx-auto flex min-h-0 w-full max-w-3xl flex-1 flex-col px-4 pt-4 md:pt-8">
-      <div className="shrink-0 bg-background pb-4">
+      <div className="shrink-0 pb-4">
         <Link
           to="/"
           className="mb-4 inline-flex items-center gap-2 text-muted-foreground text-sm transition-colors hover:text-foreground"

@@ -21,8 +21,8 @@ export interface ProfileResult {
 export interface UpsertProfilePayload {
   /** ISO 8601 date or `YYYY-MM-DD`; backend coerces to a Date. */
   dateOfBirth?: string;
-  japaneseLevel: JapaneseLevel;
-  interests: string[];
+  japaneseLevel?: JapaneseLevel;
+  interests?: string[];
   profileImage?: string;
   username?: string;
   phone?: string;

@@ -76,13 +76,7 @@ export const kanaSections: KanaSection[] = [
         null,
         { hiragana: "を", katakana: "ヲ", romaji: "wo" },
       ],
-      [
-        { hiragana: "ん", katakana: "ン", romaji: "n" },
-        null,
-        null,
-        null,
-        null,
-      ],
+      [{ hiragana: "ん", katakana: "ン", romaji: "n" }, null, null, null, null],
     ],
   },
   {
@@ -135,3 +129,30 @@ export const kanaSections: KanaSection[] = [
     ],
   },
 ];
+
+const ok = (value) => ({
+  isOk: true,
+  isErr: false,
+  map: (fn) => ok(fn(value)),
+  fold: (onErr, onOk) => onOk(value),
+});
+
+const err = (error) => ({
+  isOk: false,
+  isErr: true,
+  map: () => err(error),
+  fold: (onErr, onOk) => onErr(error),
+});
+
+const result = {
+  ok: ok,
+  err: err,
+  try: (fn, errorMsg) => {
+    try {
+      return ok(fn());
+    } catch (e) {
+      return err(errorMsg || e.message);
+    }
+  },
+};
+

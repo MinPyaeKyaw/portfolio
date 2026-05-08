@@ -1,6 +1,7 @@
 import { createBrowserRouter } from "react-router-dom";
 import AccountLayout from "./components/layouts/account-layout";
 import RootLayout from "./components/layouts/root-layout";
+import WelcomeLayout from "./components/layouts/welcome-layout";
 import DictionaryPage from "./features/dictionary";
 import DictionaryWordDetailPage from "./features/dictionary/detail";
 import KanjiPage from "./features/kanji";
@@ -40,7 +41,6 @@ export const router = createBrowserRouter([
       { path: "dictionary", element: <DictionaryPage /> },
       { path: "dictionary/:id", element: <DictionaryWordDetailPage /> },
       { path: "kanji", element: <KanjiPage /> },
-      { path: "welcome", element: <LandingPage /> },
       { path: "login", element: <LoginView /> },
       { path: "sign-up", element: <SignUpView /> },
       { path: "forgot-password", element: <ForgotPasswordView /> },
@@ -56,5 +56,10 @@ export const router = createBrowserRouter([
       { path: "settings", element: <SettingsView /> },
       { path: "set-up", element: <ProfileSetupView /> },
     ],
+  },
+  {
+    path: "/",
+    element: <WelcomeLayout />,
+    children: [{ path: "welcome", element: <LandingPage /> }],
   },
 ]);

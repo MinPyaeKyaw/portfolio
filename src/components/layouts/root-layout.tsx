@@ -1,11 +1,11 @@
 import { useCallback, useRef } from "react";
-import { BookOpen, GraduationCap, Layers, LogIn } from "lucide-react";
-import { Link, NavLink, Outlet, useLocation } from "react-router-dom";
+import { BookOpen, GraduationCap, Layers } from "lucide-react";
+import { NavLink, Outlet, useLocation } from "react-router-dom";
 import { BrandLinkToHome } from "@/components/brand-lockup";
 import { FloatingBackButton } from "@/components/floating-back-button";
+import { HeaderLoginButton } from "@/components/header-login-button";
 import { HeaderProfileButton } from "@/components/header-profile-button";
 import { ListBottomFade } from "@/components/list-bottom-fade";
-import { buttonVariants } from "@/components/ui/button";
 import { ThemeToggle } from "@/components/theme-toggle";
 import { useAuth } from "@/features/auth/use-auth";
 import { cn } from "@/lib/utils";
@@ -48,7 +48,6 @@ export default function RootLayout() {
     pathname === "/login" ||
     pathname === "/sign-up" ||
     pathname === "/forgot-password" ||
-    pathname === "/welcome" ||
     pathname === "/set-up";
 
   /** On auth routes, desktop tabs show no active segment (Learn/Dictionary/Kanji still visible). */
@@ -103,7 +102,7 @@ export default function RootLayout() {
   }, []);
 
   return (
-    <div className="flex h-svh max-h-svh min-h-0 flex-col overflow-hidden bg-background">
+    <div className="flex h-svh max-h-svh min-h-0 flex-col overflow-hidden">
       <header className="sticky top-0 z-40 flex h-[3.75rem] flex-nowrap items-center justify-between gap-3 border-border border-b bg-background/95 px-4 backdrop-blur-sm md:px-6">
         <BrandLinkToHome />
         <div className="flex items-center gap-1 md:gap-2">
@@ -141,32 +140,7 @@ export default function RootLayout() {
             </div>
           </nav>
           <ThemeToggle />
-          {isAuthenticated ? (
-            <HeaderProfileButton />
-          ) : (
-            <>
-              <Link
-                to="/login"
-                className={cn(
-                  buttonVariants({ variant: "ghost", size: "icon" }),
-                  "shrink-0 text-foreground md:hidden",
-                )}
-                aria-label="Sign in"
-              >
-                <LogIn className="size-[1.125rem]" aria-hidden />
-              </Link>
-              <Link
-                to="/login"
-                className={cn(
-                  buttonVariants({ variant: "outline", size: "sm" }),
-                  "hidden shrink-0 gap-1.5 transition-colors hover:border-primary/40 hover:bg-muted/80 md:inline-flex",
-                )}
-              >
-                <LogIn className="size-4" aria-hidden />
-                Login
-              </Link>
-            </>
-          )}
+          {isAuthenticated ? <HeaderProfileButton /> : <HeaderLoginButton />}
         </div>
       </header>
 

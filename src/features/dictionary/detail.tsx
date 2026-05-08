@@ -1,8 +1,8 @@
-import { ArrowLeft, Loader2 } from "lucide-react";
-import { useEffect, useMemo, useState } from "react";
+import { ArrowLeft } from "lucide-react";
 import { Link, useParams } from "react-router-dom";
+import { useDictionaryDetail } from "@/api/dictionary/query";
+import { ApiErrorState } from "@/components/api-error-state";
 import { PronounceButton } from "@/components/pronounce-button";
-import type { DictionaryWord } from "@/types/dictionary-word";
 import { getValidExamples } from "./utils/examples";
 import {
   getPrimaryHeadword,
@@ -13,45 +13,45 @@ import { inferPartOfSpeech } from "./utils/infer-part-of-speech";
 
 export default function DictionaryWordDetailPage() {
   const { id } = useParams<{ id: string }>();
-  const [lexicon, setLexicon] = useState<DictionaryWord[] | null>(null);
+  const numericId = Number(id);
+  const validId = Number.isFinite(numericId) ? numericId : undefined;
 
-  useEffect(() => {
-    let cancelled = false;
-    import("@/utils/new-words")
-      .then((module) => {
-        if (!cancelled) {
-          setLexicon(module.words as DictionaryWord[]);
-        }
-      })
-      .catch(() => {
-        if (!cancelled) setLexicon([]);
-      });
-    return () => {
-      cancelled = true;
-    };
-  }, []);
+  const { data: word, isLoading, isError, refetch } = useDictionaryDetail(validId);
 
-  const word = useMemo(() => {
-    if (!lexicon) return null;
-    const numericId = Number(id);
-    if (!Number.isFinite(numericId)) return undefined;
-    return lexicon.find((item) => item.id === numericId);
-  }, [id, lexicon]);
-
-  if (lexicon === null) {
+  if (isLoading) {
     return (
       <div className="mx-auto w-full max-w-3xl px-4 pb-0 pt-3 md:pb-10 md:pt-8">
-        <div
-          className="flex flex-col items-center justify-center gap-3 rounded-2xl border border-dashed border-border/80 bg-muted/20 py-20"
-          role="status"
-          aria-live="polite"
-        >
-          <Loader2
-            className="size-8 animate-spin text-muted-foreground"
-            aria-hidden
-          />
-          <p className="text-muted-foreground text-sm">Loading word details…</p>
+        <div className="mb-4 h-4 w-32 skeleton rounded-md" />
+        <div className="space-y-3 pb-4">
+          {Array.from({ length: 3 }).map((_, i) => (
+            <div
+              key={i}
+              className="rounded-xl bg-white p-4 dark:bg-muted/25"
+            >
+              <div className="mb-2 h-4 w-24 skeleton rounded-md" />
+              <div className="h-5 w-2/3 skeleton-accent rounded-md" />
+              <div className="mt-2 h-3 w-1/2 skeleton rounded-md" />
+            </div>
+          ))}
         </div>
+      </div>
+    );
+  }
+
+  if (isError) {
+    return (
+      <div className="mx-auto w-full max-w-3xl px-4 pb-0 pt-3 md:pb-10 md:pt-8">
+        <Link
+          to="/dictionary"
+          className="mb-4 inline-flex items-center gap-2 text-muted-foreground text-sm transition-colors hover:text-foreground"
+        >
+          <ArrowLeft className="size-4" aria-hidden />
+          Back to Dictionary
+        </Link>
+        <ApiErrorState
+          title="Couldn't load this word"
+          onRetry={() => refetch()}
+        />
       </div>
     );
   }
@@ -113,16 +113,18 @@ export default function DictionaryWordDetailPage() {
           </p>
         </section>
 
-        <section className="rounded-xl bg-white p-4 dark:bg-muted/25">
-          <h2 className="mb-2 text-muted-foreground text-xs uppercase tracking-wider">
-            Myanmar meanings
-          </h2>
-          <ul className="myanmar-text list-inside list-disc space-y-1.5 text-base leading-relaxed">
-            {meanings.map((meaning, index) => (
-              <li key={index}>{meaning}</li>
-            ))}
-          </ul>
-        </section>
+        {meanings.length > 0 ? (
+          <section className="rounded-xl bg-white p-4 dark:bg-muted/25">
+            <h2 className="mb-2 text-muted-foreground text-xs uppercase tracking-wider">
+              Myanmar meanings
+            </h2>
+            <ul className="myanmar-text list-inside list-disc space-y-1.5 text-base leading-relaxed">
+              {meanings.map((meaning, index) => (
+                <li key={index}>{meaning}</li>
+              ))}
+            </ul>
+          </section>
+        ) : null}
 
         {forms.length > 0 ? (
           <section className="rounded-xl bg-white p-4 dark:bg-muted/25">

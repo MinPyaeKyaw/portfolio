@@ -1,4 +1,4 @@
-import { useState, type FormEvent } from "react";
+import { useState, type KeyboardEvent } from "react";
 import { Plus } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -21,8 +21,7 @@ export function InterestsPicker({ value, onChange, disabled }: Props) {
     }
   }
 
-  function addCustom(e: FormEvent) {
-    e.preventDefault();
+  function addCustom() {
     const trimmed = draft.trim();
     if (!trimmed) return;
     if (value.some((v) => v.toLowerCase() === trimmed.toLowerCase())) {
@@ -31,6 +30,13 @@ export function InterestsPicker({ value, onChange, disabled }: Props) {
     }
     onChange([...value, trimmed]);
     setDraft("");
+  }
+
+  function onDraftKeyDown(e: KeyboardEvent<HTMLInputElement>) {
+    if (e.key === "Enter") {
+      e.preventDefault();
+      addCustom();
+    }
   }
 
   const allOptions = Array.from(new Set([...SUGGESTED_INTERESTS, ...value]));
@@ -56,23 +62,25 @@ export function InterestsPicker({ value, onChange, disabled }: Props) {
         })}
       </div>
 
-      <form className="flex items-center gap-2" onSubmit={addCustom}>
+      <div className="flex items-center gap-2">
         <Input
           value={draft}
           onChange={(e) => setDraft(e.target.value)}
+          onKeyDown={onDraftKeyDown}
           placeholder="Add another interest"
           disabled={disabled}
         />
         <Button
-          type="submit"
+          type="button"
           variant="outline"
           size="lg"
           disabled={disabled || draft.trim().length === 0}
+          onClick={addCustom}
         >
           <Plus aria-hidden />
           Add
         </Button>
-      </form>
+      </div>
     </div>
   );
 }

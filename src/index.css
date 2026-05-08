@@ -66,6 +66,7 @@
   --popover-foreground: oklch(0.145 0 0);
   --primary: #e92e69;
   --primary-foreground: #ffffff;
+  --gradient-accent: #fb923c;
   --secondary: oklch(0.97 0 0);
   --secondary-foreground: oklch(0.205 0 0);
   --muted: oklch(0.97 0 0);
@@ -93,36 +94,37 @@
 }
 
 .dark {
-  --background: oklch(0.145 0 0);
-  --foreground: oklch(0.985 0 0);
-  --card: oklch(0.205 0 0);
-  --card-foreground: oklch(0.985 0 0);
-  --popover: oklch(0.205 0 0);
-  --popover-foreground: oklch(0.985 0 0);
+  --background: oklch(0.265 0.008 325);
+  --foreground: oklch(0.955 0 0);
+  --card: oklch(0.32 0.008 325);
+  --card-foreground: oklch(0.955 0 0);
+  --popover: oklch(0.32 0.008 325);
+  --popover-foreground: oklch(0.955 0 0);
   --primary: #e92e69;
   --primary-foreground: #ffffff;
-  --secondary: oklch(0.269 0 0);
-  --secondary-foreground: oklch(0.985 0 0);
-  --muted: oklch(0.269 0 0);
-  --muted-foreground: oklch(0.708 0 0);
-  --accent: oklch(0.269 0 0);
-  --accent-foreground: oklch(0.985 0 0);
+  --gradient-accent: #fb923c;
+  --secondary: oklch(0.385 0.008 325);
+  --secondary-foreground: oklch(0.955 0 0);
+  --muted: oklch(0.36 0.008 325);
+  --muted-foreground: oklch(0.78 0.005 325);
+  --accent: oklch(0.385 0.008 325);
+  --accent-foreground: oklch(0.955 0 0);
   --destructive: oklch(0.704 0.191 22.216);
-  --border: oklch(1 0 0 / 10%);
-  --input: oklch(1 0 0 / 15%);
+  --border: oklch(1 0 0 / 14%);
+  --input: oklch(1 0 0 / 18%);
   --ring: color-mix(in srgb, #e92e69 50%, transparent);
   --chart-1: oklch(0.87 0 0);
   --chart-2: oklch(0.556 0 0);
   --chart-3: oklch(0.439 0 0);
   --chart-4: oklch(0.371 0 0);
   --chart-5: oklch(0.269 0 0);
-  --sidebar: oklch(0.205 0 0);
-  --sidebar-foreground: oklch(0.985 0 0);
+  --sidebar: oklch(0.32 0.008 325);
+  --sidebar-foreground: oklch(0.955 0 0);
   --sidebar-primary: #e92e69;
   --sidebar-primary-foreground: #ffffff;
-  --sidebar-accent: oklch(0.269 0 0);
-  --sidebar-accent-foreground: oklch(0.985 0 0);
-  --sidebar-border: oklch(1 0 0 / 10%);
+  --sidebar-accent: oklch(0.385 0.008 325);
+  --sidebar-accent-foreground: oklch(0.955 0 0);
+  --sidebar-border: oklch(1 0 0 / 14%);
   --sidebar-ring: oklch(0.556 0 0);
 }
 
@@ -130,11 +132,28 @@
   * {
     @apply border-border outline-ring/50;
   }
-  body {
-    @apply bg-background text-foreground;
-  }
   html {
     @apply font-sans;
+  }
+  html,
+  body {
+    background-color: var(--background);
+    background-image:
+      radial-gradient(
+        70% 55% at 92% 0%,
+        color-mix(in srgb, var(--primary) 12%, transparent) 0%,
+        transparent 60%
+      ),
+      radial-gradient(
+        65% 55% at 8% 100%,
+        color-mix(in srgb, var(--gradient-accent) 12%, transparent) 0%,
+        transparent 60%
+      );
+    background-attachment: fixed;
+    background-repeat: no-repeat;
+  }
+  body {
+    @apply text-foreground;
   }
 }
 
@@ -231,5 +250,141 @@
 
   .splash-screen-slogan {
     animation: splash-text-rise 0.62s ease-out 0.42s both;
+  }
+}
+
+/* Welcome hero: staggered entrance + idle decorative drift */
+@keyframes hero-rise {
+  from {
+    opacity: 0;
+    transform: translate3d(0, 12px, 0);
+  }
+  to {
+    opacity: 1;
+    transform: translate3d(0, 0, 0);
+  }
+}
+
+@keyframes hero-blob-drift {
+  0% {
+    transform: translate3d(0, 0, 0) scale(1);
+  }
+  50% {
+    transform: translate3d(2.5%, -3%, 0) scale(1.08);
+  }
+  100% {
+    transform: translate3d(0, 0, 0) scale(1);
+  }
+}
+
+@keyframes hero-glyph-float {
+  0%,
+  100% {
+    transform: translate3d(0, 0, 0);
+  }
+  50% {
+    transform: translate3d(0, -6px, 0);
+  }
+}
+
+@layer components {
+  .hero-rise {
+    opacity: 0;
+    animation: hero-rise 0.7s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+  }
+
+  .hero-blob {
+    animation: hero-blob-drift 14s ease-in-out infinite;
+    will-change: transform;
+  }
+
+  .hero-glyph-float {
+    animation: hero-glyph-float 6s ease-in-out infinite;
+    will-change: transform;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .hero-rise,
+  .hero-blob,
+  .hero-glyph-float {
+    animation: none !important;
+    opacity: 1 !important;
+    transform: none !important;
+  }
+}
+
+/* Colorful skeleton loader: tinted base + sweeping primary→accent shimmer. */
+@keyframes skeleton-shimmer {
+  0% {
+    background-position: 200% 0;
+  }
+  100% {
+    background-position: -200% 0;
+  }
+}
+
+@layer components {
+  .skeleton {
+    background-color: color-mix(in srgb, var(--primary) 4%, var(--muted));
+    background-image: linear-gradient(
+      100deg,
+      transparent 0%,
+      color-mix(in srgb, var(--primary) 11%, transparent) 35%,
+      color-mix(in srgb, var(--gradient-accent) 13%, transparent) 50%,
+      color-mix(in srgb, var(--primary) 11%, transparent) 65%,
+      transparent 100%
+    );
+    background-size: 200% 100%;
+    background-repeat: no-repeat;
+    animation: skeleton-shimmer 2.2s ease-in-out infinite;
+  }
+
+  .skeleton-accent {
+    background-color: color-mix(
+      in srgb,
+      var(--gradient-accent) 5%,
+      var(--muted)
+    );
+    background-image: linear-gradient(
+      100deg,
+      transparent 0%,
+      color-mix(in srgb, var(--gradient-accent) 13%, transparent) 35%,
+      color-mix(in srgb, var(--primary) 10%, transparent) 50%,
+      color-mix(in srgb, var(--gradient-accent) 13%, transparent) 65%,
+      transparent 100%
+    );
+    background-size: 200% 100%;
+    background-repeat: no-repeat;
+    animation: skeleton-shimmer 2.2s ease-in-out infinite;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .skeleton,
+  .skeleton-accent {
+    animation: none !important;
+  }
+}
+
+/* Sonner toast: neutral surface, brand-logo icon — no per-status colors. */
+@layer components {
+  .app-toast {
+    position: relative;
+  }
+
+  /* Sonner sets fixed sizes on [data-icon] and its child via inline styles +
+     base CSS. Override them so the brand logo can render at our chosen size. */
+  .app-toast [data-icon] {
+    width: 3rem;
+    height: 3rem;
+    margin: 0;
+    background: color-mix(in srgb, var(--primary) 8%, transparent);
+    border-radius: 9999px;
+  }
+
+  .app-toast [data-icon] > * {
+    width: 2.75rem;
+    height: 2.75rem;
   }
 }

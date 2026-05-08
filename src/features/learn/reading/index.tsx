@@ -1,11 +1,10 @@
 import { ArrowLeft, BookOpen, ChevronRight } from "lucide-react";
-import { useMemo, useState } from "react";
+import { useState } from "react";
 import { Link } from "react-router-dom";
+import { useReadingList } from "@/api/reading/query";
+import { ApiErrorState } from "@/components/api-error-state";
+import { ListSkeleton } from "@/components/list-skeleton";
 import { cn } from "@/lib/utils";
-import type { ReadingPassage } from "@/types/reading";
-import { reading } from "@/utils/reading";
-
-const passages = reading as ReadingPassage[];
 
 const LEVELS = ["all", "n5", "n4", "n3", "n2", "n1"] as const;
 type LevelFilter = (typeof LEVELS)[number];
@@ -13,14 +12,18 @@ type LevelFilter = (typeof LEVELS)[number];
 export default function ReadingListPage() {
   const [level, setLevel] = useState<LevelFilter>("all");
 
-  const filtered = useMemo(() => {
-    if (level === "all") return passages;
-    return passages.filter((p) => p.level.toLowerCase() === level);
-  }, [level]);
+  const { data, isLoading, isError, refetch } = useReadingList({
+    page: 0,
+    size: 1000,
+    level: level === "all" ? undefined : level,
+  });
+
+  const items = data?.data ?? [];
+  const total = data?.meta.totalCount ?? 0;
 
   return (
     <div className="mx-auto flex min-h-0 w-full max-w-3xl flex-1 flex-col px-4 pt-4 md:pt-8">
-      <div className="shrink-0 bg-background pb-4">
+      <div className="shrink-0 pb-4">
         <Link
           to="/"
           className="mb-4 inline-flex items-center gap-2 text-muted-foreground text-sm transition-colors hover:text-foreground"
@@ -70,14 +73,23 @@ export default function ReadingListPage() {
           </div>
         </div>
 
-        <p className="mt-3 text-muted-foreground text-xs">
-          {filtered.length} passage{filtered.length === 1 ? "" : "s"}
-        </p>
+        {!isLoading && !isError ? (
+          <p className="mt-3 text-muted-foreground text-xs">
+            {total} passage{total === 1 ? "" : "s"}
+          </p>
+        ) : null}
       </div>
 
       <div className="relative min-h-0 flex-1">
         <div className="h-full min-h-0 overflow-y-auto overscroll-contain pb-6 [-webkit-overflow-scrolling:touch]">
-          {filtered.length === 0 ? (
+          {isLoading ? (
+            <ListSkeleton count={5} lines={1} />
+          ) : isError ? (
+            <ApiErrorState
+              title="Couldn't load reading passages"
+              onRetry={() => refetch()}
+            />
+          ) : items.length === 0 ? (
             <div className="rounded-2xl border border-dashed border-border/80 bg-muted/20 px-4 py-12 text-center">
               <p className="text-muted-foreground text-sm">
                 No passages for this level yet.
@@ -85,7 +97,7 @@ export default function ReadingListPage() {
             </div>
           ) : (
             <ul className="space-y-2 pb-1" role="list">
-              {filtered.map((p: ReadingPassage) => (
+              {items.map((p) => (
                 <li key={p.id}>
                   <Link
                     to={`/reading/${p.id}`}
